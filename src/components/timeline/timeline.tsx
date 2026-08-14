@@ -3,20 +3,11 @@ import type { TimelineNavigationEra } from "@/types/timeline";
 interface TimelineProps {
   readonly navigation: readonly TimelineNavigationEra[];
   readonly activeEraId: string;
-  readonly activePeriodId: string;
   readonly progressRef: React.RefObject<HTMLDivElement | null>;
   readonly onNavigate: (index: number) => void;
 }
 
-export function Timeline({
-  navigation,
-  activeEraId,
-  activePeriodId,
-  progressRef,
-  onNavigate,
-}: TimelineProps) {
-  const activeEra = navigation.find((era) => era.id === activeEraId);
-
+export function Timeline({ navigation, activeEraId, progressRef, onNavigate }: TimelineProps) {
   return (
     <div className="timeline-overview">
       <div
@@ -53,27 +44,6 @@ export function Timeline({
           );
         })}
       </div>
-
-      {activeEra && activeEra.periods.length > 0 ? (
-        <div className="period-navigation" aria-label={`Periods within ${activeEra.title}`}>
-          {activeEra.periods.map((period) => (
-            <button
-              key={period.id}
-              type="button"
-              className="period-navigation-button"
-              disabled={period.firstEventIndex === null}
-              data-timeline-index={period.firstEventIndex ?? undefined}
-              data-navigation-kind="period"
-              aria-current={period.id === activePeriodId ? "true" : undefined}
-              onClick={() => {
-                if (period.firstEventIndex !== null) onNavigate(period.firstEventIndex);
-              }}
-            >
-              {period.title}
-            </button>
-          ))}
-        </div>
-      ) : null}
     </div>
   );
 }

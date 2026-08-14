@@ -37,9 +37,3 @@ export interface TimelineNavigationEra {
   readonly firstEventIndex: number | null;
   readonly periods: readonly TimelineNavigationPeriod[];
 }
-
-export interface NearbyTimelineItem<T> {
-  readonly index: number;
-  readonly item: T;
-  readonly relation: "previous" | "current" | "next";
-}

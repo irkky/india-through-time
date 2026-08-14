@@ -5,12 +5,7 @@ import { createSceneController } from "@/animations/scenes/scene-controller";
 import { createTimelineAnimation, type TimelineAnimationController } from "@/animations/timeline";
 import { indianHistoryTimeline } from "@/data/timeline/indian-history";
 import { createPrototypeTimelineEvents } from "@/data/timeline/prototype-presentation";
-import {
-  buildTimelineNavigation,
-  flattenTimeline,
-  getNearbyTimelineItems,
-  toTimelinePoints,
-} from "@/lib/timeline";
+import { buildTimelineNavigation, flattenTimeline, toTimelinePoints } from "@/lib/timeline";
 import { StorytellingScene } from "./storytelling-scene";
 import { TimelineNavigation } from "./timeline-navigation";
 import type { SceneElementBinding } from "@/types/scene";
@@ -35,7 +30,6 @@ const sceneDefinitions = historicalEvents.map((event) => event.scene);
 export function TimelineExperience() {
   const rootRef = useRef<HTMLElement>(null);
   const storyDateRef = useRef<HTMLSpanElement>(null);
-  const navigationDateRef = useRef<HTMLSpanElement>(null);
   const navigationProgressRef = useRef<HTMLDivElement>(null);
   const sceneRefs = useRef<HTMLElement[]>([]);
   const sceneLayerRefs = useRef<Array<Map<string, HTMLDivElement>>>([]);
@@ -45,10 +39,9 @@ export function TimelineExperience() {
   useEffect(() => {
     const root = rootRef.current;
     const storyDate = storyDateRef.current;
-    const navigationDate = navigationDateRef.current;
     const navigationProgress = navigationProgressRef.current;
 
-    if (!root || !storyDate || !navigationDate || !navigationProgress) return;
+    if (!root || !storyDate || !navigationProgress) return;
 
     const sceneBindings: SceneElementBinding[] = sceneDefinitions.map((_, index) => {
       const sceneRoot = sceneRefs.current[index];
@@ -68,7 +61,7 @@ export function TimelineExperience() {
 
     const controller = createTimelineAnimation({
       root,
-      dateReadouts: [storyDate, navigationDate],
+      dateReadouts: [storyDate],
       progress: navigationProgress,
       points: timelinePoints,
       sceneController,
@@ -89,7 +82,6 @@ export function TimelineExperience() {
   }, []);
 
   const activeEvent = historicalEvents[activeIndex] ?? initialTimelineEvent;
-  const nearbyEvents = getNearbyTimelineItems(historicalEvents, activeIndex);
 
   return (
     <main>
@@ -124,10 +116,7 @@ export function TimelineExperience() {
 
           <TimelineNavigation
             activeEvent={activeEvent}
-            nearbyEvents={nearbyEvents}
             navigation={timelineNavigation}
-            initialDateLabel={initialTimelineEvent.dateLabel}
-            dateRef={navigationDateRef}
             progressRef={navigationProgressRef}
             onNavigate={navigateToEvent}
           />

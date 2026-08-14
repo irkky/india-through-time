@@ -5,7 +5,6 @@ import {
 } from "@/lib/historical-date";
 import type { HistoricalEra } from "@/types/history";
 import type {
-  NearbyTimelineItem,
   ResolvedTimelinePosition,
   TimelineEventNode,
   TimelineNavigationEra,
@@ -127,23 +126,4 @@ export const buildTimelineNavigation = (
         periods,
       };
     });
-};
-
-export const getNearbyTimelineItems = <T>(
-  items: readonly T[],
-  activeIndex: number,
-): readonly NearbyTimelineItem<T>[] => {
-  const indexes = [activeIndex - 1, activeIndex, activeIndex + 1];
-
-  return indexes.flatMap((index) => {
-    const item = items[index];
-
-    if (!item) return [];
-
-    return {
-      index,
-      item,
-      relation: index < activeIndex ? "previous" : index > activeIndex ? "next" : "current",
-    } satisfies NearbyTimelineItem<T>;
-  });
 };
