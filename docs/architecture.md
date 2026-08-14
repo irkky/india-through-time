@@ -38,13 +38,69 @@ The current timeline controller lives in `src/animations/timeline/index.ts`. It 
 references and timeline values from the UI boundary, creates the scrubbed ScrollTrigger sequence,
 and returns one cleanup function that reverts the complete GSAP context.
 
+## Opening cinematic
+
+The opening is a separate storytelling layer, not a historical event or a special case in the
+generic Scene Controller:
+
+```text
+TimelineExperience / one ScrollTrigger
+  -> normalized opening progress
+    -> OpeningCinematic controller
+  -> handoff frame
+  -> normalized historical progress
+    -> existing Timeline Engine
+      -> historical Scene Controller
+```
+
+`src/data/opening/opening-sequence.ts` is the serializable source of truth for opening copy,
+normalized ranges, visual kinds, transition choices, and animation settings. The dedicated React
+renderers in `src/components/opening` turn those records into semantic text and placeholder SVGs.
+`src/animations/opening/cinematic.ts` consumes DOM bindings and updates only opacity and transforms;
+`transitions.ts` owns frame interpolation and the handoff dissolve.
+
+`TimelineExperience` remains the sole resolved-state owner. Its existing ScrollTrigger delegates
+the first progress partition to the opening controller and holds historical progress at zero. Near
+the boundary, the chapter frame clears while the already-matched teal atmosphere reveals the first
+timeline scene; the remaining progress is remapped from zero to one for the unchanged historical
+resolver. Navigation performs the inverse mapping, so event buttons target the historical partition
+without maintaining a second scroll model.
+
+Prehistoric periods intentionally remain empty. Consequently, the current handoff enters the first
+populated three-event prototype scene. Once a researched prehistoric event and its scene
+presentation are added through the normal ingestion workflow, chronological compilation makes it
+the first timeline state without any opening-controller change.
+
+Reduced-motion users receive discrete scene states and a direct boundary handoff. Inactive opening
+and timeline layers update `aria-hidden`, and continuous animation does not cause React renders.
+
+### Opening media insertion points
+
+- Put opening-only stills and illustrations in `public/assets/opening/images/`, videos or image
+  sequences in `public/assets/opening/video/`, and opt-in music/atmosphere in
+  `public/assets/opening/audio/`.
+- Extend the relevant entry in `src/data/opening/opening-sequence.ts` with asset metadata; keep copy,
+  rights, credit, poster, and playback configuration serializable and outside JSX.
+- Render new still/video visual kinds in `src/components/opening/OpeningVisual.tsx`. Keep the SVG
+  placeholders there until real licensed assets are ready.
+- Bind scroll-driven video time, image-sequence frames, or camera scale in
+  `src/animations/opening/cinematic.ts`; keep easing and handoff interpolation in
+  `src/animations/opening/transitions.ts`.
+- Add future audio through a focused client component under `src/components/opening/` with an
+  explicit play/mute control. Playback must never autoplay audibly, and synchronization should
+  consume opening progress from the same controller.
+- Historical event imagery, video, maps, and other assets do not go through the opening system.
+  Add them to event media metadata, reference them from `src/data/scenes`, and render them through
+  the existing generic `SceneLayer` path.
+
 ### `src/data`
 
 Owns structured, machine-readable records for the timeline, historical events, and maps. Data
 files should be serializable, validated at their boundary, and independent of React and animation
 libraries. `src/data/timeline/indian-history.ts` is the canonical hierarchy and contains all eight
-top-level eras. Unresearched eras remain empty; placeholder events must never be invented simply
-to fill the tree.
+top-level eras. `src/data/timeline/prehistoric-india.ts` owns the Prehistoric India era and its
+periods. Unresearched periods and eras remain empty; placeholder events must never be invented
+simply to fill the tree.
 
 ### `src/content`
 
@@ -58,6 +114,12 @@ Owns shared domain types. The historical hierarchy is `HistoricalEra -> Historic
 HistoricalEvent`. Events own structured dates, content metadata, relationships, asset references,
 and sources. Presentation-only types are separate from these historical records. Avoid duplicating
 types inside components.
+
+`HistoricalEvent` supports date ranges and approximation, description and significance,
+categories, regions and locations, archaeological sites, people and hominins, related events,
+media and map references, sources and citations, and explicit uncertainty or scholarly-
+interpretation notes. Fields that do not apply to a particular event stay absent; unsupported
+claims must never be filled with guesses.
 
 ### `src/lib`
 
@@ -89,10 +151,11 @@ events, and hierarchy compilation rejects ranges whose end precedes their start.
 returns one chronologically sorted list of nodes. Each node retains references to its parent era
 and period, so the UI can resolve all three hierarchy levels without copying metadata.
 
-The current prototype then projects those nodes through `prototype-presentation.ts`, which adds
-temporary palettes and abstract scene identifiers. The canonical historical records do not contain
-CSS colors. Scroll progress is distributed evenly across the resulting event list; the resolver
-selects the nearest event and interpolates a display date between adjacent event dates.
+The current prototype then projects those nodes through `timeline-presentation.ts`, which resolves
+each event's scene reference and adds presentation metadata. The canonical historical records do
+not contain CSS colors or animation settings. Scroll progress is distributed evenly across the
+resulting event list; the resolver selects the nearest event and interpolates a display date between
+adjacent event dates.
 
 ## Navigation state flow
 
@@ -140,9 +203,11 @@ geometry compiler can use it to allocate unequal scene lengths without changing 
 Those behaviors belong in adapters; they must not add historical conditionals to the core controller.
 
 Scene definitions remain outside React in `src/data/scenes`. The current prototype maps an event's
-existing `visualReference.id` to a scene definition. React's `SceneStage` renders the declared
-layers through small layer renderers, while the Scene Controller only manipulates their generic DOM
-bindings.
+existing `visualReference.id` through `scene-presentations.ts` to a scene definition. React's
+`SceneStage` renders the declared layers through small layer renderers, while the Scene Controller
+only manipulates their generic DOM bindings. A scene can declare multiple image, video,
+image-sequence, text, decorative, or map layers. A media layer's `referenceId` links it back to the
+event-owned media metadata without moving styling or playback behavior into the historical record.
 
 To add a future visual without editing the controller:
 
@@ -150,6 +215,49 @@ To add a future visual without editing the controller:
 2. Add a scene definition for that ID with its layers, assets, transition, and duration.
 3. Add a renderer only if the asset/layer type is genuinely new.
 4. Connect media progress through lifecycle hooks when playback or frame seeking is required.
+
+## Prehistoric India ingestion workflow
+
+Prehistoric India is one `HistoricalEra` with the subtitle supplied for this chapter. Its eight
+ordered `HistoricalPeriod` records are:
+
+1. Before History
+2. Lower Palaeolithic
+3. Middle Palaeolithic
+4. Upper Palaeolithic
+5. Mesolithic
+6. Neolithic
+7. Chalcolithic
+8. Transition toward early urban/Harappan societies
+
+All eight periods currently have empty `events` arrays. When researched material arrives, add its
+`HistoricalEvent` object to the matching period in
+`src/data/timeline/prehistoric-india.ts`, preserving the supplied wording, dates, uncertainty,
+source details, and citations. Do not place palettes, transitions, layer positions, or playback
+settings in that event object.
+
+If the event has a cinematic presentation, give it a stable `visualReference.id` and add the
+matching entry to `src/data/scenes/prehistoric-scenes.ts`. The scene entry targets the event ID with
+`timelinePointId`, declares its ordered layers and event-owned media/map references, and selects its
+duration and incoming transition. `scene-presentations.ts` merges that registry with the unchanged
+prototype scenes, while `timeline-presentation.ts` verifies that every populated timeline event has
+a matching scene aimed at the correct event ID.
+
+The runtime path remains generic:
+
+```text
+Prehistoric HistoricalEvent
+  -> visualReference.id
+    -> prehistoric scene presentation
+      -> resolved timeline progress
+        -> SceneController
+          -> layered SceneStage
+```
+
+Scroll progress drives the resolved date and current event. The same position then drives reversible
+scene transitions. `onEnter` and `onLeave` provide scene lifecycle boundaries; `onProgress` provides
+normalized scene progress for video seeking, image sequences, progressive zoom/parallax behavior,
+or future map-state adapters. None of these adapters should branch on prehistoric event names.
 
 ### `public/assets`
 

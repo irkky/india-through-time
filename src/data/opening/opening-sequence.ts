@@ -1,0 +1,130 @@
+import type { OpeningAnimationSettings, OpeningSceneDefinition } from "@/types/opening";
+
+const baseAnimation: OpeningAnimationSettings = {
+  enterPortion: 0.24,
+  exitPortion: 0.24,
+  translateY: 24,
+  scaleFrom: 0.985,
+  visualTranslateY: 18,
+  visualScaleFrom: 0.94,
+  visualScaleTo: 1.04,
+};
+
+export const OPENING_SCROLL_DISTANCE_VH = 700;
+export const TIMELINE_SCROLL_DISTANCE_VH = 400;
+export const TOTAL_SCROLL_DISTANCE_VH = OPENING_SCROLL_DISTANCE_VH + TIMELINE_SCROLL_DISTANCE_VH;
+export const OPENING_HANDOFF_PROGRESS = OPENING_SCROLL_DISTANCE_VH / TOTAL_SCROLL_DISTANCE_VH;
+
+export const openingSequence = [
+  {
+    id: "india-title",
+    text: "INDIA",
+    progress: { start: 0, end: 0.13 },
+    visual: "atmosphere",
+    textStyle: "title",
+    transition: "focus",
+    animation: { ...baseAnimation, enterPortion: 0.18, scaleFrom: 0.9 },
+  },
+  {
+    id: "journey-through-time",
+    text: "A JOURNEY THROUGH TIME",
+    progress: { start: 0.1, end: 0.24 },
+    visual: "time-depth",
+    textStyle: "statement",
+    transition: "drift",
+    animation: { ...baseAnimation, translateY: 18 },
+  },
+  {
+    id: "before-cities",
+    text: "Before cities.",
+    progress: { start: 0.22, end: 0.34 },
+    visual: "atmosphere",
+    textStyle: "statement",
+    transition: "dissolve",
+    animation: baseAnimation,
+  },
+  {
+    id: "before-kingdoms",
+    text: "Before kingdoms.",
+    progress: { start: 0.32, end: 0.44 },
+    visual: "atmosphere",
+    textStyle: "statement",
+    transition: "dissolve",
+    animation: baseAnimation,
+  },
+  {
+    id: "before-written-history",
+    text: "Before written history.",
+    progress: { start: 0.42, end: 0.54 },
+    visual: "time-depth",
+    textStyle: "statement",
+    transition: "drift",
+    animation: { ...baseAnimation, visualScaleFrom: 0.82, visualScaleTo: 1.1 },
+  },
+  {
+    id: "deep-time",
+    text: "~1.5 MILLION YEARS AGO",
+    progress: { start: 0.51, end: 0.67 },
+    visual: "time-depth",
+    textStyle: "date",
+    transition: "focus",
+    animation: {
+      ...baseAnimation,
+      enterPortion: 0.3,
+      scaleFrom: 0.82,
+      visualScaleFrom: 0.74,
+      visualScaleTo: 1.16,
+    },
+  },
+  {
+    id: "story-begins",
+    text: "THE STORY BEGINS",
+    progress: { start: 0.64, end: 0.8 },
+    visual: "subcontinent-placeholder",
+    textStyle: "statement",
+    transition: "emerge",
+    animation: {
+      ...baseAnimation,
+      visualTranslateY: 38,
+      visualScaleFrom: 0.84,
+      visualScaleTo: 1.02,
+    },
+  },
+  {
+    id: "first-artifact",
+    text: "Someone made this.",
+    progress: { start: 0.77, end: 0.91 },
+    visual: "artifact-placeholder",
+    textStyle: "emphasis",
+    transition: "emerge",
+    animation: {
+      ...baseAnimation,
+      enterPortion: 0.38,
+      translateY: 32,
+      visualTranslateY: 56,
+      visualScaleFrom: 0.62,
+      visualScaleTo: 1.03,
+      visualRotateFrom: -9,
+    },
+  },
+  {
+    id: "prehistoric-handoff",
+    text: "PREHISTORIC INDIA",
+    subtitle: "The Dawn of Hominin Habitation and Cultural Evolution",
+    instruction: "SCROLL TO CONTINUE",
+    progress: { start: 0.88, end: 1 },
+    visual: "chapter-placeholder",
+    textStyle: "chapter",
+    transition: "focus",
+    animation: {
+      ...baseAnimation,
+      enterPortion: 0.25,
+      exitPortion: 0,
+      scaleFrom: 0.94,
+      visualTranslateY: 22,
+      visualScaleFrom: 0.92,
+      visualScaleTo: 1.08,
+      holdAtEnd: true,
+    },
+  },
+] as const satisfies readonly OpeningSceneDefinition[];

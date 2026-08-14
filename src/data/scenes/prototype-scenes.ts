@@ -1,10 +1,5 @@
 import type { SceneDefinition } from "@/types/scene";
-import type { TimelinePalette } from "@/types/timeline-presentation";
-
-export interface PrototypeScenePresentation {
-  readonly palette: TimelinePalette;
-  readonly scene: SceneDefinition;
-}
+import type { TimelinePalette, TimelineScenePresentation } from "@/types/timeline-presentation";
 
 const createLayers = (
   artworkRenderer: string,
@@ -65,7 +60,7 @@ const mauryaPalette: TimelinePalette = {
   muted: "#bed0bf",
 };
 
-export const prototypeScenes: Readonly<Record<string, PrototypeScenePresentation>> = {
+export const prototypeScenes: Readonly<Record<string, TimelineScenePresentation>> = {
   "indus-abstract-scene": {
     palette: indusPalette,
     scene: {

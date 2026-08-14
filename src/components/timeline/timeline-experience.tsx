@@ -1,13 +1,21 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createOpeningCinematic } from "@/animations/opening/cinematic";
 import { createSceneController } from "@/animations/scenes/scene-controller";
 import { createTimelineAnimation, type TimelineAnimationController } from "@/animations/timeline";
+import { OpeningCinematic } from "@/components/opening/OpeningCinematic";
+import {
+  OPENING_HANDOFF_PROGRESS,
+  openingSequence,
+  TOTAL_SCROLL_DISTANCE_VH,
+} from "@/data/opening/opening-sequence";
 import { indianHistoryTimeline } from "@/data/timeline/indian-history";
-import { createPrototypeTimelineEvents } from "@/data/timeline/prototype-presentation";
+import { createTimelineDisplayEvents } from "@/data/timeline/timeline-presentation";
 import { buildTimelineNavigation, flattenTimeline, toTimelinePoints } from "@/lib/timeline";
 import { StorytellingScene } from "./storytelling-scene";
 import { TimelineNavigation } from "./timeline-navigation";
+import type { OpeningSceneBinding } from "@/types/opening";
 import type { SceneElementBinding } from "@/types/scene";
 
 const requireFirstEvent = <T,>(events: readonly T[]): T => {
@@ -22,13 +30,20 @@ const requireFirstEvent = <T,>(events: readonly T[]): T => {
 
 const timelineNodes = flattenTimeline(indianHistoryTimeline);
 const timelinePoints = toTimelinePoints(timelineNodes);
-const historicalEvents = createPrototypeTimelineEvents(timelineNodes);
+const historicalEvents = createTimelineDisplayEvents(timelineNodes);
 const timelineNavigation = buildTimelineNavigation(indianHistoryTimeline, timelineNodes);
 const initialTimelineEvent = requireFirstEvent(historicalEvents);
 const sceneDefinitions = historicalEvents.map((event) => event.scene);
 
 export function TimelineExperience() {
   const rootRef = useRef<HTMLElement>(null);
+  const historicalLayerRef = useRef<HTMLDivElement>(null);
+  const openingRootRef = useRef<HTMLElement>(null);
+  const openingAtmosphereRef = useRef<HTMLDivElement>(null);
+  const openingCueRef = useRef<HTMLDivElement>(null);
+  const openingProgressRef = useRef<HTMLSpanElement>(null);
+  const openingSceneRefs = useRef<HTMLElement[]>([]);
+  const openingVisualRefs = useRef<HTMLDivElement[]>([]);
   const storyDateRef = useRef<HTMLSpanElement>(null);
   const navigationProgressRef = useRef<HTMLDivElement>(null);
   const sceneRefs = useRef<HTMLElement[]>([]);
@@ -38,10 +53,46 @@ export function TimelineExperience() {
 
   useEffect(() => {
     const root = rootRef.current;
+    const historicalLayer = historicalLayerRef.current;
+    const openingRoot = openingRootRef.current;
+    const openingAtmosphere = openingAtmosphereRef.current;
+    const openingCue = openingCueRef.current;
+    const openingProgress = openingProgressRef.current;
     const storyDate = storyDateRef.current;
     const navigationProgress = navigationProgressRef.current;
 
-    if (!root || !storyDate || !navigationProgress) return;
+    if (
+      !root ||
+      !historicalLayer ||
+      !openingRoot ||
+      !openingAtmosphere ||
+      !openingCue ||
+      !openingProgress ||
+      !storyDate ||
+      !navigationProgress
+    )
+      return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const openingBindings: OpeningSceneBinding[] = openingSequence.map((_, index) => {
+      const sceneRoot = openingSceneRefs.current[index];
+      if (!sceneRoot) throw new Error(`Missing DOM binding for opening scene ${index}.`);
+
+      return {
+        root: sceneRoot,
+        visual: openingVisualRefs.current[index],
+      };
+    });
+    const openingController = createOpeningCinematic({
+      root: openingRoot,
+      atmosphere: openingAtmosphere,
+      cue: openingCue,
+      progress: openingProgress,
+      definitions: openingSequence,
+      bindings: openingBindings,
+      reducedMotion,
+    });
 
     const sceneBindings: SceneElementBinding[] = sceneDefinitions.map((_, index) => {
       const sceneRoot = sceneRefs.current[index];
@@ -56,7 +107,7 @@ export function TimelineExperience() {
     const sceneController = createSceneController({
       definitions: sceneDefinitions,
       bindings: sceneBindings,
-      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      reducedMotion,
     });
 
     const controller = createTimelineAnimation({
@@ -66,6 +117,12 @@ export function TimelineExperience() {
       points: timelinePoints,
       sceneController,
       onEventChange: setActiveIndex,
+      opening: {
+        controller: openingController,
+        root: openingRoot,
+        timelineLayer: historicalLayer,
+        handoffProgress: OPENING_HANDOFF_PROGRESS,
+      },
     });
 
     animationControllerRef.current = controller;
@@ -73,6 +130,7 @@ export function TimelineExperience() {
     return () => {
       controller.destroy();
       sceneController.destroy();
+      openingController.destroy();
       animationControllerRef.current = null;
     };
   }, []);
@@ -85,7 +143,12 @@ export function TimelineExperience() {
 
   return (
     <main>
-      <section ref={rootRef} className="relative h-[400vh]" aria-label="Journey through time">
+      <section
+        ref={rootRef}
+        className="relative"
+        style={{ height: `${TOTAL_SCROLL_DISTANCE_VH}vh` }}
+        aria-label="Journey through time"
+      >
         <div
           className="sticky top-0 h-dvh overflow-hidden bg-[var(--event-background)] text-[var(--event-foreground)]"
           style={
@@ -97,28 +160,48 @@ export function TimelineExperience() {
             } as React.CSSProperties
           }
         >
-          <StorytellingScene
-            events={historicalEvents}
-            definitions={sceneDefinitions}
-            initialDateLabel={initialTimelineEvent.dateLabel}
-            dateRef={storyDateRef}
-            registerScene={(element, index) => {
-              if (element) sceneRefs.current[index] = element;
-            }}
-            registerLayer={(element, sceneIndex, layerId) => {
-              if (!element) return;
-              const layers =
-                sceneLayerRefs.current[sceneIndex] ?? new Map<string, HTMLDivElement>();
-              layers.set(layerId, element);
-              sceneLayerRefs.current[sceneIndex] = layers;
-            }}
-          />
+          <div
+            ref={historicalLayerRef}
+            className="historical-experience-layer"
+            style={{ opacity: 0, visibility: "hidden" }}
+            aria-hidden="true"
+          >
+            <StorytellingScene
+              events={historicalEvents}
+              definitions={sceneDefinitions}
+              initialDateLabel={initialTimelineEvent.dateLabel}
+              dateRef={storyDateRef}
+              registerScene={(element, index) => {
+                if (element) sceneRefs.current[index] = element;
+              }}
+              registerLayer={(element, sceneIndex, layerId) => {
+                if (!element) return;
+                const layers =
+                  sceneLayerRefs.current[sceneIndex] ?? new Map<string, HTMLDivElement>();
+                layers.set(layerId, element);
+                sceneLayerRefs.current[sceneIndex] = layers;
+              }}
+            />
 
-          <TimelineNavigation
-            activeEvent={activeEvent}
-            navigation={timelineNavigation}
-            progressRef={navigationProgressRef}
-            onNavigate={navigateToEvent}
+            <TimelineNavigation
+              activeEvent={activeEvent}
+              navigation={timelineNavigation}
+              progressRef={navigationProgressRef}
+              onNavigate={navigateToEvent}
+            />
+          </div>
+
+          <OpeningCinematic
+            rootRef={openingRootRef}
+            atmosphereRef={openingAtmosphereRef}
+            cueRef={openingCueRef}
+            progressRef={openingProgressRef}
+            registerScene={(element, index) => {
+              if (element) openingSceneRefs.current[index] = element;
+            }}
+            registerVisual={(element, index) => {
+              if (element) openingVisualRefs.current[index] = element;
+            }}
           />
         </div>
       </section>

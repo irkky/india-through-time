@@ -1,17 +1,17 @@
-import { prototypeScenes } from "@/data/scenes/prototype-scenes";
+import { scenePresentations } from "@/data/scenes/scene-presentations";
 import { formatHistoricalDate } from "@/lib/historical-date";
 import type { TimelineEventNode } from "@/types/timeline";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 
-export const createPrototypeTimelineEvents = (
+export const createTimelineDisplayEvents = (
   nodes: readonly TimelineEventNode[],
 ): readonly TimelineDisplayEvent[] =>
   nodes.map((node) => {
     const visualId = node.event.visualReference?.id;
-    const presentation = visualId ? prototypeScenes[visualId] : undefined;
+    const presentation = visualId ? scenePresentations[visualId] : undefined;
 
     if (!presentation) {
-      throw new Error(`Missing prototype scene for event: ${node.event.id}`);
+      throw new Error(`Missing scene presentation for event: ${node.event.id}`);
     }
 
     if (presentation.scene.timelinePointId !== node.event.id) {

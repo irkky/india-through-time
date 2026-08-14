@@ -20,3 +20,8 @@ export interface TimelineDisplayEvent {
   readonly scene: SceneDefinition;
   readonly node: TimelineEventNode;
 }
+
+export interface TimelineScenePresentation {
+  readonly palette: TimelinePalette;
+  readonly scene: SceneDefinition;
+}

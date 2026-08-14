@@ -21,10 +21,17 @@ D3, Three.js, React Three Fiber, and MapLibre will be added individually when a 
 requires them. Keeping them out of the initial bundle avoids unused dependencies and makes
 performance costs explicit.
 
-## Prototype interaction
+## Opening cinematic and prototype interaction
 
-The homepage is a single `400vh` storytelling section containing a sticky viewport. ScrollTrigger
-maps the distance through that section to a normalized progress value from 0 to 1. That progress:
+The homepage is one continuous `1100vh` storytelling section containing a sticky viewport. Its
+first phase is a data-driven opening cinematic: nine reversible beats move from darkness through
+the supplied opening copy, abstract deep-time visuals, a placeholder landform, and a placeholder
+artifact before resolving to `PREHISTORIC INDIA`. No external media or additional historical copy
+is included.
+
+A single ScrollTrigger maps the full section to normalized progress. The opening owns the first
+portion, then dissolves into timeline progress zero without introducing a second scroll controller.
+The remaining progress:
 
 - interpolates the visible BCE year;
 - moves the timeline rail indicator;
@@ -33,6 +40,11 @@ maps the distance through that section to a normalized progress value from 0 to 
 
 With reduced motion enabled, the same scroll positions switch states directly without scrubbed
 crossfade or movement effects.
+
+Opening copy, progress ranges, visual kinds, transition choices, and animation settings live in
+`src/data/opening/opening-sequence.ts`. React renderers live in `src/components/opening`, and the
+scrubbed controller and frame interpolation live in `src/animations/opening`. The historical event
+model remains unaware of the opening.
 
 A persistent navigation panel shows the resolved date, era, period, event, nearby events, and
 overall progress. Event, era, and period controls navigate through the same central GSAP timeline;
@@ -45,9 +57,22 @@ reversible, scroll-scrubbed fade, crossfade, slide, scale, and parallax transiti
 three scenes use gradients and SVG placeholders only.
 
 The content system is organized as `Era -> Period -> Event`. The eight planned eras are declared
-in the canonical dataset, while only the three prototype events are currently populated. BCE/CE
-dates use an explicit calendar-era field and are normalized only inside sorting/interpolation
-utilities; historical content never uses negative years or a year zero.
+in the canonical dataset. Prehistoric India is prepared as one era containing eight empty periods;
+only the original three later-era prototype events are populated. BCE/CE dates use an explicit
+calendar-era field and are normalized only inside sorting/interpolation utilities; historical
+content never uses negative years or a year zero.
+
+Future researched prehistoric events belong in
+`src/data/timeline/prehistoric-india.ts`. Their presentation-only scene definitions belong in
+`src/data/scenes/prehistoric-scenes.ts`. See the Prehistoric India ingestion workflow in
+[docs/architecture.md](docs/architecture.md#prehistoric-india-ingestion-workflow).
+
+Future opening assets should be stored under `public/assets/opening/`: images in `images/`, video
+in `video/`, and music or atmospheric sound in `audio/`. Add their serializable references to the
+matching scene in `src/data/opening/opening-sequence.ts`, render or seek them through
+`src/components/opening/OpeningVisual.tsx` and `src/animations/opening/cinematic.ts`, and keep audio
+opt-in behind a user control. Historical event media continues to use event-owned media references
+and the generic scene layer system rather than the opening asset path.
 
 ## Getting started
 

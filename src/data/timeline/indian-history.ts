@@ -1,13 +1,9 @@
 import { bce } from "@/lib/historical-date";
+import { prehistoricIndiaEra } from "./prehistoric-india";
 import type { HistoricalEra } from "@/types/history";
 
 export const indianHistoryTimeline = [
-  {
-    id: "prehistoric-period",
-    title: "Prehistoric Period",
-    order: 1,
-    periods: [],
-  },
+  prehistoricIndiaEra,
   {
     id: "ancient-india-early-transitions",
     title: "Ancient India & Early Transitions",

@@ -12,6 +12,8 @@ export interface SceneTransitionDefinition {
 }
 
 export interface SceneMediaAsset {
+  /** Matches a HistoricalEvent media reference when the asset is event-owned. */
+  readonly referenceId: string;
   readonly type: "image" | "video" | "image-sequence";
   readonly src?: string;
   readonly poster?: string;
