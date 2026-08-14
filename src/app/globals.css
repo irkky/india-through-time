@@ -145,6 +145,31 @@ body {
   opacity: 0.38;
 }
 
+.opening-deep-time-map {
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.56;
+  filter: saturate(0.72) brightness(0.7) contrast(1.08);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 78%, transparent 100%);
+}
+
+.opening-south-india {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(96vw, 60rem);
+  max-width: none;
+  height: auto;
+  opacity: 0.64;
+  filter: saturate(0.72) brightness(0.88) contrast(1.05)
+    drop-shadow(0 2.8rem 5rem rgba(0, 0, 0, 0.6));
+  transform: translate(-34%, -50%);
+}
+
 .opening-time-rings {
   fill: none;
   stroke: rgba(180, 212, 207, 0.34);
@@ -200,27 +225,14 @@ body {
 }
 
 .opening-artifact {
-  width: min(48vw, 29rem);
-  height: min(72vh, 43rem);
-  filter: drop-shadow(0 3rem 5rem rgba(0, 0, 0, 0.62));
-}
-
-.opening-artifact-body {
-  fill: url("#artifact-fill");
-  stroke: rgba(237, 208, 156, 0.6);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-
-.opening-artifact-edge {
-  fill: none;
-  stroke: rgba(246, 221, 177, 0.44);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
-}
-
-.opening-artifact-edge--soft {
-  opacity: 0.32;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(92vw, 70rem);
+  max-width: none;
+  height: auto;
+  filter: drop-shadow(0 2.5rem 4.5rem rgba(0, 0, 0, 0.58));
+  transform: translate(-50%, -50%);
 }
 
 .opening-text-shell {
@@ -335,9 +347,33 @@ body {
   will-change: transform;
 }
 
-.opening-start-cue {
+.opening-start-layer {
   position: absolute;
   z-index: 4;
+  inset: 0;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.opening-start-map {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  width: min(58vw, 38rem);
+  opacity: 0.52;
+  filter: saturate(0.86) brightness(1.06) contrast(1.16)
+    drop-shadow(0 2.5rem 5rem rgba(0, 0, 0, 0.72));
+  transform: translate(-50%, -50%);
+}
+
+.opening-start-map img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.opening-start-cue {
+  position: absolute;
   bottom: clamp(3.25rem, 9vh, 6rem);
   right: 0;
   left: 0;
@@ -349,7 +385,6 @@ body {
   margin-inline: auto;
   color: rgba(232, 229, 217, 0.4);
   text-align: center;
-  will-change: opacity, transform;
 }
 
 .opening-start-cue p {
@@ -373,6 +408,72 @@ body {
   stroke-width: 1;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.opening-india-tricolour {
+  position: relative;
+  width: min(58vw, 38rem);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: 0.13;
+  background: linear-gradient(
+    to bottom,
+    #b77f4d 4%,
+    #a98968 29%,
+    #b7b8b0 42%,
+    #aeb1a8 58%,
+    #477153 71%,
+    #345c40 96%
+  );
+  box-shadow: 0 0 10rem rgba(107, 132, 112, 0.035);
+  filter: saturate(0.48) brightness(0.78) contrast(0.8) blur(2.5px);
+  mask-image: radial-gradient(
+    circle,
+    rgba(0, 0, 0, 0.78) 0%,
+    rgba(0, 0, 0, 0.66) 44%,
+    rgba(0, 0, 0, 0.3) 70%,
+    transparent 91%
+  );
+}
+
+.opening-india-tricolour::after {
+  position: absolute;
+  inset: -2%;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle,
+    rgba(2, 5, 6, 0.08) 0%,
+    rgba(2, 5, 6, 0.3) 55%,
+    rgba(2, 5, 6, 0.88) 100%
+  );
+  content: "";
+}
+
+.opening-india-chakra {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 12%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(30, 43, 86, 0.3);
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(30, 43, 86, 0.24) 0deg 1deg,
+    transparent 1deg 15deg
+  );
+  filter: blur(0.45px);
+  opacity: 0.42;
+  transform: translate(-50%, -50%);
+}
+
+.opening-copy--title + .opening-subtitle {
+  margin-top: clamp(1.2rem, 3vh, 2rem);
+  color: rgba(244, 240, 226, 0.64);
+  font-size: clamp(0.76rem, 1.3vw, 1rem);
+  letter-spacing: 0.2em;
 }
 
 @keyframes opening-cue-drift {
@@ -610,6 +711,18 @@ body {
 }
 
 @media (max-width: 639px) {
+  .opening-start-map {
+    top: 46%;
+    width: min(88vw, 32rem);
+    opacity: 0.46;
+  }
+
+  .opening-india-tricolour {
+    width: min(88vw, 31rem);
+    opacity: 0.11;
+    filter: saturate(0.44) brightness(0.76) contrast(0.78) blur(2px);
+  }
+
   .opening-scene {
     padding: 2rem 1.6rem 6rem;
   }
@@ -624,10 +737,21 @@ body {
     height: 68vh;
   }
 
+  .opening-deep-time-map {
+    object-position: 53% center;
+    opacity: 0.5;
+  }
+
+  .opening-south-india {
+    width: 180vw;
+    opacity: 0.56;
+    transform: translate(-34%, -52%);
+  }
+
   .opening-artifact {
-    width: 70vw;
-    height: 64vh;
-    transform: translateY(-3vh);
+    width: 210vw;
+    height: auto;
+    transform: translate(-50%, calc(-50% - 3vh));
   }
 
   .opening-copy--title {

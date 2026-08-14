@@ -1,4 +1,5 @@
-import { openingSequence } from "@/data/opening/opening-sequence";
+import Image from "next/image";
+import { openingPrelude, openingSequence } from "@/data/opening/opening-sequence";
 import { OpeningProgress } from "./OpeningProgress";
 import { OpeningScene } from "./OpeningScene";
 
@@ -40,11 +41,23 @@ export function OpeningCinematic({
         ))}
       </div>
 
-      <div ref={cueRef} className="opening-start-cue">
-        <p>SCROLL DOWN TO BEGIN THE JOURNEY</p>
-        <svg className="opening-start-chevron" viewBox="0 0 20 12" aria-hidden="true">
-          <path d="m3 3 7 6 7-6" />
-        </svg>
+      <div ref={cueRef} className="opening-start-layer">
+        <div className="opening-start-map" aria-hidden="true">
+          <Image
+            src={openingPrelude.image.src}
+            width={openingPrelude.image.width}
+            height={openingPrelude.image.height}
+            alt={openingPrelude.image.alt}
+            preload
+          />
+        </div>
+
+        <div className="opening-start-cue">
+          <p>{openingPrelude.cue}</p>
+          <svg className="opening-start-chevron" viewBox="0 0 20 12" aria-hidden="true">
+            <path d="m3 3 7 6 7-6" />
+          </svg>
+        </div>
       </div>
 
       <OpeningProgress progressRef={progressRef} />

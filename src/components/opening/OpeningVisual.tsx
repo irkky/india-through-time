@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { OpeningVisualType } from "@/types/opening";
 
 interface OpeningVisualProps {
@@ -5,6 +6,38 @@ interface OpeningVisualProps {
 }
 
 export function OpeningVisual({ type }: OpeningVisualProps) {
+  if (type === "deep-time-map-image") {
+    return (
+      <Image
+        className="opening-visual opening-deep-time-map"
+        src="/assets/images/opening/indianmap.png"
+        fill
+        sizes="100vw"
+        alt=""
+      />
+    );
+  }
+
+  if (type === "south-india-image") {
+    return (
+      <Image
+        className="opening-visual opening-south-india"
+        src="/assets/images/opening/southindiacontinent.png"
+        width={720}
+        height={407}
+        alt=""
+      />
+    );
+  }
+
+  if (type === "india-tricolour") {
+    return (
+      <div className="opening-visual opening-india-tricolour" aria-hidden="true">
+        <span className="opening-india-chakra" />
+      </div>
+    );
+  }
+
   if (type === "time-depth") {
     return (
       <svg className="opening-visual opening-time-depth" viewBox="0 0 1200 800" aria-hidden="true">
@@ -51,26 +84,15 @@ export function OpeningVisual({ type }: OpeningVisualProps) {
     );
   }
 
-  if (type === "artifact-placeholder") {
+  if (type === "artifact-image") {
     return (
-      <svg className="opening-visual opening-artifact" viewBox="0 0 700 900" aria-hidden="true">
-        <defs>
-          <linearGradient id="artifact-fill" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#d8b57b" stopOpacity="0.78" />
-            <stop offset="0.48" stopColor="#8c6943" stopOpacity="0.72" />
-            <stop offset="1" stopColor="#38291e" stopOpacity="0.92" />
-          </linearGradient>
-        </defs>
-        <path
-          className="opening-artifact-body"
-          d="m345 58 148 104 74 171-38 204-128 294-132-96-98-190 20-214 66-184Z"
-        />
-        <path className="opening-artifact-edge" d="m345 58-17 173 76 83-121 102 104 112-118 207" />
-        <path
-          className="opening-artifact-edge opening-artifact-edge--soft"
-          d="m493 162-89 152 125 223M191 331l92 85-112 129"
-        />
-      </svg>
+      <Image
+        className="opening-visual opening-artifact"
+        src="/assets/images/opening/stone.png"
+        width={1690}
+        height={945}
+        alt=""
+      />
     );
   }
 

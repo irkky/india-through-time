@@ -61,13 +61,18 @@ export const resolveOpeningSceneFrame = (
       reducedMotion || dissolvesInPlace
         ? 1
         : scene.animation.scaleFrom + (1 - scene.animation.scaleFrom) * enterProgress,
-    visualTranslateY: reducedMotion ? 0 : scene.animation.visualTranslateY * (1 - travelProgress),
-    visualScale: reducedMotion
-      ? 1
-      : scene.animation.visualScaleFrom +
-        (scene.animation.visualScaleTo - scene.animation.visualScaleFrom) * travelProgress,
-    visualRotation: reducedMotion
-      ? 0
-      : (scene.animation.visualRotateFrom ?? 0) * (1 - travelProgress),
+    visualTranslateY:
+      reducedMotion || dissolvesInPlace
+        ? 0
+        : scene.animation.visualTranslateY * (1 - travelProgress),
+    visualScale:
+      reducedMotion || dissolvesInPlace
+        ? 1
+        : scene.animation.visualScaleFrom +
+          (scene.animation.visualScaleTo - scene.animation.visualScaleFrom) * travelProgress,
+    visualRotation:
+      reducedMotion || dissolvesInPlace
+        ? 0
+        : (scene.animation.visualRotateFrom ?? 0) * (1 - travelProgress),
   };
 };

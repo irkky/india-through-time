@@ -15,12 +15,23 @@ export const TIMELINE_SCROLL_DISTANCE_VH = 400;
 export const TOTAL_SCROLL_DISTANCE_VH = OPENING_SCROLL_DISTANCE_VH + TIMELINE_SCROLL_DISTANCE_VH;
 export const OPENING_HANDOFF_PROGRESS = OPENING_SCROLL_DISTANCE_VH / TOTAL_SCROLL_DISTANCE_VH;
 
+export const openingPrelude = {
+  cue: "SCROLL DOWN TO BEGIN THE JOURNEY",
+  image: {
+    src: "/assets/images/opening/ancient_map.png",
+    width: 814,
+    height: 742,
+    alt: "",
+  },
+} as const;
+
 export const openingSequence = [
   {
     id: "india-title",
     text: "INDIA",
-    progress: { start: 0, end: 0.13 },
-    visual: "atmosphere",
+    subtitle: "that is Bharat",
+    progress: { start: 0.035, end: 0.13 },
+    visual: "india-tricolour",
     textStyle: "title",
     transition: "focus",
     animation: { ...baseAnimation, enterPortion: 0.18, scaleFrom: 0.9 },
@@ -56,31 +67,32 @@ export const openingSequence = [
     id: "before-written-history",
     text: "Before written history.",
     progress: { start: 0.42, end: 0.54 },
-    visual: "time-depth",
+    visual: "atmosphere",
     textStyle: "statement",
-    transition: "drift",
-    animation: { ...baseAnimation, visualScaleFrom: 0.82, visualScaleTo: 1.1 },
+    transition: "dissolve",
+    animation: baseAnimation,
   },
   {
     id: "deep-time",
     text: "~1.5 MILLION YEARS AGO",
     progress: { start: 0.51, end: 0.67 },
-    visual: "time-depth",
+    visual: "deep-time-map-image",
     textStyle: "date",
-    transition: "focus",
+    transition: "dissolve",
     animation: {
       ...baseAnimation,
       enterPortion: 0.3,
-      scaleFrom: 0.82,
-      visualScaleFrom: 0.74,
-      visualScaleTo: 1.16,
+      visualTranslateY: 0,
+      visualScaleFrom: 1,
+      visualScaleTo: 1,
     },
   },
   {
     id: "story-begins",
     text: "THE STORY BEGINS",
+    subtitle: "in Attirampakkam, Tamil Nadu.",
     progress: { start: 0.64, end: 0.8 },
-    visual: "subcontinent-placeholder",
+    visual: "south-india-image",
     textStyle: "statement",
     transition: "emerge",
     animation: {
@@ -94,7 +106,7 @@ export const openingSequence = [
     id: "first-artifact",
     text: "Someone made this.",
     progress: { start: 0.77, end: 0.91 },
-    visual: "artifact-placeholder",
+    visual: "artifact-image",
     textStyle: "emphasis",
     transition: "emerge",
     animation: {
