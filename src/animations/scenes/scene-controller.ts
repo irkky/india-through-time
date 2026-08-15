@@ -14,6 +14,51 @@ interface CreateSceneControllerOptions {
   readonly reducedMotion?: boolean;
 }
 
+const clamp = (value: number) => Math.min(Math.max(value, 0), 1);
+
+const smooth = (value: number) => {
+  const bounded = clamp(value);
+  return bounded * bounded * (3 - 2 * bounded);
+};
+
+const setLayerProgress = (
+  binding: SceneElementBinding,
+  definition: SceneDefinition,
+  progress: number,
+  reducedMotion: boolean,
+) => {
+  for (const layer of definition.layers) {
+    const timeline = layer.timeline;
+    const element = binding.layers.get(layer.id);
+
+    if (!timeline || !element) continue;
+
+    const duration = Math.max(timeline.end - timeline.start, 0.0001);
+    const localProgress = clamp((progress - timeline.start) / duration);
+    const isVisible = progress >= timeline.start && progress <= timeline.end;
+
+    if (reducedMotion) {
+      gsap.set(element, { autoAlpha: isVisible ? 1 : 0, y: 0, scale: 1 });
+      continue;
+    }
+
+    const fadeIn = Math.max(timeline.fadeIn ?? 0.18, 0.0001);
+    const fadeOut = Math.max(timeline.fadeOut ?? 0.18, 0.0001);
+    const enterProgress = timeline.fadeIn === 0 ? 1 : smooth(localProgress / fadeIn);
+    const exitProgress =
+      timeline.fadeOut === 0 ? 0 : smooth((localProgress - (1 - fadeOut)) / fadeOut);
+    const travelProgress = smooth(localProgress);
+    const scaleFrom = timeline.scaleFrom ?? 1;
+    const scaleTo = timeline.scaleTo ?? 1;
+
+    gsap.set(element, {
+      autoAlpha: isVisible ? enterProgress * (1 - exitProgress) : 0,
+      y: (timeline.translateYFrom ?? 0) * (1 - travelProgress),
+      scale: scaleFrom + (scaleTo - scaleFrom) * travelProgress,
+    });
+  }
+};
+
 export function createSceneController({
   definitions,
   bindings,
@@ -28,6 +73,30 @@ export function createSceneController({
     if (!Number.isFinite(definition.duration) || definition.duration <= 0) {
       throw new RangeError(`Scene duration must be positive: ${definition.id}`);
     }
+
+    const transitionPortion = definition.transitionIn.portion;
+    if (
+      transitionPortion !== undefined &&
+      (!Number.isFinite(transitionPortion) || transitionPortion <= 0 || transitionPortion > 1)
+    ) {
+      throw new RangeError(`Scene transition portion must be in (0, 1]: ${definition.id}`);
+    }
+
+    for (const layer of definition.layers) {
+      const timeline = layer.timeline;
+      if (
+        timeline &&
+        (!Number.isFinite(timeline.start) ||
+          !Number.isFinite(timeline.end) ||
+          timeline.start < 0 ||
+          timeline.end > 1 ||
+          timeline.start >= timeline.end)
+      ) {
+        throw new RangeError(
+          `Scene layer has an invalid progress range: ${definition.id}/${layer.id}`,
+        );
+      }
+    }
   }
 
   let activeIndex = 0;
@@ -37,6 +106,11 @@ export function createSceneController({
     { autoAlpha: 0, x: 0, y: 0, scale: 1 },
   );
   gsap.set(bindings[0]?.root ?? [], { autoAlpha: 1 });
+  const firstDefinition = definitions[0];
+  const firstBinding = bindings[0];
+  if (firstDefinition && firstBinding) {
+    setLayerProgress(firstBinding, firstDefinition, 0, reducedMotion);
+  }
   bindings[0]?.root.setAttribute("aria-hidden", "false");
   bindings[0]?.root.setAttribute("data-scene-state", "active");
   hooks.onEnter?.({ definition: definitions[0]!, index: 0 });
@@ -103,7 +177,8 @@ export function createSceneController({
       }
 
       const activeDefinition = definitions[index];
-      if (activeDefinition) {
+      const activeBinding = bindings[index];
+      if (activeDefinition && activeBinding) {
         const timelinePosition = progress * Math.max(definitions.length - 1, 1);
         const sceneStart = index === 0 ? 0 : index - 0.5;
         const sceneEnd = index === definitions.length - 1 ? definitions.length - 1 : index + 0.5;
@@ -111,6 +186,8 @@ export function createSceneController({
           Math.max((timelinePosition - sceneStart) / Math.max(sceneEnd - sceneStart, 0.0001), 0),
           1,
         );
+
+        setLayerProgress(activeBinding, activeDefinition, localProgress, reducedMotion);
 
         hooks.onProgress?.({
           definition: activeDefinition,

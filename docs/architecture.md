@@ -66,10 +66,10 @@ timeline scene; the remaining progress is remapped from zero to one for the unch
 resolver. Navigation performs the inverse mapping, so event buttons target the historical partition
 without maintaining a second scroll model.
 
-Prehistoric periods intentionally remain empty. Consequently, the current handoff enters the first
-populated three-event prototype scene. Once a researched prehistoric event and its scene
-presentation are added through the normal ingestion workflow, chronological compilation makes it
-the first timeline state without any opening-controller change.
+The Lower Palaeolithic period currently contains one explicitly marked scaffold event. It carries
+only the user-supplied approximate deep-time label and no archaeological claims. Consequently, the
+opening now hands directly into the Prehistoric India atmosphere and its configurable placeholder
+sequence. The three later prototype scenes still follow through the unchanged timeline resolver.
 
 Reduced-motion users receive discrete scene states and a direct boundary handoff. Inactive opening
 and timeline layers update `aria-hidden`, and continuous animation does not cause React renders.
@@ -128,9 +128,12 @@ behind client boundaries, and expose the smallest practical API to the rest of t
 
 ## Historical dates
 
-Content dates use `{ year: number, era: "BCE" | "CE" }`. The year must be a positive integer, so
-the content model never contains year zero or uses a negative year to imply BCE. Approximation is
-stored on the event because it describes the certainty of the historical claim, not the calendar.
+Content dates are a discriminated union. Calendar dates use
+`{ kind: "calendar", year, era: "BCE" | "CE" }`; the year remains a positive integer, so content
+never contains year zero or uses a negative year to imply BCE. Deep-time expressions use
+`{ kind: "years-ago", years }` and therefore do not pretend that phrases such as “1.5 million years
+ago” are BCE calendar dates. Approximation is stored on the event because it describes the
+certainty of the historical claim, not the chronology representation.
 
 Date utilities convert values to an internal sortable ordinal:
 
@@ -142,8 +145,9 @@ Date utilities convert values to an internal sortable ordinal:
 ```
 
 This coordinate is used only for comparison and interpolation. It makes BCE/CE sorting continuous
-while formatted output always returns a valid historical date. `dateEnd` is optional for point
-events, and hierarchy compilation rejects ranges whose end precedes their start.
+and also places deep-time values correctly before later calendar dates. Formatted output preserves
+the appropriate display form, such as `~1.5 million years ago` or `~10,000 BCE`. `dateEnd` is
+optional for point events, and hierarchy compilation rejects ranges whose end precedes their start.
 
 ## Timeline compilation
 
@@ -206,8 +210,16 @@ Scene definitions remain outside React in `src/data/scenes`. The current prototy
 existing `visualReference.id` through `scene-presentations.ts` to a scene definition. React's
 `SceneStage` renders the declared layers through small layer renderers, while the Scene Controller
 only manipulates their generic DOM bindings. A scene can declare multiple image, video,
-image-sequence, text, decorative, or map layers. A media layer's `referenceId` links it back to the
-event-owned media metadata without moving styling or playback behavior into the historical record.
+image-sequence, text, decorative, or map layers. A layer may also declare a normalized `timeline`
+range with fade, scale, and vertical-travel settings. The generic controller applies those values
+from reversible local scene progress; it never checks prehistoric event IDs. A media layer's
+`referenceId` links it back to event-owned media metadata without moving styling or playback
+behavior into the historical record.
+
+Incoming scene transitions may set `portion` to confine a crossfade/slide/scale to a smaller window
+around the boundary between two events. The Lower Palaeolithic scaffold uses this through the
+existing Indus presentation, allowing its final configured beat to finish before the prototype
+scene appears.
 
 To add a future visual without editing the controller:
 
@@ -230,11 +242,12 @@ ordered `HistoricalPeriod` records are:
 7. Chalcolithic
 8. Transition toward early urban/Harappan societies
 
-All eight periods currently have empty `events` arrays. When researched material arrives, add its
-`HistoricalEvent` object to the matching period in
-`src/data/timeline/prehistoric-india.ts`, preserving the supplied wording, dates, uncertainty,
-source details, and citations. Do not place palettes, transitions, layer positions, or playback
-settings in that event object.
+Seven periods remain empty. Lower Palaeolithic contains only
+`lower-palaeolithic-scaffold`, marked with `contentStatus: "placeholder"`; it exists so the opening
+handoff and visual choreography can be exercised before research arrives. Replace that object with
+the first researched `HistoricalEvent` in `src/data/timeline/prehistoric-india.ts`, preserving the
+supplied wording, dates, uncertainty, source details, and citations. Do not place palettes,
+transitions, layer positions, or playback settings in the event object.
 
 If the event has a cinematic presentation, give it a stable `visualReference.id` and add the
 matching entry to `src/data/scenes/prehistoric-scenes.ts`. The scene entry targets the event ID with
@@ -242,6 +255,12 @@ matching entry to `src/data/scenes/prehistoric-scenes.ts`. The scene entry targe
 duration and incoming transition. `scene-presentations.ts` merges that registry with the unchanged
 prototype scenes, while `timeline-presentation.ts` verifies that every populated timeline event has
 a matching scene aimed at the correct event ID.
+
+The current `lower-palaeolithic-placeholder-sequence` is presentation scaffolding for eight
+user-specified visual beats. Each layer owns an adjustable normalized `start`/`end` range. Replace
+placeholder renderers or add event-owned asset references there as researched media arrives; do not
+copy those visual settings into the canonical event record. Placeholder timeline points also hold
+their supplied date label rather than interpolating unsupported intermediate chronology.
 
 The runtime path remains generic:
 
@@ -267,6 +286,11 @@ Owns static files served without transformation:
 - `illustrations`: authored visual artwork.
 - `maps`: GeoJSON or other map assets suitable for direct serving.
 - `models`: compressed 3D assets, only when a scene justifies them.
+- `videos` and `audio`: period-specific cinematic media when supplied and licensed.
+
+Prehistoric collections should be grouped below `public/assets/` as
+`images/prehistoric/`, `maps/prehistoric/`, `videos/prehistoric/`, and
+`audio/prehistoric/`. Browser references always begin with `/assets/`.
 
 Use descriptive lowercase filenames, optimize assets before committing, and record required
 attribution or license details alongside each asset collection.

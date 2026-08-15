@@ -10,7 +10,7 @@ export type OpeningVisualType =
 
 export type OpeningTextStyle = "title" | "statement" | "date" | "emphasis" | "chapter";
 
-export type OpeningTransitionType = "dissolve" | "drift" | "focus" | "emerge";
+export type OpeningTransitionType = "dissolve" | "zoom-dissolve" | "drift" | "focus" | "emerge";
 
 export interface OpeningProgressRange {
   readonly start: number;
@@ -31,6 +31,7 @@ export interface OpeningAnimationSettings {
 
 export interface OpeningSceneDefinition {
   readonly id: string;
+  readonly eyebrow?: string;
   readonly text: string;
   readonly subtitle?: string;
   readonly instruction?: string;

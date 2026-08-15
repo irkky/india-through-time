@@ -28,16 +28,20 @@ export interface ArchaeologicalSite {
   readonly location?: HistoricalLocation;
 }
 
-export type HistoricalMediaKind = "image" | "video" | "illustration";
+export type HistoricalMediaKind = "image" | "video" | "audio" | "illustration" | "map";
 
 export interface HistoricalMediaReference {
   readonly id: string;
   readonly kind: HistoricalMediaKind;
   readonly alt: string;
   readonly caption?: string;
+  readonly creator?: string;
   readonly credit?: string;
   readonly license?: string;
+  readonly attribution?: string;
   readonly sourceUrl?: string;
+  readonly historicalContext?: string;
+  readonly usageLocations?: readonly string[];
 }
 
 export type VisualReferenceKind =
@@ -60,12 +64,37 @@ export interface HistoricalInterpretationNote {
   readonly sourceIds?: readonly string[];
 }
 
+interface HistoricalFactAnnotationBase {
+  readonly id: string;
+  readonly eyebrow: string;
+  readonly text: string;
+}
+
+export interface HistoricalChronologyFactAnnotation extends HistoricalFactAnnotationBase {
+  readonly kind: "chronology";
+  readonly primaryStatistic: string;
+  readonly statisticQualifier: string;
+  readonly location: readonly string[];
+  readonly supportingLine?: string;
+}
+
+export interface HistoricalDistributionFactAnnotation extends HistoricalFactAnnotationBase {
+  readonly kind: "distribution";
+  readonly statement: readonly string[];
+  readonly siteLine: string;
+  readonly evidenceLabel: string;
+}
+
+export type HistoricalFactAnnotation =
+  HistoricalChronologyFactAnnotation | HistoricalDistributionFactAnnotation;
+
 export interface HistoricalEvent {
   readonly id: string;
   readonly title: string;
   readonly dateStart: HistoricalDate;
   readonly dateEnd?: HistoricalDate;
   readonly approximateDate: boolean;
+  readonly contentStatus?: "placeholder" | "researched";
   readonly description: string;
   readonly significance?: string;
   readonly categories: readonly string[];
@@ -81,6 +110,7 @@ export interface HistoricalEvent {
   readonly sources: readonly HistoricalSource[];
   readonly citations?: readonly HistoricalCitation[];
   readonly interpretationNotes?: readonly HistoricalInterpretationNote[];
+  readonly factAnnotations?: readonly HistoricalFactAnnotation[];
 }
 
 export interface HistoricalPeriod {

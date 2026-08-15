@@ -6,6 +6,8 @@ export type SceneLayerKind = "background" | "image" | "video" | "text" | "map" |
 export interface SceneTransitionDefinition {
   readonly type: SceneTransitionType;
   readonly ease?: string;
+  /** Fraction of the interval used around its midpoint. Defaults to the full interval. */
+  readonly portion?: number;
   readonly direction?: "left" | "right" | "up" | "down";
   readonly distance?: number;
   readonly scale?: number;
@@ -26,13 +28,27 @@ export interface SceneMapState {
   readonly stateId?: string;
 }
 
+export interface SceneLayerTimeline {
+  /** Normalized progress within the owning scene. */
+  readonly start: number;
+  readonly end: number;
+  /** Fractions of this layer's range used for its entrance and exit. */
+  readonly fadeIn?: number;
+  readonly fadeOut?: number;
+  readonly scaleFrom?: number;
+  readonly scaleTo?: number;
+  readonly translateYFrom?: number;
+}
+
 export interface SceneLayerDefinition {
   readonly id: string;
   readonly kind: SceneLayerKind;
   readonly renderer: string;
+  readonly stack?: number;
   readonly depth?: number;
   readonly asset?: SceneMediaAsset;
   readonly mapState?: SceneMapState;
+  readonly timeline?: SceneLayerTimeline;
   readonly configuration?: Readonly<Record<string, string | number | boolean>>;
 }
 

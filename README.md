@@ -4,9 +4,9 @@ An original, interactive website for exploring Indian history by scrolling throu
 eventual experience will combine a changing historical timeline with responsive text, maps,
 illustrations, and visual scenes.
 
-This repository currently contains the production foundation and a focused three-event timeline
-prototype. It deliberately does not yet include a complete historical narrative, database,
-authentication, CMS, or external storage.
+This repository currently contains the production foundation, one presentation-only Prehistoric
+India scaffold, and the focused three-event timeline prototype. It deliberately does not yet
+include a complete historical narrative, database, authentication, CMS, or external storage.
 
 ## Current stack
 
@@ -23,7 +23,7 @@ performance costs explicit.
 
 ## Opening cinematic and prototype interaction
 
-The homepage is one continuous `1100vh` storytelling section containing a sticky viewport. Its
+The homepage is one continuous `1500vh` storytelling section containing a sticky viewport. Its
 first phase is a data-driven opening cinematic: nine reversible beats move from darkness through
 the supplied opening copy, abstract deep-time visuals, a placeholder landform, and a placeholder
 artifact before resolving to `PREHISTORIC INDIA`. No external media or additional historical copy
@@ -33,9 +33,9 @@ A single ScrollTrigger maps the full section to normalized progress. The opening
 portion, then dissolves into timeline progress zero without introducing a second scroll controller.
 The remaining progress:
 
-- interpolates the visible BCE year;
+- interpolates the visible chronology, including deep-time and BCE/CE labels;
 - moves the timeline rail indicator;
-- selects the nearest of three historical events;
+- selects the active prehistoric scaffold or one of the three later prototype events;
 - scrubs GSAP crossfades between event copy and abstract SVG scenes.
 
 With reduced motion enabled, the same scroll positions switch states directly without scrubbed
@@ -57,10 +57,11 @@ reversible, scroll-scrubbed fade, crossfade, slide, scale, and parallax transiti
 three scenes use gradients and SVG placeholders only.
 
 The content system is organized as `Era -> Period -> Event`. The eight planned eras are declared
-in the canonical dataset. Prehistoric India is prepared as one era containing eight empty periods;
-only the original three later-era prototype events are populated. BCE/CE dates use an explicit
-calendar-era field and are normalized only inside sorting/interpolation utilities; historical
-content never uses negative years or a year zero.
+in the canonical dataset. Prehistoric India is prepared as one era containing eight periods. Lower
+Palaeolithic has one explicitly marked placeholder event so its visual sequence can run; the other
+seven periods remain empty until research is supplied. Dates use separate calendar and years-ago
+representations, so deep time is not forced into BCE/CE. The original three later-era prototype
+events remain intact.
 
 Future researched prehistoric events belong in
 `src/data/timeline/prehistoric-india.ts`. Their presentation-only scene definitions belong in

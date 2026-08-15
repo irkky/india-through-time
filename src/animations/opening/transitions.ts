@@ -47,7 +47,8 @@ export const resolveOpeningSceneFrame = (
   const opacity = reducedMotion ? (inRange ? 1 : 0) : enterProgress * (1 - exitProgress);
   const travelProgress = smooth(localProgress);
   const movesLaterally = scene.transition === "drift";
-  const dissolvesInPlace = scene.transition === "dissolve";
+  const dissolvesInPlace = scene.transition === "dissolve" || scene.transition === "zoom-dissolve";
+  const zoomsWhileDissolving = scene.transition === "zoom-dissolve";
 
   return {
     opacity,
@@ -62,16 +63,16 @@ export const resolveOpeningSceneFrame = (
         ? 1
         : scene.animation.scaleFrom + (1 - scene.animation.scaleFrom) * enterProgress,
     visualTranslateY:
-      reducedMotion || dissolvesInPlace
+      reducedMotion || (dissolvesInPlace && !zoomsWhileDissolving)
         ? 0
         : scene.animation.visualTranslateY * (1 - travelProgress),
     visualScale:
-      reducedMotion || dissolvesInPlace
+      reducedMotion || (dissolvesInPlace && !zoomsWhileDissolving)
         ? 1
         : scene.animation.visualScaleFrom +
           (scene.animation.visualScaleTo - scene.animation.visualScaleFrom) * travelProgress,
     visualRotation:
-      reducedMotion || dissolvesInPlace
+      reducedMotion || (dissolvesInPlace && !zoomsWhileDissolving)
         ? 0
         : (scene.animation.visualRotateFrom ?? 0) * (1 - travelProgress),
   };

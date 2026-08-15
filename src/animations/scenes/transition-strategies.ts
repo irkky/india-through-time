@@ -54,7 +54,10 @@ export const renderSceneTransition = ({
   progress,
 }: TransitionFrame) => {
   const transition = incomingDefinition.transitionIn;
-  const easedProgress = gsap.parseEase(transition.ease ?? "power2.inOut")(progress);
+  const portion = Math.min(Math.max(transition.portion ?? 1, 0.0001), 1);
+  const transitionStart = 0.5 - portion / 2;
+  const transitionProgress = Math.min(Math.max((progress - transitionStart) / portion, 0), 1);
+  const easedProgress = gsap.parseEase(transition.ease ?? "power2.inOut")(transitionProgress);
 
   resetLayers(outgoing);
   resetLayers(incoming);

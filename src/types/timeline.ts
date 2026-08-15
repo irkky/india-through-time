@@ -12,6 +12,7 @@ export interface TimelinePoint {
   readonly date: HistoricalDate;
   readonly approximate: boolean;
   readonly dateLabel: string;
+  readonly interpolateToNext: boolean;
 }
 
 export interface ResolvedTimelinePosition<T> {

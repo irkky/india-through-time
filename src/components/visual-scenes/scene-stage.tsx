@@ -37,6 +37,7 @@ export function SceneStage({ events, definitions, registerScene, registerLayer }
                 className="scene-layer"
                 data-layer-id={layer.id}
                 data-layer-kind={layer.kind}
+                style={layer.stack === undefined ? undefined : { zIndex: layer.stack }}
               >
                 <SceneLayer definition={layer} event={event} />
               </div>

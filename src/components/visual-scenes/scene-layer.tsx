@@ -2,6 +2,8 @@ import { EventContent } from "@/components/historical-events/event-content";
 import type { SceneLayerDefinition } from "@/types/scene";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { PlaceholderArtwork } from "./placeholder-artwork";
+import { PrehistoricFactPanel, type FactPanelPart } from "./prehistoric-fact-panel";
+import { PrehistoricPlaceholder } from "./prehistoric-placeholder";
 
 interface SceneLayerProps {
   readonly definition: SceneLayerDefinition;
@@ -39,6 +41,25 @@ export function SceneLayer({ definition, event }: SceneLayerProps) {
 
   if (definition.renderer === "grid-texture") {
     return <div className="scene-texture" />;
+  }
+
+  if (definition.renderer.startsWith("prehistoric-fact-panel-")) {
+    const annotationId = configurationValue(definition, "annotationId", "");
+    const annotation = event.node.event.factAnnotations?.find(({ id }) => id === annotationId);
+    const part = definition.renderer.replace("prehistoric-fact-panel-", "") as FactPanelPart;
+
+    return annotation ? <PrehistoricFactPanel annotation={annotation} part={part} /> : null;
+  }
+
+  if (definition.renderer.startsWith("prehistoric-")) {
+    return (
+      <PrehistoricPlaceholder
+        renderer={definition.renderer}
+        label={configurationValue(definition, "label", "") || undefined}
+        src={definition.asset?.src}
+        siteId={configurationValue(definition, "siteId", "") || undefined}
+      />
+    );
   }
 
   if (definition.kind === "text") {

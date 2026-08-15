@@ -15,6 +15,7 @@ export function OpeningText({ scene, isFirst }: OpeningTextProps) {
 
   return (
     <div className="opening-text-shell">
+      {scene.eyebrow ? <p className="opening-eyebrow">{scene.eyebrow}</p> : null}
       {title}
       {scene.subtitle ? <p className="opening-subtitle">{scene.subtitle}</p> : null}
       {scene.instruction ? (

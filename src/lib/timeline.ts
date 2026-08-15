@@ -48,6 +48,7 @@ export const toTimelinePoints = (nodes: readonly TimelineEventNode[]): readonly 
     date: event.dateStart,
     approximate: event.approximateDate,
     dateLabel: formatHistoricalDate(event.dateStart, { approximate: event.approximateDate }),
+    interpolateToNext: event.contentStatus !== "placeholder",
   }));
 
 export function resolveTimelinePosition<T>(
@@ -74,7 +75,12 @@ export function resolveTimelinePosition<T>(
     throw new Error("Timeline position resolved outside the available data.");
   }
 
-  const date = interpolateHistoricalDates(fromPoint.date, toPoint.date, segmentProgress);
+  const interpolatesDate = fromPoint.interpolateToNext;
+  const date = interpolatesDate
+    ? interpolateHistoricalDates(fromPoint.date, toPoint.date, segmentProgress)
+    : index === fromIndex
+      ? fromPoint.date
+      : toPoint.date;
   const nearestPoint = points[index];
 
   return {
@@ -82,7 +88,7 @@ export function resolveTimelinePosition<T>(
     item,
     date,
     dateLabel:
-      isAtPoint && nearestPoint
+      (isAtPoint || !interpolatesDate) && nearestPoint
         ? nearestPoint.dateLabel
         : formatHistoricalDate(date, { approximate: true }),
     progress: boundedProgress,

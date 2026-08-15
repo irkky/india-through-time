@@ -67,7 +67,7 @@ export const prototypeScenes: Readonly<Record<string, TimelineScenePresentation>
       id: "scene-indus",
       timelinePointId: "indus-valley-civilization",
       duration: 1,
-      transitionIn: { type: "fade", ease: "power2.inOut" },
+      transitionIn: { type: "fade", ease: "power2.inOut", portion: 0.18 },
       layers: createLayers("indus-artwork", indusPalette),
     },
   },

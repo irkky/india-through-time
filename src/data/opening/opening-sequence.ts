@@ -10,8 +10,15 @@ const baseAnimation: OpeningAnimationSettings = {
   visualScaleTo: 1.04,
 };
 
+const backgroundZoomAnimation: OpeningAnimationSettings = {
+  ...baseAnimation,
+  visualTranslateY: 0,
+  visualScaleFrom: 0.92,
+  visualScaleTo: 1.12,
+};
+
 export const OPENING_SCROLL_DISTANCE_VH = 700;
-export const TIMELINE_SCROLL_DISTANCE_VH = 400;
+export const TIMELINE_SCROLL_DISTANCE_VH = 800;
 export const TOTAL_SCROLL_DISTANCE_VH = OPENING_SCROLL_DISTANCE_VH + TIMELINE_SCROLL_DISTANCE_VH;
 export const OPENING_HANDOFF_PROGRESS = OPENING_SCROLL_DISTANCE_VH / TOTAL_SCROLL_DISTANCE_VH;
 
@@ -51,8 +58,8 @@ export const openingSequence = [
     progress: { start: 0.22, end: 0.34 },
     visual: "atmosphere",
     textStyle: "statement",
-    transition: "dissolve",
-    animation: baseAnimation,
+    transition: "zoom-dissolve",
+    animation: backgroundZoomAnimation,
   },
   {
     id: "before-kingdoms",
@@ -60,8 +67,8 @@ export const openingSequence = [
     progress: { start: 0.32, end: 0.44 },
     visual: "atmosphere",
     textStyle: "statement",
-    transition: "dissolve",
-    animation: baseAnimation,
+    transition: "zoom-dissolve",
+    animation: backgroundZoomAnimation,
   },
   {
     id: "before-written-history",
@@ -69,8 +76,8 @@ export const openingSequence = [
     progress: { start: 0.42, end: 0.54 },
     visual: "atmosphere",
     textStyle: "statement",
-    transition: "dissolve",
-    animation: baseAnimation,
+    transition: "zoom-dissolve",
+    animation: backgroundZoomAnimation,
   },
   {
     id: "deep-time",
@@ -78,10 +85,12 @@ export const openingSequence = [
     progress: { start: 0.51, end: 0.67 },
     visual: "deep-time-map-image",
     textStyle: "date",
-    transition: "dissolve",
+    transition: "focus",
     animation: {
       ...baseAnimation,
       enterPortion: 0.3,
+      translateY: 0,
+      scaleFrom: 0.82,
       visualTranslateY: 0,
       visualScaleFrom: 1,
       visualScaleTo: 1,
@@ -121,6 +130,7 @@ export const openingSequence = [
   },
   {
     id: "prehistoric-handoff",
+    eyebrow: "LET’S BEGIN THE JOURNEY",
     text: "PREHISTORIC INDIA",
     subtitle: "The Dawn of Hominin Habitation and Cultural Evolution",
     instruction: "SCROLL TO CONTINUE",
