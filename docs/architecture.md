@@ -1,5 +1,10 @@
 # Architecture
 
+The current ingestion boundary and prioritized remaining work are documented in
+[Project review](project-review.md). `src/lib/content/compile.ts` assembles a validated model in
+the server page; `TimelineExperience` consumes its props. CLI checks additionally audit local scene
+assets and report missing sources/rights. Events without a visual reference get a default text scene.
+
 ## Goals
 
 This foundation is designed for a long-form, scroll-driven historical experience that can grow
@@ -67,7 +72,7 @@ resolver. Navigation performs the inverse mapping, so event buttons target the h
 without maintaining a second scroll model.
 
 The Lower Palaeolithic period currently contains one explicitly marked scaffold event. It carries
-only the user-supplied approximate deep-time label and no archaeological claims. Consequently, the
+an approximate deep-time label and archaeological fact panels that still require sources. The
 opening now hands directly into the Prehistoric India atmosphere and its configurable placeholder
 sequence. The three later prototype scenes still follow through the unchanged timeline resolver.
 

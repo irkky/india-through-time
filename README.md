@@ -10,6 +10,11 @@ include a complete historical narrative, database, authentication, CMS, or exter
 
 ## Current stack
 
+The data pipeline now validates and compiles historical content on the server before handing a
+single model to the interactive timeline. New events can use a default scene; custom scenes remain
+separate from historical content. See [the project review and roadmap](docs/project-review.md) for
+the current limits, data-flow diagram, and step-by-step authoring workflow.
+
 - Next.js 16 with the App Router
 - React 19
 - TypeScript with strict checking
@@ -97,6 +102,8 @@ npm run typecheck    # Run the TypeScript compiler without emitting files
 npm run format       # Format supported files
 npm run format:check # Verify formatting
 npm run check        # Run lint, type checking, and formatting checks
+npm run test         # Run content and timeline regression tests
+npm run validate:content # Audit content references, scene assets, and editorial gaps
 ```
 
 ## Project structure
@@ -116,7 +123,8 @@ docs/
   architecture.md       Boundaries, responsibilities, and development rules
 ```
 
-See [docs/architecture.md](docs/architecture.md) for the full architectural guidance.
+See [docs/architecture.md](docs/architecture.md) for the full architectural guidance and
+[docs/project-review.md](docs/project-review.md) for the implemented compilation boundary and roadmap.
 
 ## Deployment
 

@@ -10,9 +10,7 @@ import {
   openingSequence,
   TOTAL_SCROLL_DISTANCE_VH,
 } from "@/data/opening/opening-sequence";
-import { indianHistoryTimeline } from "@/data/timeline/indian-history";
-import { createTimelineDisplayEvents } from "@/data/timeline/timeline-presentation";
-import { buildTimelineNavigation, flattenTimeline, toTimelinePoints } from "@/lib/timeline";
+import type { CompiledHistory } from "@/lib/content/compile";
 import { StorytellingScene } from "./storytelling-scene";
 import { TimelineNavigation } from "./timeline-navigation";
 import type { OpeningSceneBinding } from "@/types/opening";
@@ -28,14 +26,14 @@ const requireFirstEvent = <T,>(events: readonly T[]): T => {
   return firstEvent;
 };
 
-const timelineNodes = flattenTimeline(indianHistoryTimeline);
-const timelinePoints = toTimelinePoints(timelineNodes);
-const historicalEvents = createTimelineDisplayEvents(timelineNodes);
-const timelineNavigation = buildTimelineNavigation(indianHistoryTimeline, timelineNodes);
-const initialTimelineEvent = requireFirstEvent(historicalEvents);
-const sceneDefinitions = historicalEvents.map((event) => event.scene);
-
-export function TimelineExperience() {
+export function TimelineExperience({ model }: { readonly model: CompiledHistory }) {
+  const {
+    events: historicalEvents,
+    points: timelinePoints,
+    navigation: timelineNavigation,
+    scenes: sceneDefinitions,
+  } = model;
+  const initialTimelineEvent = requireFirstEvent(historicalEvents);
   const rootRef = useRef<HTMLElement>(null);
   const historicalLayerRef = useRef<HTMLDivElement>(null);
   const openingRootRef = useRef<HTMLElement>(null);
@@ -133,7 +131,7 @@ export function TimelineExperience() {
       openingController.destroy();
       animationControllerRef.current = null;
     };
-  }, []);
+  }, [timelinePoints, sceneDefinitions]);
 
   const navigateToEvent = useCallback((index: number) => {
     animationControllerRef.current?.scrollToIndex(index);
@@ -186,6 +184,7 @@ export function TimelineExperience() {
             <TimelineNavigation
               activeEvent={activeEvent}
               navigation={timelineNavigation}
+              events={historicalEvents}
               progressRef={navigationProgressRef}
               onNavigate={navigateToEvent}
             />

@@ -42,6 +42,7 @@ export const toTimelineOrdinal = (date: HistoricalDate) => {
   }
 
   assertHistoricalYear(date.year);
+  if (date.era !== "BCE" && date.era !== "CE") throw new RangeError("Unknown calendar era.");
   return date.era === "BCE" ? 1 - date.year : date.year;
 };
 

@@ -1,14 +1,20 @@
-import { scenePresentations } from "@/data/scenes/scene-presentations";
+import { createDefaultPresentation } from "@/data/scenes/default-scene";
 import { formatHistoricalDate } from "@/lib/historical-date";
 import type { TimelineEventNode } from "@/types/timeline";
-import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
+import type {
+  TimelineDisplayEvent,
+  TimelineScenePresentation,
+} from "@/types/timeline-presentation";
 
 export const createTimelineDisplayEvents = (
   nodes: readonly TimelineEventNode[],
+  presentations: Readonly<Record<string, TimelineScenePresentation>>,
 ): readonly TimelineDisplayEvent[] =>
   nodes.map((node) => {
     const visualId = node.event.visualReference?.id;
-    const presentation = visualId ? scenePresentations[visualId] : undefined;
+    const presentation = visualId
+      ? presentations[visualId]
+      : createDefaultPresentation(node.event.id);
 
     if (!presentation) {
       throw new Error(`Missing scene presentation for event: ${node.event.id}`);
