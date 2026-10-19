@@ -4,6 +4,7 @@ import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { PlaceholderArtwork } from "./placeholder-artwork";
 import { PrehistoricFactPanel, type FactPanelPart } from "./prehistoric-fact-panel";
 import { PrehistoricPlaceholder } from "./prehistoric-placeholder";
+import { PrehistoryExhibit } from "./prehistory-exhibit";
 
 interface SceneLayerProps {
   readonly definition: SceneLayerDefinition;
@@ -16,6 +17,7 @@ const configurationValue = (definition: SceneLayerDefinition, key: string, fallb
 };
 
 export function SceneLayer({ definition, event }: SceneLayerProps) {
+  if (definition.renderer === "prehistory-exhibit") return <PrehistoryExhibit event={event} />;
   if (definition.kind === "background") {
     return (
       <div

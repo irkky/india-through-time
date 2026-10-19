@@ -1,6 +1,7 @@
 import { createTimelineDisplayEvents } from "@/data/timeline/timeline-presentation";
 import { buildTimelineNavigation, flattenTimeline, toTimelinePoints } from "@/lib/timeline";
 import { validateHistory } from "./validate";
+import { createTimelineStops } from "@/lib/timeline-position";
 import type { HistoricalEra } from "@/types/history";
 import type { TimelineScenePresentation } from "@/types/timeline-presentation";
 
@@ -17,7 +18,7 @@ export function compileHistory(
   if (!nodes.length) throw new Error("History requires at least one event to render.");
   const events = createTimelineDisplayEvents(nodes, presentations);
   const sceneIds = new Set<string>();
-  for (const { scene, node } of events) {
+  for (const { scene, node, exhibit } of events) {
     const fail = (message: string): never => {
       throw new Error(`${node.event.id}/${scene.id}: ${message}`);
     };
@@ -28,6 +29,18 @@ export function compileHistory(
     if (portion !== undefined && (!Number.isFinite(portion) || portion <= 0 || portion > 1))
       fail("Invalid transition portion.");
     const layerIds = new Set<string>();
+    if (scene.layers.some(({ renderer }) => renderer === "prehistory-exhibit")) {
+      if (!exhibit || !exhibit.points.length)
+        fail("An exhibit needs its diagram and evidence points.");
+      for (const point of exhibit!.points) {
+        if (
+          ![point.x, point.y].every((value) => Number.isFinite(value) && value >= 0 && value <= 100)
+        )
+          fail("Exhibit point lies outside its diagram.");
+        if (point.field === "interpretation" && !node.event.interpretationNotes?.length)
+          fail("Exhibit needs an interpretation note.");
+      }
+    }
     for (const layer of scene.layers) {
       if (layerIds.has(layer.id)) fail(`Duplicate layer: ${layer.id}`);
       layerIds.add(layer.id);
@@ -58,9 +71,10 @@ export function compileHistory(
       }
     }
   }
+  const stops = createTimelineStops(events.map(({ scene }) => scene.duration));
   return {
     events,
-    points: toTimelinePoints(nodes),
+    points: toTimelinePoints(nodes).map((point, index) => ({ ...point, position: stops[index]! })),
     navigation: buildTimelineNavigation(eras, nodes),
     scenes: events.map(({ scene }) => scene),
     issues,

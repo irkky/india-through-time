@@ -1,14 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createOpeningCinematic } from "@/animations/opening/cinematic";
 import { createSceneController } from "@/animations/scenes/scene-controller";
 import { createTimelineAnimation, type TimelineAnimationController } from "@/animations/timeline";
 import { OpeningCinematic } from "@/components/opening/OpeningCinematic";
 import {
-  OPENING_HANDOFF_PROGRESS,
+  OPENING_SCROLL_DISTANCE_VH,
   openingSequence,
-  TOTAL_SCROLL_DISTANCE_VH,
+  TIMELINE_SCROLL_DISTANCE_VH,
 } from "@/data/opening/opening-sequence";
 import type { CompiledHistory } from "@/lib/content/compile";
 import { StorytellingScene } from "./storytelling-scene";
@@ -26,13 +26,26 @@ const requireFirstEvent = <T,>(events: readonly T[]): T => {
   return firstEvent;
 };
 
-export function TimelineExperience({ model }: { readonly model: CompiledHistory }) {
+export function TimelineExperience({
+  model,
+  children,
+}: {
+  readonly model: CompiledHistory;
+  readonly children?: ReactNode;
+}) {
   const {
     events: historicalEvents,
     points: timelinePoints,
     navigation: timelineNavigation,
     scenes: sceneDefinitions,
   } = model;
+  const totalScrollDistance =
+    OPENING_SCROLL_DISTANCE_VH +
+    Math.max(
+      TIMELINE_SCROLL_DISTANCE_VH,
+      sceneDefinitions.reduce((sum, scene) => sum + scene.duration, 0) * 180,
+    );
+  const openingHandoffProgress = OPENING_SCROLL_DISTANCE_VH / totalScrollDistance;
   const initialTimelineEvent = requireFirstEvent(historicalEvents);
   const rootRef = useRef<HTMLElement>(null);
   const historicalLayerRef = useRef<HTMLDivElement>(null);
@@ -119,19 +132,30 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
         controller: openingController,
         root: openingRoot,
         timelineLayer: historicalLayer,
-        handoffProgress: OPENING_HANDOFF_PROGRESS,
+        handoffProgress: openingHandoffProgress,
       },
     });
 
     animationControllerRef.current = controller;
+    const visitLinkedEvent = () => {
+      const hash = window.location.hash;
+      if (!hash.startsWith("#event=")) return;
+      const id = hash.slice(7);
+      const index = timelinePoints.findIndex((point) => point.id === id);
+      if (index >= 0) controller.scrollToIndex(index);
+    };
+    const linkedFrame = window.requestAnimationFrame(visitLinkedEvent);
+    window.addEventListener("hashchange", visitLinkedEvent);
 
     return () => {
+      window.cancelAnimationFrame(linkedFrame);
+      window.removeEventListener("hashchange", visitLinkedEvent);
       controller.destroy();
       sceneController.destroy();
       openingController.destroy();
       animationControllerRef.current = null;
     };
-  }, [timelinePoints, sceneDefinitions]);
+  }, [timelinePoints, sceneDefinitions, openingHandoffProgress]);
 
   const navigateToEvent = useCallback((index: number) => {
     animationControllerRef.current?.scrollToIndex(index);
@@ -141,10 +165,16 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
 
   return (
     <main>
+      <a
+        href="#prehistory-reader"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:p-4 focus:text-black"
+      >
+        Skip animation and read the evidence
+      </a>
       <section
         ref={rootRef}
         className="relative"
-        style={{ height: `${TOTAL_SCROLL_DISTANCE_VH}vh` }}
+        style={{ height: `${totalScrollDistance}vh` }}
         aria-label="Journey through time"
       >
         <div
@@ -167,7 +197,7 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
             <StorytellingScene
               events={historicalEvents}
               definitions={sceneDefinitions}
-              initialDateLabel={initialTimelineEvent.dateLabel}
+              initialDateLabel={timelinePoints[0]!.dateLabel}
               dateRef={storyDateRef}
               registerScene={(element, index) => {
                 if (element) sceneRefs.current[index] = element;
@@ -191,6 +221,7 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
           </div>
 
           <OpeningCinematic
+            onStart={() => navigateToEvent(0)}
             rootRef={openingRootRef}
             atmosphereRef={openingAtmosphereRef}
             cueRef={openingCueRef}
@@ -215,6 +246,7 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
           </h2>
         </div>
       </section>
+      {children}
     </main>
   );
 }

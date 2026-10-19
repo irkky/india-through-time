@@ -116,6 +116,13 @@ export interface HistoricalEvent {
 export interface HistoricalPeriod {
   readonly id: string;
   readonly title: string;
+  /** Undated context belongs outside the chronological event list. */
+  readonly introduction?: string;
+  readonly context?: readonly {
+    readonly title: string;
+    readonly text: string;
+    readonly sources: readonly HistoricalSource[];
+  }[];
   readonly dateStart?: HistoricalDate;
   readonly dateEnd?: HistoricalDate;
   readonly events: readonly HistoricalEvent[];

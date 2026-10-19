@@ -40,11 +40,9 @@ export function StorytellingScene({
             </p>
             <p className="mt-2 text-xs opacity-55">Scroll to travel through time</p>
           </div>
-          <div className="hidden text-right sm:block" aria-hidden="true">
-            <span
-              ref={dateRef}
-              className="block text-3xl leading-none font-medium tracking-[-0.04em] tabular-nums"
-            >
+          <div className="journey-year-counter" aria-label="Approximate position in the timeline">
+            <span className="journey-year-label">Journey year</span>
+            <span ref={dateRef} className="journey-year-value" data-journey-year="">
               {initialDateLabel}
             </span>
           </div>

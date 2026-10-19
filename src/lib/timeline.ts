@@ -1,6 +1,6 @@
 import {
   compareHistoricalDates,
-  formatHistoricalDate,
+  formatScrollDate,
   interpolateHistoricalDates,
 } from "@/lib/historical-date";
 import type { HistoricalEra } from "@/types/history";
@@ -47,8 +47,9 @@ export const toTimelinePoints = (nodes: readonly TimelineEventNode[]): readonly 
     id: event.id,
     date: event.dateStart,
     approximate: event.approximateDate,
-    dateLabel: formatHistoricalDate(event.dateStart, { approximate: event.approximateDate }),
-    interpolateToNext: event.contentStatus !== "placeholder",
+    dateLabel: formatScrollDate(event.dateStart),
+    // Moving journey position; the event cards retain their sourced dates and ranges.
+    interpolateToNext: true,
   }));
 
 export function resolveTimelinePosition<T>(
@@ -61,7 +62,27 @@ export function resolveTimelinePosition<T>(
   }
 
   const boundedProgress = clampProgress(progress);
-  const position = boundedProgress * (items.length - 1);
+  const stops = points.map(
+    (point, i) => point.position ?? (points.length === 1 ? 0 : i / (points.length - 1)),
+  );
+  let interval = Math.max(0, points.length - 2);
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (boundedProgress <= stops[i + 1]!) {
+      interval = i;
+      break;
+    }
+  }
+  const position =
+    points.length === 1
+      ? 0
+      : interval +
+        Math.min(
+          1,
+          Math.max(
+            0,
+            (boundedProgress - stops[interval]!) / (stops[interval + 1]! - stops[interval]!),
+          ),
+        );
   const index = Math.round(position);
   const isAtPoint = Math.abs(position - index) < 0.002;
   const fromIndex = isAtPoint ? index : Math.floor(position);
@@ -90,7 +111,7 @@ export function resolveTimelinePosition<T>(
     dateLabel:
       (isAtPoint || !interpolatesDate) && nearestPoint
         ? nearestPoint.dateLabel
-        : formatHistoricalDate(date, { approximate: true }),
+        : formatScrollDate(date),
     progress: boundedProgress,
     segmentProgress,
     fromIndex,

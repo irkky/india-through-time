@@ -8,6 +8,7 @@ export interface TimelineEventNode {
 }
 
 export interface TimelinePoint {
+  readonly position?: number;
   readonly id: string;
   readonly date: HistoricalDate;
   readonly approximate: boolean;

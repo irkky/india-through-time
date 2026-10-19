@@ -13,11 +13,10 @@ const first = (eras) => eras[0].periods[1].events[0];
 
 test("canonical data compiles and navigation round-trips through the resolver", () => {
   const model = compileHistory(fixture(), scenePresentations);
-  assert.equal(model.events.length, 4);
+  assert.equal(model.events.length, 27);
   model.events.forEach((event, index) => {
     assert.equal(
-      resolveTimelinePoint(model.points, getTimelineProgressForIndex(index, model.events.length))
-        .item.id,
+      resolveTimelinePoint(model.points, getTimelineProgressForIndex(index, model.points)).item.id,
       event.id,
     );
     assert.equal(model.scenes[index].timelinePointId, event.id);
@@ -50,6 +49,8 @@ test("relationships, citations, and researched source requirements are enforced"
     relatedEvents: ["missing"],
     citations: [{ sourceId: "missing" }],
     contentStatus: "researched",
+    sources: [],
+    interpretationNotes: [],
   });
   const errors = validateHistory(eras).filter(({ severity }) => severity === "error");
   assert.equal(errors.length, 3);
@@ -65,10 +66,117 @@ test("scene media and timing are checked before browser rendering", () => {
 test("empty content fails clearly; a single event still resolves", () => {
   assert.throws(() => compileHistory([], {}), /at least one event/);
   const eras = [fixture()[0]];
+  const event = first(eras);
+  event.relatedEvents = [];
+  eras[0].periods = [{ id: "single-period", title: "Single period", events: [event] }];
   const model = compileHistory(eras, scenePresentations);
   assert.equal(resolveTimelinePoint(model.points, 1).index, 0);
+});
+
+test("prehistoric events have traceable citations and preserve overlapping chronology", () => {
+  const model = compileHistory(fixture(), scenePresentations);
+  const prehistoric = model.events.filter(({ node }) => node.era.id === "prehistoric-india");
+  assert.equal(prehistoric.length, 24);
+  for (const {
+    node: { event },
+  } of prehistoric) {
+    assert.equal(event.contentStatus, "researched");
+    assert.ok(event.sources.length > 0);
+    assert.ok(event.citations.length > 0);
+    for (const citation of event.citations)
+      assert.ok(event.sources.some(({ id }) => id === citation.sourceId));
+    assert.ok(event.interpretationNotes.length > 0);
+  }
+  const ids = model.events.map(({ id }) => id);
+  assert.equal(ids[0], "lower-palaeolithic-scaffold");
+  assert.equal(ids[1], "attirampakkam-middle-palaeolithic");
+  assert.ok(
+    ids.indexOf("attirampakkam-middle-palaeolithic") < ids.indexOf("singi-talav-acheulian"),
+  );
+  assert.ok(ids.indexOf("singi-talav-acheulian") < ids.indexOf("sandhav-coastal-occupation"));
+  assert.ok(ids.indexOf("chopani-mando-late-phase") < ids.indexOf("harappa-ravi-phase"));
+  assert.ok(ids.indexOf("mahagara-neolithic") < ids.indexOf("malwa-villages"));
+  assert.ok(ids.indexOf("lahuradewa-rice-use") < ids.indexOf("bagor-mesolithic"));
+  assert.ok(ids.indexOf("balathal-ahar-banas") < ids.indexOf("burzahom-neolithic"));
+  assert.ok(ids.indexOf("harappa-kot-diji-phase") < ids.indexOf("indus-valley-civilization"));
+});
+
+test("research gaps never become fictional dated events", () => {
+  const { prehistoryGaps } = require("../src/data/timeline/prehistory/gaps.ts");
+  const era = fixture()[0];
+  for (const gap of prehistoryGaps) {
+    assert.equal(gap.date, null);
+    assert.ok(era.periods.some(({ id }) => id === gap.periodId));
+    assert.ok(gap.missing.length > 0);
+  }
+  assert.equal(era.periods[0].events.length, 0);
+  assert.ok(era.periods[0].context.length > 0);
+  assert.ok(
+    era.periods
+      .find(({ id }) => id === "mesolithic")
+      .context.some(({ title }) => title.includes("Bhimbetka")),
+  );
+});
+
+test("every prehistoric event resolves to a visual scene with usable evidence", () => {
+  const model = compileHistory(fixture(), scenePresentations);
+  const events = model.events.filter(({ node }) => node.era.id === "prehistoric-india");
+  for (const event of events) {
+    {
+      assert.ok(event.exhibit.caption.length > 20);
+      assert.deepEqual(
+        event.exhibit.points.map(({ field }) => field),
+        ["description", "significance", "interpretation"],
+      );
+      assert.equal(event.scene.layers.at(-1).renderer, "prehistory-exhibit");
+    }
+  }
+  const scenes = structuredClone(scenePresentations);
+  scenes["exhibit-jwalapuram-toba"].exhibit.points[0].x = 101;
+  assert.throws(() => compileHistory(fixture(), scenes), /outside its diagram/);
+  delete scenes["exhibit-jwalapuram-toba"].exhibit;
+  assert.throws(() => compileHistory(fixture(), scenes), /needs its diagram/);
 });
 test("BCE/CE interpolation never emits year zero", () => {
   for (const progress of [0, 0.25, 0.5, 0.75, 1])
     assert.ok(interpolateHistoricalDates(bce(1), ce(1), progress).year >= 1);
+});
+
+test("journey years advance continuously and reverse without changing published event ranges", () => {
+  const model = compileHistory(fixture(), scenePresentations);
+  const { toTimelineOrdinal } = require("../src/lib/historical-date.ts");
+  for (let i = 0; i < model.points.length - 1; i++) {
+    let previous = toTimelineOrdinal(model.points[i].date);
+    for (const fraction of [0.1, 0.49, 0.51, 0.9]) {
+      const resolved = resolveTimelinePoint(
+        model.points,
+        model.points[i].position +
+          fraction * (model.points[i + 1].position - model.points[i].position),
+      );
+      const current = toTimelineOrdinal(resolved.date);
+      assert.ok(current >= previous);
+      assert.ok(current <= toTimelineOrdinal(model.points[i + 1].date));
+      previous = current;
+    }
+  }
+  const labels = [0.2, 0.4, 0.6, 0.4, 0.2].map(
+    (fraction) =>
+      resolveTimelinePoint(model.points, fraction / (model.points.length - 1)).dateLabel,
+  );
+  assert.equal(new Set(labels).size, 3);
+  assert.equal(labels[0], labels[4]);
+  assert.equal(labels[1], labels[3]);
+  const middle = model.events.find(({ id }) => id === "attirampakkam-middle-palaeolithic");
+  assert.ok(middle.dateLabel.includes("385") && middle.dateLabel.includes("172"));
+});
+
+test("weighted scene pacing preserves anchors and allocates longer image intervals", () => {
+  const { createTimelineStops } = require("../src/lib/timeline-position.ts");
+  assert.deepEqual(createTimelineStops([1]), [0]);
+  assert.deepEqual(createTimelineStops([1, 1, 1]), [0, 0.5, 1]);
+  const stops = createTimelineStops([3, 1, 1]);
+  assert.ok(stops[1] > 0.5);
+  assert.equal(stops[2], 1);
+  assert.throws(() => createTimelineStops([0]), RangeError);
+  assert.throws(() => createTimelineStops([NaN]), RangeError);
 });

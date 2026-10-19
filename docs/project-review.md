@@ -1,5 +1,9 @@
 # Project review and next steps
 
+This review records the foundation before the prehistoric research pass. The subsequent
+[Prehistoric India content guide](prehistoric-content.md) documents 13 sourced records, a sources
+reader and the remaining research/asset gaps; its content inventory supersedes the snapshot below.
+
 This project is an interactive historical atlas told through a continuous cinematic timeline.
 Its strongest existing decision is separating historical records, scene definitions, React rendering,
 and GSAP animation. Keep those boundaries as the narrative grows.

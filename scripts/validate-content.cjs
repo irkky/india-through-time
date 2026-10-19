@@ -8,6 +8,17 @@ const { scenePresentations } = require("../src/data/scenes/scene-presentations.t
 try {
   const model = compileHistory(indianHistoryTimeline, scenePresentations);
   let missing = 0;
+  for (const event of model.events) {
+    for (const image of event.exhibit?.gallery ?? []) {
+      if (
+        !image.src.startsWith("/assets/") ||
+        !fs.existsSync(path.join(__dirname, "../public", image.src))
+      ) {
+        console.error(`ERROR ${event.id}: Missing gallery asset ${image.src}`);
+        missing++;
+      }
+    }
+  }
   for (const scene of model.scenes) {
     for (const layer of scene.layers) {
       for (const src of [layer.asset?.src, layer.asset?.poster]) {

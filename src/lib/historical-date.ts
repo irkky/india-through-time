@@ -76,6 +76,12 @@ interface FormatHistoricalDateOptions {
   readonly approximate?: boolean;
 }
 
+/** Full-year precision for the moving counter; event copy keeps its published precision. */
+export const formatScrollDate = (date: HistoricalDate) =>
+  date.kind === "years-ago"
+    ? `~${date.years.toLocaleString("en-IN")} years ago`
+    : `~${date.year.toLocaleString("en-IN")} ${date.era}`;
+
 export const formatHistoricalDate = (
   date: HistoricalDate,
   { approximate = false }: FormatHistoricalDateOptions = {},

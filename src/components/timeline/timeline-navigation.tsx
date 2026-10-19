@@ -1,6 +1,7 @@
 import type { TimelineNavigationEra } from "@/types/timeline";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { Timeline } from "./timeline";
+import { HistoryExplorer } from "./history-explorer";
 
 interface TimelineNavigationProps {
   readonly activeEvent: TimelineDisplayEvent;
@@ -17,6 +18,7 @@ export function TimelineNavigation({
   progressRef,
   onNavigate,
 }: TimelineNavigationProps) {
+  const index = events.findIndex(({ id }) => id === activeEvent.id);
   return (
     <nav className="historical-navigation" aria-label="Historical timeline navigation">
       <div className="historical-navigation-inner">
@@ -26,11 +28,37 @@ export function TimelineNavigation({
           progressRef={progressRef}
           onNavigate={onNavigate}
         />
-        <div className="flex flex-wrap gap-3 px-4 pb-3 text-sm">
+        <div className="journey-toolbar">
+          <div className="journey-steps">
+            <button
+              type="button"
+              className="journey-button"
+              disabled={index <= 0}
+              onClick={() => onNavigate(index - 1)}
+              aria-label="Previous event"
+            >
+              ←
+            </button>
+            <span aria-label={`Event ${index + 1} of ${events.length}`}>
+              {String(index + 1).padStart(2, "0")} / {events.length}
+            </span>
+            <button
+              type="button"
+              className="journey-button"
+              disabled={index === events.length - 1}
+              onClick={() => onNavigate(index + 1)}
+              aria-label="Next event"
+            >
+              →
+            </button>
+          </div>
+          <HistoryExplorer events={events} activeEvent={activeEvent} onNavigate={onNavigate} />
+        </div>
+        <div className="journey-selects">
           <label>
             <span className="mr-2">Period</span>
             <select
-              className="max-w-56 rounded border border-current bg-[var(--event-background)] p-1"
+              className="journey-select"
               value={activeEvent.node.period.id}
               onChange={(event) => {
                 const period = navigation
@@ -58,7 +86,7 @@ export function TimelineNavigation({
           <label>
             <span className="mr-2">Event</span>
             <select
-              className="max-w-56 rounded border border-current bg-[var(--event-background)] p-1"
+              className="journey-select"
               value={activeEvent.id}
               onChange={(event) =>
                 onNavigate(events.findIndex(({ id }) => id === event.target.value))

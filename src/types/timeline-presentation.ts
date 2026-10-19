@@ -1,5 +1,6 @@
 import type { TimelineEventNode } from "./timeline";
 import type { SceneDefinition } from "./scene";
+import type { PrehistoryExhibit } from "./prehistory-exhibit";
 
 export interface TimelinePalette {
   readonly background: string;
@@ -10,6 +11,7 @@ export interface TimelinePalette {
 }
 
 export interface TimelineDisplayEvent {
+  readonly exhibit?: PrehistoryExhibit;
   readonly id: string;
   readonly title: string;
   readonly description: string;
@@ -22,6 +24,7 @@ export interface TimelineDisplayEvent {
 }
 
 export interface TimelineScenePresentation {
+  readonly exhibit?: PrehistoryExhibit;
   readonly palette: TimelinePalette;
   readonly scene: SceneDefinition;
 }

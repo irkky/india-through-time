@@ -62,6 +62,16 @@ export const renderSceneTransition = ({
   resetLayers(outgoing);
   resetLayers(incoming);
 
+  // Visuals overlap, but outgoing and incoming copy never compete for reading.
+  gsap.set(outgoing.root.querySelectorAll(".story-copy"), {
+    opacity: Math.max(0, 1 - transitionProgress / 0.45),
+    y: -10 * transitionProgress,
+  });
+  gsap.set(incoming.root.querySelectorAll(".story-copy"), {
+    opacity: Math.max(0, (transitionProgress - 0.55) / 0.45),
+    y: 10 * (1 - transitionProgress),
+  });
+
   switch (transition.type) {
     case "fade": {
       const outgoingOpacity = Math.max(0, 1 - easedProgress * 2);

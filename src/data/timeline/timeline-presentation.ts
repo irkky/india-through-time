@@ -28,12 +28,14 @@ export const createTimelineDisplayEvents = (
       id: node.event.id,
       title: node.event.title,
       description: node.event.description,
-      dateLabel: formatHistoricalDate(node.event.dateStart, {
-        approximate: node.event.approximateDate,
-      }),
+      dateLabel: [node.event.dateStart, node.event.dateEnd]
+        .filter((date) => date !== undefined)
+        .map((date) => formatHistoricalDate(date, { approximate: node.event.approximateDate }))
+        .join(" – "),
       eraTitle: node.era.title,
       periodTitle: node.period.title,
       palette: presentation.palette,
+      exhibit: presentation.exhibit,
       scene: presentation.scene,
       node,
     };

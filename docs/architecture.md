@@ -1,5 +1,11 @@
 # Architecture
 
+**Content update, 18 October 2026:** Prehistoric India now contains 24 sourced records and an
+undated introduction. See [the current chapter guide](prehistoric-content.md); the scaffold-only
+descriptions below document the original prototype and are superseded by that guide. The server
+also supplies an evidence reader as children of the interactive experience, so the sources remain
+readable without JavaScript. Scroll space now grows with the event count.
+
 The current ingestion boundary and prioritized remaining work are documented in
 [Project review](project-review.md). `src/lib/content/compile.ts` assembles a validated model in
 the server page; `TimelineExperience` consumes its props. CLI checks additionally audit local scene
@@ -71,10 +77,10 @@ timeline scene; the remaining progress is remapped from zero to one for the unch
 resolver. Navigation performs the inverse mapping, so event buttons target the historical partition
 without maintaining a second scroll model.
 
-The Lower Palaeolithic period currently contains one explicitly marked scaffold event. It carries
-an approximate deep-time label and archaeological fact panels that still require sources. The
-opening now hands directly into the Prehistoric India atmosphere and its configurable placeholder
-sequence. The three later prototype scenes still follow through the unchanged timeline resolver.
+The Lower Palaeolithic record retains its original scaffold ID but now uses the shared SVG exhibit layout and carries sourced
+content. The opening hands into this scene, followed by the illustrated prehistoric records and the
+later prototype scenes through the same timeline resolver. Regional prehistoric records may overlap
+the later eras chronologically.
 
 Reduced-motion users receive discrete scene states and a direct boundary handoff. Inactive opening
 and timeline layers update `aria-hidden`, and continuous animation does not cause React renders.
@@ -247,12 +253,11 @@ ordered `HistoricalPeriod` records are:
 7. Chalcolithic
 8. Transition toward early urban/Harappan societies
 
-Seven periods remain empty. Lower Palaeolithic contains only
-`lower-palaeolithic-scaffold`, marked with `contentStatus: "placeholder"`; it exists so the opening
-handoff and visual choreography can be exercised before research arrives. Replace that object with
-the first researched `HistoricalEvent` in `src/data/timeline/prehistoric-india.ts`, preserving the
-supplied wording, dates, uncertainty, source details, and citations. Do not place palettes,
-transitions, layer positions, or playback settings in the event object.
+The introduction has undated context, and the seven archaeological periods contain 24 sourced
+records. The stable ID `lower-palaeolithic-scaffold` is retained for stable links, and its
+content is now researched. Other records live in `src/data/timeline/prehistory/events.ts`; bibliography
+and research gaps have their own files. Do not place palettes, layer positions or playback settings
+in historical records. See the chapter guide for the current chronology and remaining gaps.
 
 If the event has a cinematic presentation, give it a stable `visualReference.id` and add the
 matching entry to `src/data/scenes/prehistoric-scenes.ts`. The scene entry targets the event ID with
@@ -261,11 +266,11 @@ duration and incoming transition. `scene-presentations.ts` merges that registry 
 prototype scenes, while `timeline-presentation.ts` verifies that every populated timeline event has
 a matching scene aimed at the correct event ID.
 
-The current `lower-palaeolithic-placeholder-sequence` is presentation scaffolding for eight
-user-specified visual beats. Each layer owns an adjustable normalized `start`/`end` range. Replace
-placeholder renderers or add event-owned asset references there as researched media arrives; do not
-copy those visual settings into the canonical event record. Placeholder timeline points also hold
-their supplied date label rather than interpolating unsupported intermediate chronology.
+The legacy `lower-palaeolithic-placeholder-sequence` remains available in the scene registry, but is
+not selected by the current data. All 24 records use registered SVG exhibits. Their points resolve the event's
+description, significance/location or interpretation note. The native-dialog explorer reads the same
+compiled events for search, source inspection and related-event jumps. Hash links delegate to the
+existing scroll controller. Inactive scenes and opening layers are inert as well as aria-hidden.
 
 The runtime path remains generic:
 

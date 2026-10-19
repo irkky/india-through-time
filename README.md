@@ -4,9 +4,28 @@ An original, interactive website for exploring Indian history by scrolling throu
 eventual experience will combine a changing historical timeline with responsive text, maps,
 illustrations, and visual scenes.
 
-This repository currently contains the production foundation, one presentation-only Prehistoric
-India scaffold, and the focused three-event timeline prototype. It deliberately does not yet
-include a complete historical narrative, database, authentication, CMS, or external storage.
+This repository contains the production foundation, 24 sourced Prehistoric India records, a
+readable evidence section, 24 interactive SVG exhibits, and three later-era prototype events. The prehistoric chapter includes
+regional overlaps and explicit uncertainty notes; it is an initial selection, not an exhaustive
+historical narrative. There is no database, authentication, CMS, or external storage.
+
+Start with [the Prehistoric India content guide](docs/prehistoric-content.md) for the chronology,
+editable files, sources, missing-research slots and asset checklist.
+
+## Recovering a stale development page
+
+If a hydration error appears after editing content or components, stop the development server
+with **Ctrl+C**. From `D:\Indian History`, run `npm run dev:fresh`, then open the URL printed by
+Next.js and hard-refresh the browser with **Ctrl+Shift+R**.
+
+This optional command clears only generated `.next/dev` output before starting development.
+It preserves your source files, images and production build. It refuses to clean while a Next.js
+development lock exists or if the output directory is redirected. It does not run during normal
+website use. An already-open page can still contain older HTML; reload after restarting.
+
+The browser regression can run against either a development or production server:
+`npm run test:browser -- http://localhost:3000` (replace the URL with the running server's URL).
+It captures hydration errors before loading the page and checks scrolling to the bottom and reloading.
 
 ## Current stack
 
@@ -28,7 +47,8 @@ performance costs explicit.
 
 ## Opening cinematic and prototype interaction
 
-The homepage is one continuous `1500vh` storytelling section containing a sticky viewport. Its
+The homepage is one continuous storytelling section containing a sticky viewport. Scroll space
+grows with the event count, while the opening retains its own allocation. Its
 first phase is a data-driven opening cinematic: nine reversible beats move from darkness through
 the supplied opening copy, abstract deep-time visuals, a placeholder landform, and a placeholder
 artifact before resolving to `PREHISTORIC INDIA`. No external media or additional historical copy
@@ -38,9 +58,9 @@ A single ScrollTrigger maps the full section to normalized progress. The opening
 portion, then dissolves into timeline progress zero without introducing a second scroll controller.
 The remaining progress:
 
-- interpolates the visible chronology, including deep-time and BCE/CE labels;
+- animates a full-year journey counter between event start dates; event cards retain their published ranges;
 - moves the timeline rail indicator;
-- selects the active prehistoric scaffold or one of the three later prototype events;
+- selects the active prehistoric record or one of the three later prototype events;
 - scrubs GSAP crossfades between event copy and abstract SVG scenes.
 
 With reduced motion enabled, the same scroll positions switch states directly without scrubbed
@@ -58,18 +78,18 @@ they do not maintain a second timeline calculation.
 The storytelling viewport uses a reusable layered Scene System. Scene definitions live outside
 React and declare their timeline point, transition, duration, and background/decorative/text/media
 or map layers. A generic GSAP Scene Controller consumes the resolved timeline position and renders
-reversible, scroll-scrubbed fade, crossfade, slide, scale, and parallax transitions. The current
-three scenes use gradients and SVG placeholders only.
+reversible, scroll-scrubbed fade, crossfade, slide, scale, and parallax transitions. Prehistoric exhibits use original explanatory SVG diagrams with selectable evidence points; the
+Lower Palaeolithic exhibit now shares this layout and uses an original handaxe-and-cleaver diagram.
 
 The content system is organized as `Era -> Period -> Event`. The eight planned eras are declared
-in the canonical dataset. Prehistoric India is prepared as one era containing eight periods. Lower
-Palaeolithic has one explicitly marked placeholder event so its visual sequence can run; the other
-seven periods remain empty until research is supplied. Dates use separate calendar and years-ago
-representations, so deep time is not forced into BCE/CE. The original three later-era prototype
-events remain intact.
+in the canonical dataset. Prehistoric India has eight reading sections: an undated introduction
+and seven archaeological periods containing 24 sourced records. Dates use separate calendar and
+years-ago representations. The timeline sorts by event start dates rather than forcing regional
+periods into a non-overlapping sequence. The original three later-era prototype events remain intact.
 
-Future researched prehistoric events belong in
-`src/data/timeline/prehistoric-india.ts`. Their presentation-only scene definitions belong in
+Prehistoric period composition and the existing Lower Palaeolithic record belong in
+`src/data/timeline/prehistoric-india.ts`; the other events, bibliography and research gaps live in
+`src/data/timeline/prehistory/`. Their presentation-only scene definitions belong in
 `src/data/scenes/prehistoric-scenes.ts`. See the Prehistoric India ingestion workflow in
 [docs/architecture.md](docs/architecture.md#prehistoric-india-ingestion-workflow).
 
@@ -103,6 +123,7 @@ npm run format       # Format supported files
 npm run format:check # Verify formatting
 npm run check        # Run lint, type checking, and formatting checks
 npm run test         # Run content and timeline regression tests
+npm run test:browser -- http://localhost:3000 # Check a running production site in headless Chrome
 npm run validate:content # Audit content references, scene assets, and editorial gaps
 ```
 

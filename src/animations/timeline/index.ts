@@ -71,6 +71,8 @@ export function createTimelineAnimation({
           "aria-hidden",
           handoffFrame.timelineOpacity >= 0.5 ? "false" : "true",
         );
+        opening.root.inert = handoffFrame.timelineOpacity >= 0.5;
+        opening.timelineLayer.inert = handoffFrame.timelineOpacity < 0.5;
       }
 
       for (const readout of dateReadouts) {
@@ -90,36 +92,67 @@ export function createTimelineAnimation({
       }
     };
 
+    // Smooth rendered progress, not native scrolling. Reading panels remain independently scrollable.
+    const playhead = { progress: 0 };
+    const followScroll = gsap.quickTo(playhead, "progress", {
+      duration: 0.22,
+      ease: "power1.out",
+      onUpdate: () => updateReadout(playhead.progress),
+    });
     const trigger = ScrollTrigger.create({
       trigger: root,
       start: "top top",
       end: "bottom bottom",
-      onRefresh: (self) => updateReadout(self.progress),
-      onUpdate: (self) => updateReadout(self.progress),
+      onRefresh: (self) => {
+        followScroll.tween.pause();
+        playhead.progress = self.progress;
+        updateReadout(self.progress);
+      },
+      onUpdate: (self) => {
+        if (reducedMotion) updateReadout(self.progress);
+        else followScroll(self.progress);
+      },
     });
     activeScrollTrigger = trigger;
 
     return () => {
+      followScroll.tween.kill();
       trigger.kill();
       activeScrollTrigger = undefined;
     };
   }, root);
 
+  const cancelNavigation = () => navigationTween?.kill();
+  const cancelOnKey = (event: KeyboardEvent) => {
+    if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Home", "End", " "].includes(event.key))
+      cancelNavigation();
+  };
+  window.addEventListener("wheel", cancelNavigation, { passive: true });
+  window.addEventListener("touchstart", cancelNavigation, { passive: true });
+  window.addEventListener("keydown", cancelOnKey);
+
   return {
     destroy: () => {
       navigationTween?.kill();
+      window.removeEventListener("wheel", cancelNavigation);
+      window.removeEventListener("touchstart", cancelNavigation);
+      window.removeEventListener("keydown", cancelOnKey);
       context.revert();
     },
     scrollToIndex: (index: number) => {
       const trigger = activeScrollTrigger;
-      const timelineProgress = getTimelineProgressForIndex(index, points.length);
+      const timelineProgress = getTimelineProgressForIndex(index, points);
       const scrollProgress = opening
         ? opening.handoffProgress + timelineProgress * (1 - opening.handoffProgress)
         : timelineProgress;
       const rootStart = root.getBoundingClientRect().top + window.scrollY;
       const start = trigger?.start ?? rootStart;
       const end = trigger?.end ?? rootStart + root.offsetHeight - window.innerHeight;
-      const targetY = getScrollPositionForProgress(scrollProgress, start, end);
+      // Browser scroll offsets are rounded to pixels; land beyond the opening boundary.
+      const targetY = Math.min(
+        end,
+        Math.ceil(getScrollPositionForProgress(scrollProgress, start, end)),
+      );
       navigationTween?.kill();
 
       if (reducedMotion) {

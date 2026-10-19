@@ -131,6 +131,7 @@ export function createSceneController({
           { autoAlpha: 0, x: 0, y: 0, scale: 1 },
         );
         gsap.set(bindings[index]?.root ?? [], { autoAlpha: 1 });
+        gsap.set(bindings[index]?.root.querySelectorAll(".story-copy") ?? [], { opacity: 1, y: 0 });
       } else {
         gsap.set(
           bindings
@@ -174,12 +175,13 @@ export function createSceneController({
 
       for (const [bindingIndex, binding] of bindings.entries()) {
         binding.root.setAttribute("aria-hidden", bindingIndex === index ? "false" : "true");
+        binding.root.inert = bindingIndex !== index;
       }
 
       const activeDefinition = definitions[index];
       const activeBinding = bindings[index];
       if (activeDefinition && activeBinding) {
-        const timelinePosition = progress * Math.max(definitions.length - 1, 1);
+        const timelinePosition = fromIndex + segmentProgress;
         const sceneStart = index === 0 ? 0 : index - 0.5;
         const sceneEnd = index === definitions.length - 1 ? definitions.length - 1 : index + 0.5;
         const localProgress = Math.min(
@@ -188,6 +190,12 @@ export function createSceneController({
         );
 
         setLayerProgress(activeBinding, activeDefinition, localProgress, reducedMotion);
+        const step = reducedMotion ? 0 : localProgress < 0.36 ? 0 : localProgress < 0.7 ? 1 : 2;
+        const exhibit = activeBinding.root.querySelector<HTMLElement>(".prehistory-exhibit");
+        if (exhibit && exhibit.dataset.storyStep !== String(step)) {
+          exhibit.dataset.storyStep = String(step);
+          exhibit.dispatchEvent(new CustomEvent("story-step", { detail: step }));
+        }
 
         hooks.onProgress?.({
           definition: activeDefinition,

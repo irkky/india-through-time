@@ -4,6 +4,7 @@ import { OpeningProgress } from "./OpeningProgress";
 import { OpeningScene } from "./OpeningScene";
 
 interface OpeningCinematicProps {
+  readonly onStart: () => void;
   readonly rootRef: React.RefObject<HTMLElement | null>;
   readonly atmosphereRef: React.RefObject<HTMLDivElement | null>;
   readonly cueRef: React.RefObject<HTMLDivElement | null>;
@@ -13,6 +14,7 @@ interface OpeningCinematicProps {
 }
 
 export function OpeningCinematic({
+  onStart,
   rootRef,
   atmosphereRef,
   cueRef,
@@ -22,6 +24,9 @@ export function OpeningCinematic({
 }: OpeningCinematicProps) {
   return (
     <article ref={rootRef} className="opening-cinematic" aria-label="Opening cinematic">
+      <button type="button" className="journey-start-button" onClick={onStart}>
+        Enter the timeline ↓
+      </button>
       <div ref={atmosphereRef} className="opening-atmosphere" aria-hidden="true">
         <span className="opening-glow opening-glow--one" />
         <span className="opening-glow opening-glow--two" />
