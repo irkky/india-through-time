@@ -50,6 +50,11 @@ export function PrehistoryGallery({
               {item.credit ?? "Image credit pending"} · {item.license ?? "Reuse terms pending"}
             </small>
             <div className="gallery-links">
+              {item.licenseUrl && (
+                <a href={item.licenseUrl} target="_blank" rel="noopener noreferrer">
+                  Image licence
+                </a>
+              )}
               <a href={item.src} target="_blank" rel="noopener noreferrer">
                 Open full image ↗
               </a>

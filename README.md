@@ -4,10 +4,12 @@ An original, interactive website for exploring Indian history by scrolling throu
 eventual experience will combine a changing historical timeline with responsive text, maps,
 illustrations, and visual scenes.
 
-This repository contains the production foundation, 24 sourced Prehistoric India records, a
-readable evidence section, 24 interactive SVG exhibits, and three later-era prototype events. The prehistoric chapter includes
-regional overlaps and explicit uncertainty notes; it is an initial selection, not an exhaustive
-historical narrative. There is no database, authentication, CMS, or external storage.
+This repository contains 24 sourced Prehistoric India records and 15 researched Ancient India &
+Early Transitions records, with interactive scenes and readable evidence sections. Two later-era
+prototype events remain. Regional overlaps and uncertainty notes are explicit; these are expandable
+overviews, not an exhaustive historical narrative. There is no database, authentication, CMS, or
+external storage. See [the ancient chapter guide](docs/ancient-india-content.md) for sources,
+image credits and tagged additions.
 
 Start with [the Prehistoric India content guide](docs/prehistoric-content.md) for the chronology,
 editable files, sources, missing-research slots and asset checklist.

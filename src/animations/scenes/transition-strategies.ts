@@ -63,14 +63,19 @@ export const renderSceneTransition = ({
   resetLayers(incoming);
 
   // Visuals overlap, but outgoing and incoming copy never compete for reading.
-  gsap.set(outgoing.root.querySelectorAll(".story-copy"), {
-    opacity: Math.max(0, 1 - transitionProgress / 0.45),
-    y: -10 * transitionProgress,
-  });
-  gsap.set(incoming.root.querySelectorAll(".story-copy"), {
-    opacity: Math.max(0, (transitionProgress - 0.55) / 0.45),
-    y: 10 * (1 - transitionProgress),
-  });
+  // Prototype scenes use different markup and may have no staged copy.
+  const outgoingCopy = outgoing.root.querySelectorAll(".story-copy");
+  const incomingCopy = incoming.root.querySelectorAll(".story-copy");
+  if (outgoingCopy.length)
+    gsap.set(outgoingCopy, {
+      opacity: Math.max(0, 1 - transitionProgress / 0.45),
+      y: -10 * transitionProgress,
+    });
+  if (incomingCopy.length)
+    gsap.set(incomingCopy, {
+      opacity: Math.max(0, (transitionProgress - 0.55) / 0.45),
+      y: 10 * (1 - transitionProgress),
+    });
 
   switch (transition.type) {
     case "fade": {

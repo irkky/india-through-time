@@ -131,7 +131,8 @@ export function createSceneController({
           { autoAlpha: 0, x: 0, y: 0, scale: 1 },
         );
         gsap.set(bindings[index]?.root ?? [], { autoAlpha: 1 });
-        gsap.set(bindings[index]?.root.querySelectorAll(".story-copy") ?? [], { opacity: 1, y: 0 });
+        const copy = bindings[index]?.root.querySelectorAll(".story-copy");
+        if (copy?.length) gsap.set(copy, { opacity: 1, y: 0 });
       } else {
         gsap.set(
           bindings

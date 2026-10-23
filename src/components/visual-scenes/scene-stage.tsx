@@ -37,6 +37,7 @@ export function SceneStage({ events, definitions, registerScene, registerLayer }
             }
             data-scene-id={scene.id}
             data-timeline-point-id={scene.timelinePointId}
+            data-era-id={event.node.era.id}
             aria-label={`${event.title} scene`}
             aria-hidden={sceneIndex === 0 ? undefined : true}
             inert={sceneIndex !== 0}

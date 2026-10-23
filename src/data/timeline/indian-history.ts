@@ -1,38 +1,11 @@
 import { bce } from "@/lib/historical-date";
 import { prehistoricIndiaEra } from "./prehistoric-india";
+import { ancientIndiaEra } from "./ancient-india";
 import type { HistoricalEra } from "@/types/history";
 
 export const indianHistoryTimeline = [
   prehistoricIndiaEra,
-  {
-    id: "ancient-india-early-transitions",
-    title: "Ancient India & Early Transitions",
-    order: 2,
-    periods: [
-      {
-        id: "cities-of-the-indus",
-        title: "Cities of the Indus",
-        events: [
-          {
-            id: "indus-valley-civilization",
-            title: "Indus Valley Civilization",
-            dateStart: bce(2500),
-            approximateDate: true,
-            description:
-              "Planned cities, skilled crafts, and long-distance trade flourished across the Indus region.",
-            categories: [],
-            people: [],
-            relatedEvents: [],
-            visualReference: {
-              id: "indus-abstract-scene",
-              kind: "abstract-scene",
-            },
-            sources: [],
-          },
-        ],
-      },
-    ],
-  },
+  ancientIndiaEra,
   {
     id: "second-urbanization-empires",
     title: "Second Urbanization & Empires",

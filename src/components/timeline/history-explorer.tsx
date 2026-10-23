@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
-import { formatHistoricalDate } from "@/lib/historical-date";
+import { ContentNeeds } from "@/components/historical-events/content-needs";
 
 interface HistoryExplorerProps {
   readonly events: readonly TimelineDisplayEvent[];
@@ -165,7 +165,11 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             </div>
             <a
               className="history-reader-link"
-              href="#prehistory-reader"
+              href={
+                activeEvent.node.era.id === "ancient-india-early-transitions"
+                  ? "#ancient-reader"
+                  : "#prehistory-reader"
+              }
               onClick={() => dialogRef.current?.close()}
             >
               Read all periods, including undated evidence →
@@ -173,13 +177,14 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
           </>
         ) : (
           <div className="history-evidence">
-            <p className="exhibit-date">
-              {activeEvent.dateLabel}
-              {record.dateEnd
-                ? ` — ${formatHistoricalDate(record.dateEnd, { approximate: record.approximateDate })}`
-                : ""}
-            </p>
+            <p className="exhibit-date">{activeEvent.dateLabel}</p>
             <p>{record.description}</p>
+            {record.dateScope && (
+              <p>
+                <strong>Date scope: </strong>
+                {record.dateScope}
+              </p>
+            )}
             {record.significance && <p>{record.significance}</p>}
             <p className="exhibit-location">{record.regions?.join(" · ")}</p>
             {record.interpretationNotes?.map((note, index) => (
@@ -189,6 +194,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
               </aside>
             ))}
             <h3>Sources</h3>
+            <ContentNeeds event={record} />
             {record.sources.length === 0 && (
               <p>This prototype record still needs historical citations.</p>
             )}

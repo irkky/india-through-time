@@ -1,30 +1,43 @@
 import type { HistoricalEra } from "@/types/history";
 import { compareHistoricalDates, formatHistoricalDate } from "@/lib/historical-date";
 import { prehistoryGaps } from "@/data/timeline/prehistory/gaps";
+import { ContentNeeds } from "./content-needs";
 
 /** Server-rendered evidence remains readable without the scroll animation or JavaScript. */
-export function PrehistoryReader({ era }: { readonly era: HistoricalEra }) {
+export function PrehistoryReader({
+  era,
+  id = "prehistory-reader",
+  gaps = prehistoryGaps,
+}: {
+  readonly era: HistoricalEra;
+  readonly id?: string;
+  readonly gaps?: readonly {
+    readonly periodId: string;
+    readonly topic: string;
+    readonly missing: readonly string[];
+  }[];
+}) {
   return (
     <section
-      id="prehistory-reader"
-      aria-labelledby="prehistory-reader-title"
+      id={id}
+      aria-labelledby={`${id}-title`}
       className="bg-[#f2ecdf] px-6 py-20 text-[#20251f] sm:px-10"
     >
       <div className="mx-auto max-w-4xl">
         <p className="text-sm font-semibold uppercase tracking-widest text-[#8f3e28]">
           Read the evidence
         </p>
-        <h2 id="prehistory-reader-title" className="mt-3 text-4xl font-semibold">
-          Prehistoric India, in context
+        <h2 id={`${id}-title`} className="mt-3 text-4xl font-semibold">
+          {era.title}, in context
         </h2>
         <p className="mt-5 leading-7">
           Explore the records and their sources by period. The cinematic timeline sorts events by
           their starting dates; regional traditions overlap. Dates are approximate and refer to the
           specific evidence described. Regional overview ranges are distinguished from site and
           phase dates. This is an expandable overview, not an exhaustive catalogue of Indian
-          prehistory.
+          history.
         </p>
-        <nav aria-label="Prehistory reading sections" className="my-8 flex flex-wrap gap-3">
+        <nav aria-label={`${era.title} reading sections`} className="my-8 flex flex-wrap gap-3">
           {era.periods.map((period) => (
             <a
               key={period.id}
@@ -77,6 +90,12 @@ export function PrehistoryReader({ era }: { readonly era: HistoricalEra }) {
                     </span>
                   </summary>
                   <p className="mt-4 leading-7">{event.description}</p>
+                  {event.dateScope && (
+                    <p className="mt-3 text-sm">
+                      <strong>Date scope: </strong>
+                      {event.dateScope}
+                    </p>
+                  )}
                   {event.regions && (
                     <p className="mt-3 text-sm">Location: {event.regions.join("; ")}</p>
                   )}
@@ -110,9 +129,10 @@ export function PrehistoryReader({ era }: { readonly era: HistoricalEra }) {
                       </li>
                     ))}
                   </ul>
+                  <ContentNeeds event={event} />
                 </details>
               ))}
-            {prehistoryGaps
+            {gaps
               .filter((gap) => gap.periodId === period.id)
               .map((gap) => (
                 <aside

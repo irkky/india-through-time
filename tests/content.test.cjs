@@ -13,7 +13,7 @@ const first = (eras) => eras[0].periods[1].events[0];
 
 test("canonical data compiles and navigation round-trips through the resolver", () => {
   const model = compileHistory(fixture(), scenePresentations);
-  assert.equal(model.events.length, 27);
+  assert.equal(model.events.length, 41);
   model.events.forEach((event, index) => {
     assert.equal(
       resolveTimelinePoint(model.points, getTimelineProgressForIndex(index, model.points)).item.id,
@@ -57,10 +57,13 @@ test("relationships, citations, and researched source requirements are enforced"
 });
 test("scene media and timing are checked before browser rendering", () => {
   const scenes = structuredClone(scenePresentations);
-  scenes["indus-abstract-scene"].scene.layers[0].asset = { referenceId: "missing", type: "image" };
+  scenes["exhibit-indus-valley-civilization"].scene.layers[0].asset = {
+    referenceId: "missing",
+    type: "image",
+  };
   assert.throws(() => compileHistory(fixture(), scenes), /Unknown media/);
-  delete scenes["indus-abstract-scene"].scene.layers[0].asset;
-  scenes["indus-abstract-scene"].scene.layers[0].timeline = { start: 0.8, end: 0.2 };
+  delete scenes["exhibit-indus-valley-civilization"].scene.layers[0].asset;
+  scenes["exhibit-indus-valley-civilization"].scene.layers[0].timeline = { start: 0.8, end: 0.2 };
   assert.throws(() => compileHistory(fixture(), scenes), /Invalid layer range/);
 });
 test("empty content fails clearly; a single event still resolves", () => {
@@ -179,4 +182,45 @@ test("weighted scene pacing preserves anchors and allocates longer image interva
   assert.equal(stops[2], 1);
   assert.throws(() => createTimelineStops([0]), RangeError);
   assert.throws(() => createTimelineStops([NaN]), RangeError);
+});
+
+test("ancient chapter has sourced ranges, traceable additions, and matching scenes", () => {
+  const { ancientIndiaEra, ancientGaps } = require("../src/data/timeline/ancient-india.ts");
+  const events = ancientIndiaEra.periods.flatMap((period) => period.events);
+  assert.equal(events.length, 15);
+  assert.equal(ancientIndiaEra.periods.length, 4);
+  for (const event of events) {
+    assert.equal(event.contentStatus, "researched");
+    assert.ok(event.dateEnd && event.dateScope);
+    assert.ok(event.sources.every((source) => source.url.startsWith("https://")));
+    assert.ok(event.citations.length > 0);
+    assert.ok(event.interpretationNotes.length > 0);
+    assert.ok(
+      event.contentNeeds.every(
+        (need) => /^[A-Z_]+$/.test(need.tag) && need.instruction.length > 30,
+      ),
+    );
+    assert.equal(scenePresentations[event.visualReference.id].scene.timelinePointId, event.id);
+  }
+  const issues = validateHistory([
+    ancientIndiaEra,
+    ...fixture().filter((era) => era.id !== ancientIndiaEra.id),
+  ]);
+  assert.equal(issues.filter((issue) => issue.path?.startsWith(ancientIndiaEra.id)).length, 0);
+  assert.ok(
+    ancientGaps.every((gap) =>
+      ancientIndiaEra.periods.some((period) => period.id === gap.periodId),
+    ),
+  );
+});
+
+test("contemporary thematic scenes remain navigable without invented advancing years", () => {
+  const model = compileHistory(fixture(), scenePresentations);
+  const start = model.points.findIndex((point) => point.id === "indus-valley-civilization");
+  const next = start + 1;
+  assert.equal(model.points[start].date.year, model.points[next].date.year);
+  assert.ok(model.points[next].position > model.points[start].position);
+  const middle = (model.points[start].position + model.points[next].position) / 2;
+  const result = resolveTimelinePoint(model.points, middle);
+  assert.deepEqual(result.date, model.points[start].date);
 });

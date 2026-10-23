@@ -782,10 +782,10 @@
   grid-template-columns: 0.85fr 1.3fr;
 }
 .story-exhibit[data-layout="settlement"] .exhibit-figure {
-  border-radius: 100px 100px 16px 16px;
+  border-radius: 32px 32px 16px 16px;
 }
 .story-exhibit[data-layout="artefact"] .exhibit-figure {
-  border-radius: 50% 50% 20px 20px;
+  border-radius: 32px 32px 20px 20px;
 }
 .story-exhibit .exhibit-dialog h2 {
   font-size: 24px;
@@ -907,4 +907,23 @@
     padding: 0 5px;
     font-size: 9px;
   }
+}
+
+.content-needs-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+.content-need-tag {
+  display: inline-block;
+  font: 600 10px/1.5 monospace;
+  letter-spacing: 0.04em;
+  padding: 4px 8px;
+  border: 1px dashed currentColor;
+  border-radius: 4px;
+}
+.content-needs-list p {
+  margin-top: 6px;
+  line-height: 1.65;
+  font-size: 13px;
 }

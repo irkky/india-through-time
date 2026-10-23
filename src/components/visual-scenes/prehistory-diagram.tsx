@@ -34,6 +34,132 @@ export function PrehistoryDiagram({
         <path d="M20 190H540M280 20V360" strokeDasharray="3 9" />
       </g>
       <g stroke="#e7cda9" strokeWidth="2" strokeLinejoin="round">
+        {kind === "water" && (
+          <>
+            <path
+              d="M35 90Q90 50 140 90T250 90M310 90Q370 40 430 90T530 90"
+              fill="none"
+              stroke="#95c8d4"
+              strokeWidth="8"
+            />
+            <path d="M140 92V145H210M430 92V145H350" fill="none" stroke="#95c8d4" strokeWidth="5" />
+            <rect x="200" y="140" width="160" height="115" rx="4" fill="#385e6a" strokeWidth="8" />
+            <path d="M215 170H345M215 195H345M215 220H345" stroke="#95c8d4" opacity=".5" />
+            <path d="M280 255V305H430" stroke="#95c8d4" strokeWidth="5" fill="none" />
+            <path d="M405 270h70v55h-70Z" fill={fill} />
+            <g fill="currentColor" stroke="none" fontSize="13" textAnchor="middle">
+              <text x="280" y="120">
+                COLLECT
+              </text>
+              <text x="280" y="205">
+                STORE
+              </text>
+              <text x="440" y="305">
+                USE
+              </text>
+            </g>
+          </>
+        )}
+        {kind === "weights" && (
+          <>
+            <path d="M280 85V285M180 290H380M110 125H450" fill="none" strokeWidth="8" />
+            <path d="m130 125-50 105h100Zm300 0-50 105h100Z" fill="none" />
+            <path d="M75 232q55 65 110 0M375 232q55 65 110 0" fill={fill} />
+            <rect x="110" y="198" width="35" height="32" fill="#858d83" />
+            <rect x="404" y="202" width="22" height="28" fill="#858d83" />
+            <rect x="432" y="202" width="22" height="28" fill="#858d83" />
+            <text
+              x="280"
+              y="328"
+              fill="currentColor"
+              stroke="none"
+              fontSize="12"
+              textAnchor="middle"
+            >
+              COMPARISON, NOT A CALIBRATED SERIES
+            </text>
+          </>
+        )}
+        {kind === "seal" && (
+          <>
+            <rect x="60" y="95" width="170" height="170" rx="12" fill={fill} />
+            <rect x="330" y="95" width="170" height="170" rx="12" fill="#bc9275" />
+            <path d="M100 140h90v30h-50v50h-40ZM460 140h-90v30h50v50h40Z" fill="#655547" />
+            <path d="M250 180h60m-15-12 15 12-15 12" fill="none" />
+            <g fill="currentColor" stroke="none" fontSize="12" textAnchor="middle">
+              <text x="145" y="300">
+                CARVED SURFACE
+              </text>
+              <text x="415" y="300">
+                REVERSED IMPRESSION
+              </text>
+            </g>
+          </>
+        )}
+        {kind === "oral" && (
+          <>
+            {[100, 280, 460].map((x, i) => (
+              <g key={x}>
+                <circle cx={x} cy="170" r="48" fill="#314253" />
+                <path d={`M${x - 35} 175q18-65 35 0t35 0`} fill="none" strokeWidth="4" />
+                <text
+                  x={x}
+                  y="255"
+                  fill="currentColor"
+                  stroke="none"
+                  fontSize="13"
+                  textAnchor="middle"
+                >
+                  {["LISTEN", "REMEMBER", "RECITE"][i]}
+                </text>
+              </g>
+            ))}
+            <path
+              d="M153 170h70m110 0h70M455 285Q280 345 100 285"
+              fill="none"
+              strokeDasharray="5 7"
+            />
+          </>
+        )}
+        {kind === "furnace" && (
+          <>
+            <path d="M180 285 205 90h150l25 195Z" fill="#8b644c" strokeWidth="7" />
+            <path d="M220 280 235 130h90l15 150Z" fill="#342b28" />
+            <path d="m250 255 25-85 10 50 25-35-10 70Z" fill="#efab60" />
+            <path d="M80 230h155m-20-12 20 12-20 12" stroke="#9dc0cc" strokeWidth="5" fill="none" />
+            <path d="m350 285 45 15 30-7 35 15" strokeWidth="7" fill="none" />
+            <g fill="currentColor" stroke="none" fontSize="13">
+              <text x="80" y="210">
+                AIR
+              </text>
+              <text x="390" y="335">
+                SLAG
+              </text>
+            </g>
+          </>
+        )}
+        {kind === "pottery" && (
+          <>
+            <path d="M135 105h290q-15 145-145 145T135 105Z" fill="#93958b" strokeWidth="5" />
+            <path d="M150 132h260M168 158h224" stroke="#30352f" strokeWidth="4" />
+            <path
+              d="m190 180 20 20 20-20 20 20 20-20 20 20 20-20 20 20 20-20"
+              fill="none"
+              stroke="#30352f"
+            />
+            <path d="M70 285H490M70 310H490" strokeDasharray="8 5" opacity=".5" />
+            <text
+              x="280"
+              y="335"
+              fill="currentColor"
+              stroke="none"
+              fontSize="12"
+              textAnchor="middle"
+            >
+              FORM + CONTEXT + DATING
+            </text>
+          </>
+        )}
         {kind === "acheulian" && (
           <>
             <path

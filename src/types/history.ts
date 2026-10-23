@@ -89,6 +89,9 @@ export type HistoricalFactAnnotation =
   HistoricalChronologyFactAnnotation | HistoricalDistributionFactAnnotation;
 
 export interface HistoricalEvent {
+  /** Explains whether dates represent an occupation, object, or broad teaching range. */
+  readonly dateScope?: string;
+  readonly contentNeeds?: readonly { readonly tag: string; readonly instruction: string }[];
   readonly id: string;
   readonly title: string;
   readonly dateStart: HistoricalDate;

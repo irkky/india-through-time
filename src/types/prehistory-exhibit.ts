@@ -1,4 +1,10 @@
 export type PrehistoryDiagram =
+  | "water"
+  | "weights"
+  | "seal"
+  | "oral"
+  | "furnace"
+  | "pottery"
   | "acheulian"
   | "core"
   | "strata"
@@ -20,9 +26,12 @@ export interface PrehistoryGalleryImage {
   readonly credit?: string;
   readonly sourceUrl?: string;
   readonly license?: string;
+  readonly licenseUrl?: string;
 }
 
 export interface PrehistoryExhibit {
+  readonly layout?: "artefact" | "photograph" | "strata" | "settlement" | "comparison";
+  readonly stageImages?: readonly (number | null)[];
   readonly gallery?: readonly PrehistoryGalleryImage[];
   readonly diagram: PrehistoryDiagram;
   readonly title: string;

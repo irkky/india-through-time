@@ -61,11 +61,15 @@ async function main() {
           message.params.exceptionDetails.exception?.description ??
             message.params.exceptionDetails.text,
         );
-      if (message.method === "Runtime.consoleAPICalled" && message.params.type === "error") {
+      if (
+        message.method === "Runtime.consoleAPICalled" &&
+        ["error", "warning", "warn"].includes(message.params.type)
+      ) {
         const description = message.params.args
           .map((arg) => arg.description ?? arg.value ?? "")
           .join(" ");
-        if (/hydrat|server rendered HTML|didn't match/i.test(description)) errors.push(description);
+        if (/hydrat|server rendered HTML|didn't match|GSAP target .*not found/i.test(description))
+          errors.push(description);
       }
       if (message.id) {
         pending.get(message.id)?.(message);
@@ -138,7 +142,7 @@ async function main() {
         `document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'`,
       );
       const ids = await evaluate(
-        `Array.from(document.querySelectorAll('[data-timeline-point-id]')).filter(e=>e.querySelector('.story-exhibit')).map(e=>e.dataset.timelinePointId)`,
+        `Array.from(document.querySelectorAll('[data-era-id="prehistoric-india"]')).filter(e=>e.querySelector('.story-exhibit')).map(e=>e.dataset.timelinePointId)`,
       );
       assert.equal(ids.length, 24);
       for (const eventId of ids) {
@@ -245,6 +249,56 @@ async function main() {
       await click('[aria-label="Next event"]');
       await waitFor(`${active}?.dataset.timelinePointId === 'mehrgarh-aceramic-cemetery'`);
       assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"), false);
+      const ancientIds = await evaluate(
+        `Array.from(document.querySelectorAll('[data-era-id="ancient-india-early-transitions"]')).map(e=>e.dataset.timelinePointId)`,
+      );
+      assert.equal(ancientIds.length, 15);
+      for (const eventId of ancientIds) {
+        await navigate(eventId);
+        assert.equal(
+          await evaluate(
+            `(()=>{const e=${active}.querySelector('.story-exhibit');return e.scrollHeight<=e.clientHeight+2 && e.scrollWidth<=e.clientWidth+2})()`,
+          ),
+          true,
+          `Ancient scene fits: ${eventId} at ${width}`,
+        );
+        await click('.visual-scene[aria-hidden="false"] .exhibit-point:last-child');
+        assert.ok(
+          await evaluate(`${active}.querySelector('.exhibit-insight p').textContent.length > 50`),
+        );
+        await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+        await waitFor("!!document.querySelector('.exhibit-dialog[open] .content-need-tag')");
+        if (["indus-seals-writing", "rakhigarhi-cemetery"].includes(eventId)) {
+          await waitFor(
+            `(()=>{const img=document.querySelector('.exhibit-dialog[open] .gallery-image-surface img');return img?.complete && img.naturalWidth>0})()`,
+          );
+          await screenshot(`ancient-gallery-${eventId}-${width}`);
+        }
+        assert.ok(
+          await evaluate(
+            `document.querySelectorAll('.exhibit-dialog[open] .history-source-list a').length > 0`,
+          ),
+        );
+        await click(".exhibit-dialog[open] .history-dialog-header button");
+        await waitFor("!document.querySelector('.exhibit-dialog[open]')");
+      }
+      await navigate("indus-seals-writing");
+      await click('.visual-scene[aria-hidden="false"] .exhibit-point:nth-child(2)');
+      await waitFor(
+        `(()=>{const img=${active}.querySelector('.exhibit-drawing img');return img?.complete && img.naturalWidth>0})()`,
+      );
+      await screenshot(`ancient-seal-${width}`);
+      await navigate("dholavira-water-city");
+      await screenshot(`ancient-water-${width}`);
+      await navigate("early-upanishads");
+      await screenshot(`ancient-oral-${width}`);
+      await click(".journey-button-accent");
+      assert.ok(
+        await evaluate(
+          "document.querySelector('.history-evidence').textContent.includes('Date scope:')",
+        ),
+      );
+      await click(".history-dialog:not(.exhibit-dialog) .history-dialog-header button");
     }
     await send("Page.navigate", { url: `${base}/#event=inamgaon-settlement` });
     await waitFor(`${active}?.dataset.timelinePointId === 'inamgaon-settlement'`);
@@ -311,21 +365,49 @@ async function main() {
     assert.equal(journeyYears[0], journeyYears[4], "Scrolling back restores the earlier year");
     assert.equal(journeyYears[1], journeyYears[3]);
     await screenshot("scroll-transition");
+    // Cross a real chapter boundary, including the final handoff to the next era.
+    for (const pair of [
+      ["harappa-kot-diji-phase", "indus-valley-civilization"],
+      ["early-upanishads", "mahajanapadas"],
+    ]) {
+      await navigate(pair[0]);
+      await delay(1200);
+      const start = await evaluate("scrollY");
+      await navigate(pair[1]);
+      await delay(1200);
+      const end = await evaluate("scrollY");
+      assert.ok(end > start);
+      for (const fraction of [0.25, 0.5, 0.75, 0.5, 0.25]) {
+        await evaluate(`window.scrollTo(0, ${start + (end - start) * fraction})`);
+        await delay(400);
+        assert.equal(
+          await evaluate("document.querySelectorAll('.visual-scene[aria-hidden=false]').length"),
+          1,
+        );
+        assert.ok(
+          await evaluate(
+            "Array.from(document.querySelectorAll('.visual-scene')).reduce((sum,e)=>sum+Number(getComputedStyle(e).opacity),0)>.95",
+          ),
+        );
+      }
+    }
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
     await send("Page.reload");
-    await waitFor("document.querySelectorAll('.story-exhibit').length === 24");
+    await waitFor("document.querySelectorAll('.story-exhibit').length === 39");
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
+    await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
     await delay(1200);
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
-    assert.equal(await evaluate("document.querySelectorAll('.visual-scene').length"), 27);
+    assert.equal(await evaluate("document.querySelectorAll('.visual-scene').length"), 41);
     assert.deepEqual(errors, []);
     await send("Emulation.setScriptExecutionDisabled", { value: true });
     await send("Page.reload");
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
+    await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
     console.log(
-      "PASS: all 24 exhibits on desktop/mobile; galleries; evidence; search; sources; keyboard focus; navigation; shared links; forward/reverse crossfades; reduced motion; no runtime exceptions; reader without JavaScript.",
+      "PASS: all 39 prehistoric/ancient exhibits on desktop/mobile; 12 gallery images; evidence tags; search; sources; keyboard focus; navigation; shared links; chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; both readers without JavaScript.",
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {
