@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
+import { EventDetails, ImageNeeds } from "@/components/historical-events/event-details";
 
 interface HistoryExplorerProps {
   readonly events: readonly TimelineDisplayEvent[];
@@ -166,9 +167,11 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             <a
               className="history-reader-link"
               href={
-                activeEvent.node.era.id === "ancient-india-early-transitions"
-                  ? "#ancient-reader"
-                  : "#prehistory-reader"
+                activeEvent.node.era.id === "second-urbanization-empires"
+                  ? "#empires-reader"
+                  : activeEvent.node.era.id === "ancient-india-early-transitions"
+                    ? "#ancient-reader"
+                    : "#prehistory-reader"
               }
               onClick={() => dialogRef.current?.close()}
             >
@@ -193,6 +196,8 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
                 <p>{note.text}</p>
               </aside>
             ))}
+            <EventDetails event={record} />
+            <ImageNeeds event={record} />
             <h3>Sources</h3>
             <ContentNeeds event={record} />
             {record.sources.length === 0 && (

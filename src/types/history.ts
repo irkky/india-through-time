@@ -100,6 +100,12 @@ export interface HistoricalEvent {
   readonly contentStatus?: "placeholder" | "researched";
   readonly description: string;
   readonly significance?: string;
+  readonly details?: readonly {
+    readonly title: string;
+    readonly text: string;
+    readonly sourceIds: readonly string[];
+  }[];
+  readonly imageNeeds?: readonly { readonly tag: string; readonly instruction: string }[];
   readonly categories: readonly string[];
   readonly regions?: readonly string[];
   readonly locations?: readonly HistoricalLocation[];

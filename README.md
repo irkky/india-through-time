@@ -4,12 +4,15 @@ An original, interactive website for exploring Indian history by scrolling throu
 eventual experience will combine a changing historical timeline with responsive text, maps,
 illustrations, and visual scenes.
 
-This repository contains 24 sourced Prehistoric India records and 15 researched Ancient India &
-Early Transitions records, with interactive scenes and readable evidence sections. Two later-era
-prototype events remain. Regional overlaps and uncertainty notes are explicit; these are expandable
+This repository contains 24 sourced Prehistoric India records, 15 researched Ancient India &
+Early Transitions records, and 17 Second Urbanization & Empires records, with interactive scenes
+and readable evidence sections. Regional overlaps and uncertainty notes are explicit; these are expandable
 overviews, not an exhaustive historical narrative. There is no database, authentication, CMS, or
 external storage. See [the ancient chapter guide](docs/ancient-india-content.md) for sources,
 image credits and tagged additions.
+
+The [Second Urbanization & Empires guide](docs/second-urbanization-content.md) covers the new
+chapter, its seven credited photographs and visual examples, chronology and exactly where to add further evidence.
 
 Start with [the Prehistoric India content guide](docs/prehistoric-content.md) for the chronology,
 editable files, sources, missing-research slots and asset checklist.
@@ -62,7 +65,7 @@ The remaining progress:
 
 - animates a full-year journey counter between event start dates; event cards retain their published ranges;
 - moves the timeline rail indicator;
-- selects the active prehistoric record or one of the three later prototype events;
+- selects the active record across all three researched chapters;
 - scrubs GSAP crossfades between event copy and abstract SVG scenes.
 
 With reduced motion enabled, the same scroll positions switch states directly without scrubbed
@@ -87,7 +90,7 @@ The content system is organized as `Era -> Period -> Event`. The eight planned e
 in the canonical dataset. Prehistoric India has eight reading sections: an undated introduction
 and seven archaeological periods containing 24 sourced records. Dates use separate calendar and
 years-ago representations. The timeline sorts by event start dates rather than forcing regional
-periods into a non-overlapping sequence. The original three later-era prototype events remain intact.
+periods into a non-overlapping sequence. The original later-era prototype IDs now point to researched exhibits.
 
 Prehistoric period composition and the existing Lower Palaeolithic record belong in
 `src/data/timeline/prehistoric-india.ts`; the other events, bibliography and research gaps live in

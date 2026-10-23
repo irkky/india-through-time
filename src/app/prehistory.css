@@ -927,3 +927,70 @@
   line-height: 1.65;
   font-size: 13px;
 }
+.event-details {
+  margin-block: 1.5rem;
+}
+.event-details h3 {
+  font-size: 1.12rem;
+  font-weight: 650;
+  margin-bottom: 0.6rem;
+}
+.event-details p {
+  line-height: 1.75;
+}
+.detail-sources {
+  font-size: 0.78rem;
+  opacity: 0.8;
+}
+.detail-sources a {
+  text-decoration: underline;
+  margin-right: 0.8rem;
+}
+.image-spaces {
+  margin-block: 1.5rem;
+}
+.image-space-card {
+  border: 1px dashed currentColor;
+  border-radius: 18px;
+  padding: 1.4rem;
+  overflow-wrap: anywhere;
+  background: linear-gradient(135deg, #b89b6a12, #b89b6a04);
+}
+.image-space-icon {
+  display: block;
+  font-size: 2rem;
+  opacity: 0.6;
+}
+.image-space-card h3 {
+  font-size: 1rem;
+  margin: 0.35rem 0 0.7rem;
+}
+.image-space-card p {
+  margin-block: 0.75rem;
+  line-height: 1.6;
+}
+.image-space-card small {
+  opacity: 0.75;
+}
+.image-space-compact {
+  width: min(100%, 560px);
+  padding: 1rem;
+  align-self: center;
+}
+.image-space-compact .image-space-card {
+  padding: clamp(0.6rem, 2vw, 1.4rem);
+}
+.image-space-compact .content-need-tag {
+  color: inherit;
+  font-size: 0.65rem;
+}
+.image-space-compact p {
+  font-size: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.image-space-compact .image-space-icon {
+  font-size: 1.4rem;
+}

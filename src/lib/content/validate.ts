@@ -70,6 +70,17 @@ export function validateHistory(eras: readonly HistoricalEra[]): readonly Conten
           if (!sources.has(citation.sourceId))
             report(eventPath, `Unknown citation source: ${citation.sourceId}`);
         }
+        for (const detail of event.details ?? []) {
+          if (!detail.title.trim() || !detail.text.trim() || !detail.sourceIds.length)
+            report(eventPath, "Detailed evidence needs a title, text and sources.");
+          for (const id of detail.sourceIds) {
+            if (!sources.has(id)) report(eventPath, `Unknown detail source: ${id}`);
+          }
+        }
+        for (const need of event.imageNeeds ?? []) {
+          if (!/^[A-Z_]+$/.test(need.tag) || !need.instruction.trim())
+            report(eventPath, "Image spaces need an uppercase tag and instructions.");
+        }
         for (const note of event.interpretationNotes ?? []) {
           for (const id of note.sourceIds ?? []) {
             if (!sources.has(id)) report(eventPath, `Unknown interpretation source: ${id}`);

@@ -13,7 +13,7 @@ const first = (eras) => eras[0].periods[1].events[0];
 
 test("canonical data compiles and navigation round-trips through the resolver", () => {
   const model = compileHistory(fixture(), scenePresentations);
-  assert.equal(model.events.length, 41);
+  assert.equal(model.events.length, 56);
   model.events.forEach((event, index) => {
     assert.equal(
       resolveTimelinePoint(model.points, getTimelineProgressForIndex(index, model.points)).item.id,
@@ -22,7 +22,7 @@ test("canonical data compiles and navigation round-trips through the resolver", 
     assert.equal(model.scenes[index].timelinePointId, event.id);
   });
   assert.equal(model.navigation.at(-1).firstEventIndex, null);
-  assert.ok(model.issues.some(({ message }) => message.includes("sources")));
+  assert.ok(!model.issues.some(({ message }) => message.includes("sources")));
 });
 test("new content without a visual gets a default scene", () => {
   const eras = fixture();
@@ -223,4 +223,56 @@ test("contemporary thematic scenes remain navigable without invented advancing y
   const middle = (model.points[start].position + model.points[next].position) / 2;
   const result = resolveTimelinePoint(model.points, middle);
   assert.deepEqual(result.date, model.points[start].date);
+});
+
+test("empire chapter preserves anchors, dated evidence and a navigable endpoint", () => {
+  const {
+    secondUrbanizationEra,
+    empireGaps,
+  } = require("../src/data/timeline/second-urbanization.ts");
+  const events = secondUrbanizationEra.periods.flatMap((p) => p.events);
+  assert.equal(events.length, 17);
+  assert.ok(secondUrbanizationEra.periods.every((p) => p.events.length));
+  assert.ok(events.some((e) => e.id === "mahajanapadas"));
+  assert.ok(events.some((e) => e.id === "mauryan-empire"));
+  const model = compileHistory(fixture(), scenePresentations);
+  assert.equal(model.events.at(-1).id, "mauryan-successors");
+  assert.equal(model.points.at(-1).date.year, 185);
+  for (const event of events) {
+    assert.equal(event.contentStatus, "researched");
+    assert.ok(event.dateScope && event.sources.length && event.citations.length);
+    assert.equal(event.details.length, 2);
+    assert.ok(
+      event.details.every((d) => d.sourceIds.every((id) => event.sources.some((s) => s.id === id))),
+    );
+    assert.ok(event.imageNeeds.length && event.imageNeeds.every((n) => /^[A-Z_]+$/.test(n.tag)));
+    assert.ok(
+      event.contentNeeds.every((n) => /^[A-Z_]+$/.test(n.tag) && n.instruction.length > 30),
+    );
+    assert.ok(event.citations.every((c) => event.sources.some((s) => s.id === c.sourceId)));
+    assert.ok(event.relatedEvents.every((id) => model.events.some((e) => e.id === id)));
+    assert.equal(scenePresentations[event.visualReference.id].exhibit.points.length, 3);
+  }
+  assert.ok(
+    empireGaps.every((g) => secondUrbanizationEra.periods.some((p) => p.id === g.periodId)),
+  );
+  const { empireGalleries } = require("../src/data/scenes/empire-exhibits.ts");
+  assert.equal(Object.keys(empireGalleries).length, 7);
+  for (const gallery of Object.values(empireGalleries))
+    for (const image of gallery) {
+      assert.ok(image.credit && image.sourceUrl && image.license);
+      assert.ok(
+        require("node:fs").existsSync(require("node:path").join(__dirname, "../public", image.src)),
+      );
+    }
+});
+
+test("expanded evidence rejects broken sources and malformed image tags", () => {
+  const eras = fixture();
+  const event = eras.find((e) => e.id === "second-urbanization-empires").periods[0].events[0];
+  event.details[0].sourceIds = ["missing-detail-source"];
+  event.imageNeeds[0].tag = "untagged space";
+  const issues = validateHistory(eras);
+  assert.ok(issues.some((i) => i.message.includes("Unknown detail source")));
+  assert.ok(issues.some((i) => i.message.includes("Image spaces need")));
 });

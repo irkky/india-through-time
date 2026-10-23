@@ -1,4 +1,10 @@
 export type PrehistoryDiagram =
+  | "network"
+  | "pillar"
+  | "coin"
+  | "stupa"
+  | "cave"
+  | "ringstone"
   | "water"
   | "weights"
   | "seal"

@@ -34,6 +34,156 @@ export function PrehistoryDiagram({
         <path d="M20 190H540M280 20V360" strokeDasharray="3 9" />
       </g>
       <g stroke="#e7cda9" strokeWidth="2" strokeLinejoin="round">
+        {kind === "network" && (
+          <>
+            <path
+              d="M95 110L280 185L460 100M280 185L430 285M280 185L115 290M95 110L115 290M460 100L430 285"
+              fill="none"
+              strokeDasharray="6 8"
+              strokeWidth="3"
+            />
+            {[
+              [95, 110],
+              [280, 185],
+              [460, 100],
+              [430, 285],
+              [115, 290],
+            ].map(([x, y], i) => (
+              <g key={i} transform={`translate(${x} ${y})`}>
+                <circle r={i === 1 ? 40 : 28} fill={fill} />
+                <path d="M-13 10V-8L0-20L13-8V10Z" fill="#463b35" />
+                <circle r="49" fill="none" opacity=".25" />
+              </g>
+            ))}
+            <text
+              x="280"
+              y="330"
+              fill="currentColor"
+              stroke="none"
+              textAnchor="middle"
+              fontSize="15"
+            >
+              CENTRES · CONNECTIONS · CHANGING REACH
+            </text>
+          </>
+        )}
+        {kind === "pillar" && (
+          <>
+            <path d="M130 310L142 90H178L190 310Z" fill={fill} />
+            <rect x="125" y="68" width="70" height="22" rx="5" fill={fill} />
+            <path d="M110 315H210" strokeWidth="8" />
+            <path d="M185 155L300 105M185 240L300 275" strokeDasharray="5 7" opacity=".5" />
+            <rect x="300" y="85" width="180" height="210" rx="16" fill="#443a38" />
+            {[125, 155, 185, 215, 245].map((y) => (
+              <path key={y} d={`M325 ${y}H455`} strokeWidth="4" opacity=".6" />
+            ))}
+            <text
+              x="390"
+              y="330"
+              fill="currentColor"
+              stroke="none"
+              textAnchor="middle"
+              fontSize="15"
+            >
+              READ THE EVIDENCE
+            </text>
+          </>
+        )}
+        {kind === "coin" && (
+          <>
+            <path d="M120 125L270 90L340 150L310 280L145 290L95 210Z" fill={fill} strokeWidth="4" />
+            {[
+              [160, 165],
+              [240, 150],
+              [270, 230],
+              [170, 245],
+            ].map(([x, y], i) => (
+              <g key={i} transform={`translate(${x} ${y})`}>
+                <circle r="18" fill="none" />
+                <path d="M-10 0H10M0-10V10" />
+              </g>
+            ))}
+            <path d="M390 85H440V195H390Z" fill="#8c9291" />
+            <path d="M380 195H450V210H380Z" fill={fill} />
+            <path d="M415 225V275M400 260L415 275L430 260" fill="none" />
+            <text
+              x="280"
+              y="330"
+              fill="currentColor"
+              stroke="none"
+              textAnchor="middle"
+              fontSize="15"
+            >
+              CUT · WEIGH · PUNCH
+            </text>
+          </>
+        )}
+        {kind === "stupa" && (
+          <>
+            <path
+              d="M85 285A195 195 0 0 1 475 285Z"
+              fill="none"
+              strokeDasharray="7 7"
+              strokeWidth="3"
+              opacity=".6"
+            />
+            <path d="M155 285A125 125 0 0 1 405 285Z" fill={fill} />
+            <rect x="260" y="140" width="40" height="22" fill={fill} />
+            <path d="M280 140V95M250 110H310M260 95H300" strokeWidth="5" />
+            <path d="M65 300H495" strokeWidth="6" />
+            <text x="280" y="250" textAnchor="middle" fill="#30271f" stroke="none" fontSize="16">
+              EARLY CORE
+            </text>
+            <text
+              x="280"
+              y="330"
+              textAnchor="middle"
+              fill="currentColor"
+              stroke="none"
+              fontSize="14"
+            >
+              DASHED OUTLINE: LATER ENLARGEMENT
+            </text>
+          </>
+        )}
+        {kind === "cave" && (
+          <>
+            <path d="M55 310L90 140L190 65L390 80L485 160L510 310Z" fill={fill} />
+            <path d="M175 310V195A105 105 0 0 1 385 195V310Z" fill="#222625" />
+            <path
+              d="M205 300V200A75 75 0 0 1 355 200V300M205 300L250 265H310L355 300M250 265V180"
+              fill="none"
+              opacity=".5"
+            />
+            <text
+              x="280"
+              y="330"
+              textAnchor="middle"
+              fill="currentColor"
+              stroke="none"
+              fontSize="15"
+            >
+              ROCK · CHAMBER · DEDICATION
+            </text>
+          </>
+        )}
+        {kind === "ringstone" && (
+          <>
+            <circle cx="280" cy="185" r="125" fill={fill} />
+            <circle cx="280" cy="185" r="48" fill="#29242a" />
+            <circle cx="280" cy="185" r="99" fill="none" strokeDasharray="4 12" strokeWidth="12" />
+            <text
+              x="280"
+              y="330"
+              textAnchor="middle"
+              fill="currentColor"
+              stroke="none"
+              fontSize="15"
+            >
+              EXAMINE THE ORIGINAL IN THE NEXT STEP
+            </text>
+          </>
+        )}
         {kind === "water" && (
           <>
             <path

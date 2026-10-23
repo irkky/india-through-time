@@ -2,6 +2,7 @@ import type { HistoricalEra } from "@/types/history";
 import { compareHistoricalDates, formatHistoricalDate } from "@/lib/historical-date";
 import { prehistoryGaps } from "@/data/timeline/prehistory/gaps";
 import { ContentNeeds } from "./content-needs";
+import { EventDetails, ImageNeeds } from "./event-details";
 
 /** Server-rendered evidence remains readable without the scroll animation or JavaScript. */
 export function PrehistoryReader({
@@ -106,6 +107,8 @@ export function PrehistoryReader({
                       {note.text}
                     </p>
                   ))}
+                  <EventDetails event={event} />
+                  <ImageNeeds event={event} />
                   <h5 className="mt-5 font-semibold">Sources</h5>
                   <ul className="mt-2 space-y-3 text-sm leading-6">
                     {event.sources.map((source) => (

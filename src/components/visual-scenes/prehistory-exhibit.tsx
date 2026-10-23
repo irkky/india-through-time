@@ -5,6 +5,7 @@ import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { PrehistoryDiagram } from "./prehistory-diagram";
 import { PrehistoryGallery } from "./prehistory-gallery";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
+import { EventDetails, ImageNeeds } from "@/components/historical-events/event-details";
 
 export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEvent }) {
   const [selected, setSelected] = useState(0);
@@ -46,6 +47,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
         : 1;
   const photo = imageIndex == null ? undefined : visual.gallery?.[imageIndex];
   const showPhoto = photo && selected < 2;
+  const showImageSpace = !showPhoto && selected === 1 && !!record.imageNeeds?.length;
   const layout =
     visual.layout ??
     (visual.gallery
@@ -96,7 +98,9 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
         </div>
         <figure className="exhibit-figure">
           <div className="exhibit-figure-header story-copy">
-            <span>{showPhoto ? photo.category : "Teaching diagram"}</span>
+            <span>
+              {showPhoto ? photo.category : showImageSpace ? "Image to add" : "Teaching diagram"}
+            </span>
             <span>{["Location", "Material evidence", "Interpretation"][selected]}</span>
           </div>
           <div className="exhibit-drawing" key={selected}>
@@ -104,13 +108,27 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
               // Keep archaeological scales and labels intact.
               // eslint-disable-next-line @next/next/no-img-element
               <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+            ) : showImageSpace ? (
+              <ImageNeeds event={record} compact />
             ) : (
               <PrehistoryDiagram kind={visual.diagram} title={visual.title} />
             )}
           </div>
           <figcaption className="story-copy">
-            <strong>{showPhoto ? photo.title : visual.title}</strong>
-            <span>{showPhoto ? photo.caption : visual.caption}</span>
+            <strong>
+              {showPhoto
+                ? photo.title
+                : showImageSpace
+                  ? "A place for the original evidence"
+                  : visual.title}
+            </strong>
+            <span>
+              {showPhoto
+                ? photo.caption
+                : showImageSpace
+                  ? "Open full evidence for the image specification and historical sources."
+                  : visual.caption}
+            </span>
           </figcaption>
         </figure>
       </div>
@@ -147,6 +165,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
                 <p>{detailFor(item.field)}</p>
               </section>
             ))}
+            <EventDetails event={record} />
             {visual.gallery?.length ? (
               <PrehistoryGallery images={visual.gallery} />
             ) : record.contentNeeds?.length ? null : (
@@ -160,6 +179,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
               </aside>
             )}
             <ContentNeeds event={record} />
+            <ImageNeeds event={record} />
             {record.sources.length > 0 && (
               <section className="story-full-note">
                 <h3>Sources for this record</h3>

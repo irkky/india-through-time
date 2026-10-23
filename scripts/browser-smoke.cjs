@@ -282,6 +282,93 @@ async function main() {
         await click(".exhibit-dialog[open] .history-dialog-header button");
         await waitFor("!document.querySelector('.exhibit-dialog[open]')");
       }
+      const empireIds = await evaluate(
+        `Array.from(document.querySelectorAll('[data-era-id="second-urbanization-empires"]')).map(e=>e.dataset.timelinePointId)`,
+      );
+      assert.equal(empireIds.length, 17);
+      for (const eventId of empireIds) {
+        await navigate(eventId);
+        assert.ok(
+          await evaluate(
+            `(()=>{const e=${active}.querySelector('.story-exhibit');return e.scrollHeight<=e.clientHeight+2 && e.scrollWidth<=e.clientWidth+2})()`,
+          ),
+          `Empire scene fits: ${eventId} at ${width}`,
+        );
+        for (const step of [2, 3, 1]) {
+          await click(`.visual-scene[aria-hidden="false"] .exhibit-point:nth-child(${step})`);
+          assert.ok(
+            await evaluate(`${active}.querySelector('.exhibit-insight p').textContent.length > 30`),
+          );
+          if (
+            step === 2 &&
+            [
+              "mauryan-ringstone",
+              "sanchi-mauryan-core",
+              "ashoka-lumbini",
+              "magadha-rise",
+              "early-punchmarked-money",
+              "kalinga-war",
+              "barabar-ajivikas",
+            ].includes(eventId)
+          ) {
+            await waitFor(
+              `(()=>{const i=${active}.querySelector('.exhibit-drawing img');return i?.complete && i.naturalWidth>0})()`,
+            );
+            await screenshot(`empire-photo-${eventId}-${width}`);
+          } else if (step === 2) {
+            assert.ok(
+              await evaluate(
+                `${active}.querySelector('.image-space-compact .content-need-tag')?.textContent.startsWith('ADD_')`,
+              ),
+            );
+            if (eventId === "mahajanapadas") await screenshot(`empire-placeholder-${width}`);
+          }
+        }
+        await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+        await waitFor("!!document.querySelector('.exhibit-dialog[open] .content-need-tag')");
+        assert.ok(
+          await evaluate(
+            "document.querySelectorAll('.exhibit-dialog[open] .history-source-list a').length > 0",
+          ),
+        );
+        assert.equal(
+          await evaluate(
+            "document.querySelectorAll('.exhibit-dialog[open] .event-details section').length",
+          ),
+          2,
+        );
+        assert.ok(
+          await evaluate(
+            "!!document.querySelector('.exhibit-dialog[open] .image-spaces .content-need-tag')",
+          ),
+        );
+        if (
+          [
+            "mauryan-ringstone",
+            "sanchi-mauryan-core",
+            "ashoka-lumbini",
+            "magadha-rise",
+            "early-punchmarked-money",
+            "kalinga-war",
+            "barabar-ajivikas",
+          ].includes(eventId)
+        ) {
+          await waitFor(
+            "(()=>{const i=document.querySelector('.exhibit-dialog[open] .gallery-image-surface img');return i?.complete && i.naturalWidth>0})()",
+          );
+          await screenshot(`empire-gallery-${eventId}-${width}`);
+        }
+        await click(".exhibit-dialog[open] .history-dialog-header button");
+        if (
+          [
+            "mahajanapadas",
+            "early-punchmarked-money",
+            "kalinga-war",
+            "sanchi-mauryan-core",
+          ].includes(eventId)
+        )
+          await screenshot(`empire-${eventId}-${width}`);
+      }
       await navigate("indus-seals-writing");
       await click('.visual-scene[aria-hidden="false"] .exhibit-point:nth-child(2)');
       await waitFor(
@@ -369,6 +456,9 @@ async function main() {
     for (const pair of [
       ["harappa-kot-diji-phase", "indus-valley-civilization"],
       ["early-upanishads", "mahajanapadas"],
+      ["early-punchmarked-money", "alexander-taxila"],
+      ["kalinga-war", "ashoka-dhamma"],
+      ["ashoka-lumbini", "mauryan-successors"],
     ]) {
       await navigate(pair[0]);
       await delay(1200);
@@ -394,20 +484,32 @@ async function main() {
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
     await send("Page.reload");
-    await waitFor("document.querySelectorAll('.story-exhibit').length === 39");
+    await waitFor("document.querySelectorAll('.story-exhibit').length === 56");
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
     await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
+    await waitFor("document.querySelectorAll('#empires-reader details').length === 17");
     await delay(1200);
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
-    assert.equal(await evaluate("document.querySelectorAll('.visual-scene').length"), 41);
+    assert.equal(await evaluate("document.querySelectorAll('.visual-scene').length"), 56);
     assert.deepEqual(errors, []);
     await send("Emulation.setScriptExecutionDisabled", { value: true });
     await send("Page.reload");
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
     await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
+    await waitFor("document.querySelectorAll('#empires-reader details').length === 17");
+    assert.equal(
+      await evaluate("document.querySelectorAll('#empires-reader .event-details section').length"),
+      34,
+    );
+    assert.equal(
+      await evaluate(
+        "document.querySelectorAll('#empires-reader .image-spaces .content-need-tag').length",
+      ),
+      17,
+    );
     console.log(
-      "PASS: all 39 prehistoric/ancient exhibits on desktop/mobile; 12 gallery images; evidence tags; search; sources; keyboard focus; navigation; shared links; chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; both readers without JavaScript.",
+      "PASS: all 56 exhibits on desktop/mobile; 19 gallery images; evidence tags; search; sources; keyboard focus; navigation; shared links; chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all three readers without JavaScript.",
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {
