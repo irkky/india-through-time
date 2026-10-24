@@ -994,3 +994,36 @@
 .image-space-compact .image-space-icon {
   font-size: 1.4rem;
 }
+/* Expanded explorer keeps every filter labelled and usable on narrow screens. */
+.history-search-controls > label {
+  min-width: 0;
+}
+.history-search-controls select {
+  width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
+}
+.history-reset {
+  align-self: end;
+}
+.history-filter-hint {
+  max-width: 65ch;
+  margin-top: 1rem;
+  color: #665c4a;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+.history-contemporaries {
+  margin-top: 2rem;
+  border-top: 1px solid #a38c6a44;
+  padding-top: 1rem;
+}
+.history-contemporaries p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.history-contemporaries small {
+  display: block;
+  margin-top: 0.4rem;
+  opacity: 0.8;
+}

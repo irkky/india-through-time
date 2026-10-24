@@ -4,6 +4,12 @@ import { useRef, useState } from "react";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
 import { EventDetails, ImageNeeds } from "@/components/historical-events/event-details";
+import {
+  centuryOptions,
+  contemporaryEvents,
+  emptyHistoryFilters,
+  filterHistory,
+} from "@/lib/history-explorer";
 
 interface HistoryExplorerProps {
   readonly events: readonly TimelineDisplayEvent[];
@@ -14,27 +20,21 @@ interface HistoryExplorerProps {
 export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExplorerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [mode, setMode] = useState<"browse" | "evidence">("browse");
-  const [query, setQuery] = useState("");
-  const [period, setPeriod] = useState("all");
+  const [filters, setFilters] = useState(emptyHistoryFilters);
   const [copyStatus, setCopyStatus] = useState("");
   const periods = [
-    ...new Map(events.map((event) => [event.node.period.id, event.periodTitle])).entries(),
+    ...new Map(
+      events
+        .filter((event) => filters.era === "all" || event.node.era.id === filters.era)
+        .map((event) => [event.node.period.id, event.periodTitle]),
+    ).entries(),
   ];
-  const needle = query.trim().toLocaleLowerCase();
-  const matches = events.filter(
-    (event) =>
-      (period === "all" || event.node.period.id === period) &&
-      [
-        event.title,
-        event.description,
-        event.periodTitle,
-        ...(event.node.event.regions ?? []),
-        ...event.node.event.categories,
-      ]
-        .join(" ")
-        .toLocaleLowerCase()
-        .includes(needle),
-  );
+  const eras = [...new Map(events.map((event) => [event.node.era.id, event.eraTitle])).entries()];
+  const civilizations = [
+    ...new Set(events.flatMap((event) => event.node.event.civilizations ?? [])),
+  ].sort();
+  const matches = filterHistory(events, filters);
+  const contemporaries = contemporaryEvents(events, activeEvent);
   const open = (next: typeof mode) => {
     setMode(next);
     setCopyStatus("");
@@ -112,14 +112,17 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
                 Search events
                 <input
                   type="search"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Try tools, rice, Kashmir…"
+                  value={filters.query}
+                  onChange={(event) => setFilters({ ...filters, query: event.target.value })}
+                  placeholder="Try Aryabhata, Patan, temple…"
                 />
               </label>
               <label>
                 Period
-                <select value={period} onChange={(event) => setPeriod(event.target.value)}>
+                <select
+                  value={filters.period}
+                  onChange={(event) => setFilters({ ...filters, period: event.target.value })}
+                >
                   <option value="all">All periods</option>
                   {periods.map(([id, title]) => (
                     <option key={id} value={id}>
@@ -128,7 +131,62 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
                   ))}
                 </select>
               </label>
+              <label>
+                Era
+                <select
+                  value={filters.era}
+                  onChange={(event) =>
+                    setFilters({ ...filters, era: event.target.value, period: "all" })
+                  }
+                >
+                  <option value="all">All eras</option>
+                  {eras.map(([id, title]) => (
+                    <option key={id} value={id}>
+                      {title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Civilization or community
+                <select
+                  value={filters.civilization}
+                  onChange={(event) => setFilters({ ...filters, civilization: event.target.value })}
+                >
+                  <option value="all">All communities</option>
+                  {civilizations.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Century · overlapping dates
+                <select
+                  value={filters.century}
+                  onChange={(event) => setFilters({ ...filters, century: event.target.value })}
+                >
+                  <option value="all">All dates, including prehistory</option>
+                  {centuryOptions.map(({ id, label }) => (
+                    <option key={id} value={id}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                className="journey-button history-reset"
+                type="button"
+                onClick={() => setFilters(emptyHistoryFilters)}
+              >
+                Reset all filters
+              </button>
             </div>
+            <p className="history-filter-hint">
+              Centuries cover 800 BCE–1800 CE and include overlapping topic ranges. Results stay in
+              chronological order; selecting a result returns to the full timeline.
+            </p>
             <p className="history-result-count" role="status">
               {matches.length} {matches.length === 1 ? "event" : "events"}
             </p>
@@ -155,8 +213,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
                     className="journey-button"
                     type="button"
                     onClick={() => {
-                      setQuery("");
-                      setPeriod("all");
+                      setFilters(emptyHistoryFilters);
                     }}
                   >
                     Clear filters
@@ -167,11 +224,15 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             <a
               className="history-reader-link"
               href={
-                activeEvent.node.era.id === "second-urbanization-empires"
-                  ? "#empires-reader"
-                  : activeEvent.node.era.id === "ancient-india-early-transitions"
-                    ? "#ancient-reader"
-                    : "#prehistory-reader"
+                activeEvent.node.era.id === "early-modern-india"
+                  ? "#early-modern-reader"
+                  : activeEvent.node.era.id === "classical-medieval-eras"
+                    ? "#classical-reader"
+                    : activeEvent.node.era.id === "second-urbanization-empires"
+                      ? "#empires-reader"
+                      : activeEvent.node.era.id === "ancient-india-early-transitions"
+                        ? "#ancient-reader"
+                        : "#prehistory-reader"
               }
               onClick={() => dialogRef.current?.close()}
             >
@@ -190,6 +251,18 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             )}
             {record.significance && <p>{record.significance}</p>}
             <p className="exhibit-location">{record.regions?.join(" · ")}</p>
+            {record.civilizations?.length ? (
+              <p>
+                <strong>Community: </strong>
+                {record.civilizations.join(" · ")}
+              </p>
+            ) : null}
+            {record.people.length ? (
+              <p>
+                <strong>People: </strong>
+                {record.people.join(" · ")}
+              </p>
+            ) : null}
             {record.interpretationNotes?.map((note, index) => (
               <aside className="history-evidence-note" key={index}>
                 <strong>Evidence & interpretation</strong>
@@ -261,6 +334,28 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             <button type="button" className="journey-button" onClick={copyLink}>
               Copy event link
             </button>
+            {contemporaries.length > 0 && (
+              <section className="history-contemporaries">
+                <h3>Also within these dates</h3>
+                <p>
+                  Overlapping topic windows, sometimes in distant regions. Comparison alone does not
+                  establish contact or influence.
+                </p>
+                <div className="history-related">
+                  {contemporaries.map((event) => (
+                    <button
+                      className="journey-button"
+                      type="button"
+                      key={event.id}
+                      onClick={() => visit(event.id)}
+                    >
+                      {event.title}
+                      <small>{event.dateLabel}</small>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
             <p role="status" className="history-copy-status">
               {copyStatus}
             </p>

@@ -13,7 +13,12 @@ const first = (eras) => eras[0].periods[1].events[0];
 
 test("canonical data compiles and navigation round-trips through the resolver", () => {
   const model = compileHistory(fixture(), scenePresentations);
-  assert.equal(model.events.length, 56);
+  assert.equal(
+    model.events.length,
+    56 +
+      require("../src/data/timeline/classical/events.ts").classicalEvents.length +
+      require("../src/data/timeline/early-modern/events.ts").earlyModernEvents.length,
+  );
   model.events.forEach((event, index) => {
     assert.equal(
       resolveTimelinePoint(model.points, getTimelineProgressForIndex(index, model.points)).item.id,
@@ -236,8 +241,8 @@ test("empire chapter preserves anchors, dated evidence and a navigable endpoint"
   assert.ok(events.some((e) => e.id === "mahajanapadas"));
   assert.ok(events.some((e) => e.id === "mauryan-empire"));
   const model = compileHistory(fixture(), scenePresentations);
-  assert.equal(model.events.at(-1).id, "mauryan-successors");
-  assert.equal(model.points.at(-1).date.year, 185);
+  assert.equal(events.at(-1).id, "mauryan-successors");
+  assert.equal(model.points.find((point) => point.id === "mauryan-successors").date.year, 185);
   for (const event of events) {
     assert.equal(event.contentStatus, "researched");
     assert.ok(event.dateScope && event.sources.length && event.citations.length);

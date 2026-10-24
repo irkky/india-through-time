@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import type { TimelineNavigationEra } from "@/types/timeline";
 
 interface TimelineProps {
@@ -8,6 +11,23 @@ interface TimelineProps {
 }
 
 export function Timeline({ navigation, activeEraId, progressRef, onNavigate }: TimelineProps) {
+  const eraNavigationRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const revealActiveEra = () => {
+      const container = eraNavigationRef.current;
+      const active = container?.querySelector<HTMLElement>('[aria-current="true"]');
+      if (!container || !active) return;
+      const bounds = container.getBoundingClientRect();
+      const target = active.getBoundingClientRect();
+      if (target.left < bounds.left || target.right > bounds.right) {
+        // Change only this horizontal scroller; scrollIntoView would move the story itself.
+        container.scrollLeft += target.left - bounds.left - (bounds.width - target.width) / 2;
+      }
+    };
+    revealActiveEra();
+    window.addEventListener("resize", revealActiveEra);
+    return () => window.removeEventListener("resize", revealActiveEra);
+  }, [activeEraId]);
   return (
     <div className="timeline-overview">
       <div
@@ -21,7 +41,11 @@ export function Timeline({ navigation, activeEraId, progressRef, onNavigate }: T
         <div ref={progressRef} className="timeline-overall-progress" />
       </div>
 
-      <div className="era-navigation" aria-label="Navigate by historical era">
+      <div
+        ref={eraNavigationRef}
+        className="era-navigation"
+        aria-label="Navigate by historical era"
+      >
         {navigation.map((era) => {
           const disabled = era.firstEventIndex === null;
 
@@ -34,7 +58,7 @@ export function Timeline({ navigation, activeEraId, progressRef, onNavigate }: T
               data-timeline-index={era.firstEventIndex ?? undefined}
               data-navigation-kind="era"
               aria-current={era.id === activeEraId ? "true" : undefined}
-              title={disabled ? `${era.title} has no prototype events yet` : era.title}
+              title={disabled ? `${era.title} is planned for a later chapter` : era.title}
               onClick={() => {
                 if (era.firstEventIndex !== null) onNavigate(era.firstEventIndex);
               }}

@@ -6,6 +6,8 @@ import { PrehistoryReader } from "@/components/historical-events/prehistory-read
 import { prehistoricIndiaEra } from "@/data/timeline/prehistoric-india";
 import { ancientIndiaEra, ancientGaps } from "@/data/timeline/ancient-india";
 import { secondUrbanizationEra, empireGaps } from "@/data/timeline/second-urbanization";
+import { classicalMedievalEra, classicalGaps } from "@/data/timeline/classical-medieval";
+import { earlyModernIndiaEra, earlyModernGaps } from "@/data/timeline/early-modern-india";
 
 export default function Home() {
   const model = compileHistory(indianHistoryTimeline, scenePresentations);
@@ -14,6 +16,8 @@ export default function Home() {
       <PrehistoryReader era={prehistoricIndiaEra} />
       <PrehistoryReader era={ancientIndiaEra} id="ancient-reader" gaps={ancientGaps} />
       <PrehistoryReader era={secondUrbanizationEra} id="empires-reader" gaps={empireGaps} />
+      <PrehistoryReader era={classicalMedievalEra} id="classical-reader" gaps={classicalGaps} />
+      <PrehistoryReader era={earlyModernIndiaEra} id="early-modern-reader" gaps={earlyModernGaps} />
     </TimelineExperience>
   );
 }

@@ -78,7 +78,7 @@ export function validateHistory(eras: readonly HistoricalEra[]): readonly Conten
           }
         }
         for (const need of event.imageNeeds ?? []) {
-          if (!/^[A-Z_]+$/.test(need.tag) || !need.instruction.trim())
+          if (!/^[A-Z][A-Z0-9_]*$/.test(need.tag) || !need.instruction.trim())
             report(eventPath, "Image spaces need an uppercase tag and instructions.");
         }
         for (const note of event.interpretationNotes ?? []) {

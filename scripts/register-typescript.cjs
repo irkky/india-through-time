@@ -15,7 +15,12 @@ Module._resolveFilename = function (request, ...args) {
 require.extensions[".ts"] = function (module, filename) {
   const result = ts.transpileModule(fs.readFileSync(filename, "utf8"), {
     fileName: filename,
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+    compilerOptions: {
+      module: ts.ModuleKind.CommonJS,
+      target: ts.ScriptTarget.ES2022,
+      esModuleInterop: true,
+      resolveJsonModule: true,
+    },
   });
   module._compile(result.outputText, filename);
 };

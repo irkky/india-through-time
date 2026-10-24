@@ -33,11 +33,27 @@ export function PrehistoryReader({
         </h2>
         <p className="mt-5 leading-7">
           Explore the records and their sources by period. The cinematic timeline sorts events by
-          their starting dates; regional traditions overlap. Dates are approximate and refer to the
-          specific evidence described. Regional overview ranges are distinguished from site and
-          phase dates. This is an expandable overview, not an exhaustive catalogue of Indian
-          history.
+          their starting dates; regional traditions overlap. Approximate dates are marked and refer
+          to the specific evidence described. Scroll distance reflects reading time, not a linear
+          year scale. This is an expandable overview, not an exhaustive catalogue.
         </p>
+        {id === "classical-reader" && (
+          <p className="mt-4 leading-7">
+            This chapter follows Indian history from c. 200 BCE to 1500 CE. Regional phases are
+            navigation conventions, not uniform changes across the subcontinent. Ranges remain
+            visible when a topic continues into another phase; there is no year zero between BCE and
+            CE.
+          </p>
+        )}
+        {id === "early-modern-reader" && (
+          <p className="mt-4 leading-7">
+            This chapter uses 1498–1765 as a working range. It follows the Indian subcontinent’s
+            regional histories, including places now outside India’s borders. European powers appear
+            through their actions in India. Long topic windows overlap; 1765 marks a transition in
+            Company revenue authority, not the disappearance of Mughal or regional institutions.
+            Later commemorative images are dated separately from the events they depict.
+          </p>
+        )}
         <nav aria-label={`${era.title} reading sections`} className="my-8 flex flex-wrap gap-3">
           {era.periods.map((period) => (
             <a

@@ -107,6 +107,7 @@ export interface HistoricalEvent {
   }[];
   readonly imageNeeds?: readonly { readonly tag: string; readonly instruction: string }[];
   readonly categories: readonly string[];
+  readonly civilizations?: readonly string[];
   readonly regions?: readonly string[];
   readonly locations?: readonly HistoricalLocation[];
   readonly archaeologicalSites?: readonly ArchaeologicalSite[];

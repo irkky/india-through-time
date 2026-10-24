@@ -5,6 +5,12 @@ const os = require("node:os");
 const path = require("node:path");
 const assert = require("node:assert/strict");
 const { setTimeout: delay } = require("node:timers/promises");
+require("./register-typescript.cjs");
+const { classicalEvents } = require("../src/data/timeline/classical/events.ts");
+const { classicalGalleries } = require("../src/data/scenes/classical-galleries.ts");
+const { earlyModernEvents } = require("../src/data/timeline/early-modern/events.ts");
+const { earlyModernGalleries } = require("../src/data/scenes/early-modern-galleries.ts");
+const totalEvents = 56 + classicalEvents.length + earlyModernEvents.length;
 
 async function main() {
   const base = process.argv[2] || "http://localhost:3000";
@@ -125,7 +131,7 @@ async function main() {
     await send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
     });
-    for (const width of [1440, 390]) {
+    for (const width of [1440, 768, 390]) {
       await send("Emulation.setDeviceMetricsOverride", {
         width,
         height: 900,
@@ -369,6 +375,110 @@ async function main() {
         )
           await screenshot(`empire-${eventId}-${width}`);
       }
+      for (const record of [...classicalEvents, ...earlyModernEvents]) {
+        await navigate(record.id);
+        for (let step = 1; step <= 3; step++) {
+          await click(`.visual-scene[aria-hidden="false"] .exhibit-point:nth-child(${step})`);
+          assert.ok(
+            await evaluate(
+              `(()=>{const e=${active}.querySelector('.story-exhibit');return e.scrollHeight<=e.clientHeight+2 && e.scrollWidth<=e.clientWidth+2})()`,
+            ),
+            `${record.id} stage ${step} fits at ${width}`,
+          );
+          if (step === 2 && (classicalGalleries[record.id] || earlyModernGalleries[record.id])) {
+            await waitFor(
+              `(()=>{const i=${active}.querySelector('.exhibit-drawing img');return i?.complete && i.naturalWidth>0})()`,
+            );
+            await screenshot(`classical-photo-${record.id}-${width}`);
+          } else if (step === 2) {
+            assert.ok(
+              await evaluate(
+                `${active}.querySelector('.image-space-compact .content-need-tag')?.textContent.startsWith('IMAGE_PLACEHOLDER_')`,
+              ),
+            );
+          }
+        }
+        await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+        await waitFor("!!document.querySelector('.exhibit-dialog[open] .event-details')");
+        assert.equal(
+          await evaluate(
+            "document.querySelectorAll('.exhibit-dialog[open] .event-details section').length",
+          ),
+          record.details.length,
+        );
+        assert.ok(
+          await evaluate(
+            "document.querySelectorAll('.exhibit-dialog[open] .history-source-list a').length > 0",
+          ),
+        );
+        await click(".exhibit-dialog[open] .history-dialog-header button");
+      }
+      await navigate("brahmagupta-628");
+      assert.ok(
+        await evaluate(
+          `(()=>{const c=document.querySelector('.era-navigation');const a=c.querySelector('[aria-current=true]');const cr=c.getBoundingClientRect(),ar=a.getBoundingClientRect();return ar.left>=cr.left-1 && ar.right<=cr.right+1;})()`,
+        ),
+        "Active era is fully visible without moving the story",
+      );
+      await click(".journey-toolbar > .journey-button:not(.journey-button-accent)");
+      await click(".history-reset");
+      const selectFilter = async (label, value) => {
+        await evaluate(
+          `(()=>{const label=[...document.querySelectorAll('.history-search-controls label')].find(e=>e.textContent.trim().startsWith(${JSON.stringify(label)}));const s=label.querySelector('select');s.value=${JSON.stringify(value)};s.dispatchEvent(new Event('change',{bubbles:true}));})()`,
+        );
+      };
+      await selectFilter("Era", "classical-medieval-eras");
+      await waitFor(
+        `document.querySelectorAll('.history-event-result').length === ${classicalEvents.length}`,
+      );
+      await selectFilter("Civilization", "Gupta");
+      await selectFilter("Century", "CE-4");
+      await waitFor("document.querySelectorAll('.history-event-result').length === 1");
+      await screenshot(`classical-filters-${width}`);
+      await selectFilter("Century", "CE-15");
+      await waitFor("document.querySelectorAll('.history-event-result').length === 0");
+      await click(".history-reset");
+      await evaluate(
+        "(()=>{const input=document.querySelector('input[type=search]');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'Brahmagupta');input.dispatchEvent(new Event('input',{bubbles:true}));})()",
+      );
+      await waitFor("document.querySelectorAll('.history-event-result').length === 1");
+      await click(".history-event-result");
+      await waitFor(`${active}?.dataset.timelinePointId === 'brahmagupta-628'`);
+      await click(".journey-button-accent");
+      assert.ok(
+        await evaluate("document.querySelectorAll('.history-contemporaries button').length > 0"),
+      );
+      const contemporaryTitle = await evaluate(
+        "document.querySelector('.history-contemporaries button').childNodes[0].textContent",
+      );
+      await click(".history-contemporaries button");
+      await waitFor(
+        `${active}?.querySelector('h2').textContent === ${JSON.stringify(contemporaryTitle)}`,
+      );
+      assert.equal(await evaluate("document.documentElement.scrollWidth > innerWidth"), false);
+      await navigate("diwani-1765");
+      assert.ok(
+        await evaluate(
+          `(()=>{const c=document.querySelector('.era-navigation');const a=c.querySelector('[aria-current=true]');const cr=c.getBoundingClientRect(),ar=a.getBoundingClientRect();return ar.left>=cr.left-1 && ar.right<=cr.right+1;})()`,
+        ),
+        "Early modern era remains visible",
+      );
+      await click(".journey-toolbar > .journey-button:not(.journey-button-accent)");
+      await click(".history-reset");
+      await selectFilter("Era", "early-modern-india");
+      await waitFor(
+        `document.querySelectorAll('.history-event-result').length === ${earlyModernEvents.length}`,
+      );
+      assert.equal(
+        await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
+        "#early-modern-reader",
+      );
+      await selectFilter("Century", "CE-18");
+      await selectFilter("Civilization", "Travancore");
+      await waitFor("document.querySelectorAll('.history-event-result').length === 1");
+      await screenshot(`early-modern-filters-${width}`);
+      await click(".history-event-result");
+      await waitFor(`${active}?.dataset.timelinePointId === 'colachel-1741'`);
       await navigate("indus-seals-writing");
       await click('.visual-scene[aria-hidden="false"] .exhibit-point:nth-child(2)');
       await waitFor(
@@ -386,6 +496,7 @@ async function main() {
         ),
       );
       await click(".history-dialog:not(.exhibit-dialog) .history-dialog-header button");
+      console.log(`Verified ${totalEvents} exhibits and chapter filters at ${width}px.`);
     }
     await send("Page.navigate", { url: `${base}/#event=inamgaon-settlement` });
     await waitFor(`${active}?.dataset.timelinePointId === 'inamgaon-settlement'`);
@@ -459,6 +570,15 @@ async function main() {
       ["early-punchmarked-money", "alexander-taxila"],
       ["kalinga-war", "ashoka-dhamma"],
       ["ashoka-lumbini", "mauryan-successors"],
+      ["indo-greek-india", "kushan-connections"],
+      ["aryabhata-499", "tamil-devotion"],
+      ["ibn-battuta-india", "vijayanagara-city"],
+      ["vijayanagara-city", "calicut-1498"],
+      ["humayun-restoration", "akbar-consolidation"],
+      ["adi-granth-1604", "jahangir-court"],
+      ["mughal-succession-war", "aurangzeb-reign"],
+      ["chand-bibi-memory", "regional-successor-states"],
+      ["buxar-1764", "diwani-1765"],
     ]) {
       await navigate(pair[0]);
       await delay(1200);
@@ -484,20 +604,38 @@ async function main() {
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
     await send("Page.reload");
-    await waitFor("document.querySelectorAll('.story-exhibit').length === 56");
+    await waitFor(`document.querySelectorAll('.story-exhibit').length === ${totalEvents}`);
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
     await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
     await waitFor("document.querySelectorAll('#empires-reader details').length === 17");
     await delay(1200);
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
-    assert.equal(await evaluate("document.querySelectorAll('.visual-scene').length"), 56);
+    assert.equal(await evaluate("document.querySelectorAll('.visual-scene').length"), totalEvents);
     assert.deepEqual(errors, []);
     await send("Emulation.setScriptExecutionDisabled", { value: true });
     await send("Page.reload");
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
     await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
     await waitFor("document.querySelectorAll('#empires-reader details').length === 17");
+    await waitFor(
+      `document.querySelectorAll('#classical-reader details').length === ${classicalEvents.length}`,
+    );
+    assert.equal(
+      await evaluate(
+        "document.querySelectorAll('#classical-reader .event-details section').length",
+      ),
+      classicalEvents.length * 2,
+    );
+    await waitFor(
+      `document.querySelectorAll('#early-modern-reader details').length === ${earlyModernEvents.length}`,
+    );
+    assert.equal(
+      await evaluate(
+        "document.querySelectorAll('#early-modern-reader .event-details section').length",
+      ),
+      earlyModernEvents.length * 3,
+    );
     assert.equal(
       await evaluate("document.querySelectorAll('#empires-reader .event-details section').length"),
       34,
@@ -509,7 +647,7 @@ async function main() {
       17,
     );
     console.log(
-      "PASS: all 56 exhibits on desktop/mobile; 19 gallery images; evidence tags; search; sources; keyboard focus; navigation; shared links; chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all three readers without JavaScript.",
+      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 26 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all five readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {

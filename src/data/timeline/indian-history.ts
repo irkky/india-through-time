@@ -1,4 +1,6 @@
 import { secondUrbanizationEra } from "./second-urbanization";
+import { classicalMedievalEra } from "./classical-medieval";
+import { earlyModernIndiaEra } from "./early-modern-india";
 import { prehistoricIndiaEra } from "./prehistoric-india";
 import { ancientIndiaEra } from "./ancient-india";
 import type { HistoricalEra } from "@/types/history";
@@ -7,18 +9,8 @@ export const indianHistoryTimeline = [
   prehistoricIndiaEra,
   ancientIndiaEra,
   secondUrbanizationEra,
-  {
-    id: "classical-medieval-eras",
-    title: "Classical & Medieval Eras",
-    order: 4,
-    periods: [],
-  },
-  {
-    id: "early-modern-india",
-    title: "Early Modern India",
-    order: 5,
-    periods: [],
-  },
+  classicalMedievalEra,
+  earlyModernIndiaEra,
   {
     id: "colonial-era-british-rule",
     title: "Colonial Era & British Rule",

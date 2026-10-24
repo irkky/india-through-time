@@ -5,7 +5,8 @@ eventual experience will combine a changing historical timeline with responsive 
 illustrations, and visual scenes.
 
 This repository contains 24 sourced Prehistoric India records, 15 researched Ancient India &
-Early Transitions records, and 17 Second Urbanization & Empires records, with interactive scenes
+Early Transitions records, 17 Second Urbanization & Empires records, 22 Classical & Medieval
+Indian-history records, and 54 Early Modern India records, with interactive scenes
 and readable evidence sections. Regional overlaps and uncertainty notes are explicit; these are expandable
 overviews, not an exhaustive historical narrative. There is no database, authentication, CMS, or
 external storage. See [the ancient chapter guide](docs/ancient-india-content.md) for sources,
@@ -14,8 +15,23 @@ image credits and tagged additions.
 The [Second Urbanization & Empires guide](docs/second-urbanization-content.md) covers the new
 chapter, its seven credited photographs and visual examples, chronology and exactly where to add further evidence.
 
+The [Classical & Medieval research guide](docs/classical-medieval-content.md) explains the Indian-history
+scope, regional chronology, sources and two public-domain museum photographs. The
+[event and image inventory](docs/classical-medieval-inventory.md) lists every new record and its
+remaining image or map brief. Explore chapter now supports era, period, civilization/community and
+century filters, people/place/detail search, and links to overlapping historical windows.
+
+`scripts/fetch-classical-media.cjs` is an optional manual maintenance script that downloads the two
+selected Met Open Access images and records their provenance. It never runs during normal website use.
+
 Start with [the Prehistoric India content guide](docs/prehistoric-content.md) for the chronology,
 editable files, sources, missing-research slots and asset checklist.
+
+The [Early Modern India guide](docs/early-modern-india-content.md) covers 1498–1765 in five phases,
+with 162 evidence sections and five public-domain museum images. The
+[Early Modern inventory](docs/early-modern-inventory.md) lists every entry, source and remaining
+image/map/research request. `scripts/fetch-early-modern-media.cjs` is an optional manual downloader;
+it never runs during normal website use. The timeline now contains 132 records across five populated chapters.
 
 ## Recovering a stale development page
 
@@ -65,7 +81,7 @@ The remaining progress:
 
 - animates a full-year journey counter between event start dates; event cards retain their published ranges;
 - moves the timeline rail indicator;
-- selects the active record across all three researched chapters;
+- selects the active record across all five researched chapters;
 - scrubs GSAP crossfades between event copy and abstract SVG scenes.
 
 With reduced motion enabled, the same scroll positions switch states directly without scrubbed
