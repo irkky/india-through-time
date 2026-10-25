@@ -1,12 +1,21 @@
 # History of India
 
+The [Independence Movement guide](docs/independence-movement-content.md) adds 29 entries,
+87 evidence sections and two credited public-domain photographs. Its [media inventory](docs/independence-inventory.md)
+lists the 27 remaining image slots and the research tags, with instructions for supplying each item.
+
+The [Colonial Era guide](docs/colonial-india-content.md) adds 36 entries across five phases through 1947,
+with two credited archival photographs and [tagged image/research briefs](docs/colonial-inventory.md).
+The project now has 197 events and seven populated chapters. The optional
+`scripts/fetch-colonial-media.cjs` downloads only the two selected public-domain images; it never runs during website use.
+
 An original, interactive website for exploring Indian history by scrolling through time. The
 eventual experience will combine a changing historical timeline with responsive text, maps,
 illustrations, and visual scenes.
 
 This repository contains 24 sourced Prehistoric India records, 15 researched Ancient India &
 Early Transitions records, 17 Second Urbanization & Empires records, 22 Classical & Medieval
-Indian-history records, and 54 Early Modern India records, with interactive scenes
+Indian-history records, 54 Early Modern India records, 36 Colonial Era records, and 29 Independence Movement records, with interactive scenes
 and readable evidence sections. Regional overlaps and uncertainty notes are explicit; these are expandable
 overviews, not an exhaustive historical narrative. There is no database, authentication, CMS, or
 external storage. See [the ancient chapter guide](docs/ancient-india-content.md) for sources,
@@ -31,7 +40,7 @@ The [Early Modern India guide](docs/early-modern-india-content.md) covers 1498â€
 with 162 evidence sections and five public-domain museum images. The
 [Early Modern inventory](docs/early-modern-inventory.md) lists every entry, source and remaining
 image/map/research request. `scripts/fetch-early-modern-media.cjs` is an optional manual downloader;
-it never runs during normal website use. The timeline now contains 132 records across five populated chapters.
+it never runs during normal website use. The timeline now contains 197 records across seven populated chapters.
 
 ## Recovering a stale development page
 
@@ -81,7 +90,7 @@ The remaining progress:
 
 - animates a full-year journey counter between event start dates; event cards retain their published ranges;
 - moves the timeline rail indicator;
-- selects the active record across all five researched chapters;
+- selects the active record across all six researched chapters;
 - scrubs GSAP crossfades between event copy and abstract SVG scenes.
 
 With reduced motion enabled, the same scroll positions switch states directly without scrubbed

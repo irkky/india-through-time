@@ -24,7 +24,7 @@ test("early modern chapter preserves chronology, regional overlaps and the Compa
   assert.equal(earlyModernIndiaEra.periods.length, 5);
   assert.ok(earlyModernIndiaEra.periods.every((p) => p.events.length));
   assert.equal(earlyModernEvents[0].id, "calicut-1498");
-  assert.equal(model.events.at(-1).id, "diwani-1765");
+  assert.equal(earlyModernEvents.at(-1).id, "diwani-1765");
   for (const [id, year] of Object.entries({
     "panipat-1526": 1526,
     "panipat-1556": 1556,

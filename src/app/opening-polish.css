@@ -1,0 +1,228 @@
+/* Optional opening treatment. Remove its layout.tsx import to restore the original.
+   The scene markup, scroll transforms and animation timings remain untouched. */
+.opening-cinematic {
+  background: #080c0c;
+  color: #f8edda;
+}
+
+.opening-cinematic::after {
+  position: absolute;
+  z-index: 3;
+  inset: clamp(12px, 2vw, 28px);
+  border: 1px solid #d7b77a1c;
+  border-radius: 2px;
+  pointer-events: none;
+  content: "";
+  mask-image: linear-gradient(135deg, #000, transparent 27%, transparent 73%, #000);
+}
+
+.opening-cinematic .opening-atmosphere {
+  background:
+    radial-gradient(ellipse at 50% 45%, #b8925329, transparent 52%),
+    radial-gradient(ellipse at 16% 80%, #306b6838, transparent 55%),
+    radial-gradient(ellipse at 86% 18%, #9e623124, transparent 45%),
+    linear-gradient(160deg, #101714, #071213 65%, #161510);
+}
+
+.opening-cinematic .opening-glow--one {
+  background: radial-gradient(ellipse, #d8b67726, transparent 68%);
+}
+
+.opening-cinematic .opening-glow--two {
+  background: radial-gradient(ellipse, #518d842b, transparent 68%);
+}
+
+.opening-cinematic .opening-grain {
+  opacity: 0.24;
+}
+
+.opening-cinematic .opening-vignette {
+  box-shadow: inset 0 0 14vw 2vw #0009;
+}
+
+.opening-cinematic .opening-start-map {
+  opacity: 0.78;
+  filter: sepia(0.16) saturate(0.76) brightness(1.12) contrast(1.08) drop-shadow(0 0 3rem #cb9d4a24)
+    drop-shadow(0 2rem 3rem #0009);
+}
+
+.opening-start-map::before,
+.opening-start-map::after {
+  position: absolute;
+  z-index: -1;
+  inset: -8%;
+  border: 1px solid #d6b78026;
+  border-radius: 50%;
+  pointer-events: none;
+  content: "";
+}
+
+.opening-start-map::after {
+  inset: -13%;
+  border-style: dashed;
+  border-color: #d6b78018;
+}
+
+.opening-cinematic .opening-start-cue {
+  color: #e0cba7;
+  gap: 0.65rem;
+}
+
+.opening-cinematic .opening-start-cue p {
+  font-size: clamp(0.62rem, 0.9vw, 0.78rem);
+  letter-spacing: 0.3em;
+  text-shadow: 0 2px 12px #000;
+}
+
+.opening-start-cue::before {
+  width: 1px;
+  height: clamp(1.5rem, 4vh, 2.75rem);
+  margin-bottom: 0.6rem;
+  background: linear-gradient(transparent, #d2ac69aa);
+  content: "";
+}
+
+.opening-cinematic .opening-copy {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-weight: 400;
+  text-shadow:
+    0 3px 24px #0009,
+    0 0 70px #d6ab6a18;
+}
+
+.opening-cinematic .opening-copy--title {
+  letter-spacing: 0.19em;
+  text-indent: 0.19em;
+  color: #f5e6cb;
+  text-shadow:
+    0 2px 1px #fff2,
+    0 0 60px #e5bf7d30,
+    0 18px 50px #0009;
+}
+
+.opening-cinematic .opening-copy--statement {
+  line-height: 1.12;
+  letter-spacing: 0.035em;
+}
+
+.opening-cinematic .opening-copy--date {
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.opening-cinematic .opening-copy--emphasis {
+  font-style: italic;
+  line-height: 1.08;
+}
+
+.opening-cinematic .opening-copy--chapter {
+  line-height: 1.03;
+  letter-spacing: 0.025em;
+}
+
+.opening-cinematic .opening-eyebrow {
+  color: #d9b77d;
+  letter-spacing: 0.33em;
+}
+
+.opening-cinematic .opening-subtitle {
+  color: #e3dccb;
+  text-shadow: 0 2px 14px #000;
+}
+
+.opening-cinematic .opening-copy--title + .opening-subtitle {
+  color: #dfcbaa;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: clamp(1rem, 1.7vw, 1.5rem);
+  letter-spacing: 0.12em;
+}
+
+.opening-cinematic .opening-india-tricolour {
+  opacity: 0.22;
+  filter: saturate(0.6) brightness(0.9) blur(2px);
+}
+
+.opening-cinematic .opening-time-depth {
+  opacity: 0.65;
+}
+
+.opening-cinematic .opening-time-rings {
+  stroke: #d4b17b66;
+  stroke-dasharray: 1 10;
+}
+
+.opening-cinematic .opening-time-rings ellipse:nth-child(2) {
+  stroke-dasharray: none;
+  stroke-width: 0.6;
+}
+
+.opening-cinematic .opening-atmosphere-mark {
+  border-color: #d6b78030;
+  background: radial-gradient(circle, #c6a46c09, transparent 70%);
+  box-shadow:
+    0 0 0 4vw #d7b27804,
+    0 0 0 8vw #d7b27803,
+    0 0 7vw #cba36714;
+}
+
+.opening-cinematic .opening-landform {
+  color: #c5b58d;
+}
+
+.opening-cinematic .opening-instruction,
+.opening-cinematic .opening-progress {
+  color: #d1bd98;
+}
+
+.opening-cinematic .opening-progress-value {
+  background: linear-gradient(#f5dfb4, #b68b49);
+}
+
+.opening-cinematic .journey-start-button {
+  border-color: #d8b77955;
+  background: #101917dc;
+  color: #f0dfc1;
+  box-shadow:
+    inset 0 1px #f5dfb40d,
+    0 4px 20px #0003;
+  letter-spacing: 0.04em;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.opening-cinematic .journey-start-button:hover {
+  border-color: #e0bc7d;
+  background: #2a3026;
+}
+
+@media (max-width: 639px) {
+  .opening-cinematic .opening-copy--title {
+    letter-spacing: 0.1em;
+    text-indent: 0.1em;
+  }
+
+  .opening-cinematic .opening-start-map {
+    width: min(76vw, 32rem);
+    opacity: 0.8;
+  }
+
+  .opening-cinematic .opening-copy--chapter {
+    font-size: clamp(2.35rem, 11vw, 4.6rem);
+  }
+
+  .opening-cinematic .opening-start-cue {
+    bottom: max(3.25rem, 8vh);
+  }
+
+  .opening-cinematic .opening-progress {
+    right: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-cinematic .journey-start-button {
+    transition: none;
+  }
+}

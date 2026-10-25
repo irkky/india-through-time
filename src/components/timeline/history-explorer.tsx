@@ -34,6 +34,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
     ...new Set(events.flatMap((event) => event.node.event.civilizations ?? [])),
   ].sort();
   const matches = filterHistory(events, filters);
+  const readerEra = filters.era === "all" ? activeEvent.node.era.id : filters.era;
   const contemporaries = contemporaryEvents(events, activeEvent);
   const open = (next: typeof mode) => {
     setMode(next);
@@ -184,7 +185,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
               </button>
             </div>
             <p className="history-filter-hint">
-              Centuries cover 800 BCE–1800 CE and include overlapping topic ranges. Results stay in
+              Centuries cover 800 BCE–2000 CE and include overlapping topic ranges. Results stay in
               chronological order; selecting a result returns to the full timeline.
             </p>
             <p className="history-result-count" role="status">
@@ -224,15 +225,19 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             <a
               className="history-reader-link"
               href={
-                activeEvent.node.era.id === "early-modern-india"
-                  ? "#early-modern-reader"
-                  : activeEvent.node.era.id === "classical-medieval-eras"
-                    ? "#classical-reader"
-                    : activeEvent.node.era.id === "second-urbanization-empires"
-                      ? "#empires-reader"
-                      : activeEvent.node.era.id === "ancient-india-early-transitions"
-                        ? "#ancient-reader"
-                        : "#prehistory-reader"
+                readerEra === "indian-independence-movement"
+                  ? "#independence-reader"
+                  : readerEra === "colonial-era-british-rule"
+                    ? "#colonial-reader"
+                    : readerEra === "early-modern-india"
+                      ? "#early-modern-reader"
+                      : readerEra === "classical-medieval-eras"
+                        ? "#classical-reader"
+                        : readerEra === "second-urbanization-empires"
+                          ? "#empires-reader"
+                          : readerEra === "ancient-india-early-transitions"
+                            ? "#ancient-reader"
+                            : "#prehistory-reader"
               }
               onClick={() => dialogRef.current?.close()}
             >

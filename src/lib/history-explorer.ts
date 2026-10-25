@@ -20,7 +20,7 @@ export const centuryOptions = [
     id: `BCE-${8 - i}`,
     label: `${(8 - i) * 100}–${(7 - i) * 100 + 1} BCE`,
   })),
-  ...Array.from({ length: 18 }, (_, i) => ({
+  ...Array.from({ length: 20 }, (_, i) => ({
     id: `CE-${i + 1}`,
     label: `${i * 100 + 1}–${(i + 1) * 100} CE`,
   })),

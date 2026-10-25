@@ -17,7 +17,9 @@ test("canonical data compiles and navigation round-trips through the resolver", 
     model.events.length,
     56 +
       require("../src/data/timeline/classical/events.ts").classicalEvents.length +
-      require("../src/data/timeline/early-modern/events.ts").earlyModernEvents.length,
+      require("../src/data/timeline/early-modern/events.ts").earlyModernEvents.length +
+      require("../src/data/timeline/colonial/events.ts").colonialEvents.length +
+      require("../src/data/timeline/independence/events.ts").independenceEvents.length,
   );
   model.events.forEach((event, index) => {
     assert.equal(

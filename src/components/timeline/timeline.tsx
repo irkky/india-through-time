@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import type { TimelineNavigationEra } from "@/types/timeline";
 
 interface TimelineProps {
@@ -12,7 +12,7 @@ interface TimelineProps {
 
 export function Timeline({ navigation, activeEraId, progressRef, onNavigate }: TimelineProps) {
   const eraNavigationRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const revealActiveEra = () => {
       const container = eraNavigationRef.current;
       const active = container?.querySelector<HTMLElement>('[aria-current="true"]');

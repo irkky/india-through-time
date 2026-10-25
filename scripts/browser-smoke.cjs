@@ -10,7 +10,16 @@ const { classicalEvents } = require("../src/data/timeline/classical/events.ts");
 const { classicalGalleries } = require("../src/data/scenes/classical-galleries.ts");
 const { earlyModernEvents } = require("../src/data/timeline/early-modern/events.ts");
 const { earlyModernGalleries } = require("../src/data/scenes/early-modern-galleries.ts");
-const totalEvents = 56 + classicalEvents.length + earlyModernEvents.length;
+const { colonialEvents } = require("../src/data/timeline/colonial/events.ts");
+const { colonialGalleries } = require("../src/data/scenes/colonial-galleries.ts");
+const { independenceEvents } = require("../src/data/timeline/independence/events.ts");
+const { independenceGalleries } = require("../src/data/scenes/independence-galleries.ts");
+const totalEvents =
+  56 +
+  classicalEvents.length +
+  earlyModernEvents.length +
+  colonialEvents.length +
+  independenceEvents.length;
 
 async function main() {
   const base = process.argv[2] || "http://localhost:3000";
@@ -375,7 +384,12 @@ async function main() {
         )
           await screenshot(`empire-${eventId}-${width}`);
       }
-      for (const record of [...classicalEvents, ...earlyModernEvents]) {
+      for (const record of [
+        ...classicalEvents,
+        ...earlyModernEvents,
+        ...colonialEvents,
+        ...independenceEvents,
+      ]) {
         await navigate(record.id);
         for (let step = 1; step <= 3; step++) {
           await click(`.visual-scene[aria-hidden="false"] .exhibit-point:nth-child(${step})`);
@@ -385,7 +399,13 @@ async function main() {
             ),
             `${record.id} stage ${step} fits at ${width}`,
           );
-          if (step === 2 && (classicalGalleries[record.id] || earlyModernGalleries[record.id])) {
+          if (
+            step === 2 &&
+            (classicalGalleries[record.id] ||
+              earlyModernGalleries[record.id] ||
+              colonialGalleries[record.id] ||
+              independenceGalleries[record.id])
+          ) {
             await waitFor(
               `(()=>{const i=${active}.querySelector('.exhibit-drawing img');return i?.complete && i.naturalWidth>0})()`,
             );
@@ -479,6 +499,64 @@ async function main() {
       await screenshot(`early-modern-filters-${width}`);
       await click(".history-event-result");
       await waitFor(`${active}?.dataset.timelinePointId === 'colachel-1741'`);
+      await navigate("colonial-crown-1858");
+      await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+      await waitFor("!!document.querySelector('.exhibit-dialog[open]')");
+      assert.equal(
+        await evaluate(
+          "document.querySelectorAll('.exhibit-dialog[open] .gallery-choices button').length",
+        ),
+        2,
+      );
+      for (let photo = 1; photo <= 2; photo++) {
+        await click(`.exhibit-dialog[open] .gallery-choices button:nth-child(${photo})`);
+        await evaluate(
+          "document.querySelector('.exhibit-dialog[open] .gallery-selected').scrollIntoView({block:'center'})",
+        );
+        await waitFor(
+          "(()=>{const img=document.querySelector('.exhibit-dialog[open] .gallery-selected img');return img?.complete&&img.naturalWidth>0})()",
+        );
+      }
+      await send("Input.dispatchKeyEvent", {
+        type: "keyDown",
+        key: "Escape",
+        code: "Escape",
+        windowsVirtualKeyCode: 27,
+      });
+      await send("Input.dispatchKeyEvent", {
+        type: "keyUp",
+        key: "Escape",
+        code: "Escape",
+        windowsVirtualKeyCode: 27,
+      });
+
+      await click(".journey-toolbar > .journey-button:not(.journey-button-accent)");
+      await click(".history-reset");
+      await selectFilter("Era", "colonial-era-british-rule");
+      await waitFor(
+        `document.querySelectorAll('.history-event-result').length === ${colonialEvents.length}`,
+      );
+      assert.equal(
+        await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
+        "#colonial-reader",
+      );
+      await selectFilter("Century", "CE-20");
+      await screenshot(`colonial-filters-${width}`);
+      await click(".history-reset");
+      await selectFilter("Era", "indian-independence-movement");
+      await selectFilter("Century", "CE-20");
+      await waitFor(
+        `document.querySelectorAll('.history-event-result').length === ${independenceEvents.length}`,
+      );
+      assert.equal(
+        await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
+        "#independence-reader",
+      );
+      await screenshot(`independence-filters-${width}`);
+      await click(".history-dialog:not(.exhibit-dialog) .history-dialog-header button");
+      await navigate("freedom-round-table");
+      await screenshot(`independence-photo-${width}`);
+
       await navigate("indus-seals-writing");
       await click('.visual-scene[aria-hidden="false"] .exhibit-point:nth-child(2)');
       await waitFor(
@@ -579,6 +657,11 @@ async function main() {
       ["mughal-succession-war", "aurangzeb-reign"],
       ["chand-bibi-memory", "regional-successor-states"],
       ["buxar-1764", "diwani-1765"],
+      ["diwani-1765", "colonial-bengal-famine"],
+      ["colonial-awadh-1856", "colonial-rebellion-1857"],
+      ["colonial-transfer-1946", "freedom-naval-uprising"],
+      ["freedom-bhagat-singh", "freedom-karachi"],
+      ["freedom-objectives", "colonial-independence-1947"],
     ]) {
       await navigate(pair[0]);
       await delay(1200);
@@ -646,8 +729,20 @@ async function main() {
       ),
       17,
     );
+    await waitFor(
+      `document.querySelectorAll("#colonial-reader details").length === ${colonialEvents.length}`,
+    );
+    await waitFor(
+      `document.querySelectorAll("#independence-reader details").length === ${independenceEvents.length}`,
+    );
+    assert.equal(
+      await evaluate(
+        'document.querySelectorAll("#independence-reader .event-details section").length',
+      ),
+      independenceEvents.length * 3,
+    );
     console.log(
-      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 26 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all five readers without JavaScript.`,
+      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 30 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all seven readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {
