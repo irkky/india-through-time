@@ -25,7 +25,7 @@ History of India is an educational website built around one continuous timeline.
 through a cinematic opening, historical exhibits, images and source-backed explanations. Visitors
 can also jump between events, search the collection or read the evidence independently.
 
-The current collection contains **252 entries across eight populated chapters**, with **33 distinct
+The current collection contains **252 entries across eight populated chapters**, with **45 distinct
 gallery image files** and tagged spaces for missing images or research. Historical content,
 presentation and animation are maintained separately so the project can grow without placing
 historical facts inside UI or animation code.
@@ -351,7 +351,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **31 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **33 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -438,6 +438,10 @@ code uses weighted positions and all eight chapters are populated.
 
 `dev:fresh` removes only generated `.next/dev` output. It preserves source, assets and production
 build output and does not run during normal website use.
+
+### Prehistoric visual research
+
+See the [media inventory](docs/prehistory-media-inventory.md) for site-by-site coverage and remaining image requests, and the [media manifest](docs/prehistory-media-manifest.json) for sources and licences. Twelve new files provide published excavation figures, artefact plates, maps and a Bhimbetka photograph; all 24 prehistoric entries have evidence-reading notes. Optional NPTEL viewing is linked from the Mesolithic overview.
 
 ## Deployment
 

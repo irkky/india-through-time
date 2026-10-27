@@ -16,6 +16,7 @@ const { independenceEvents } = require("../src/data/timeline/independence/events
 const { independenceGalleries } = require("../src/data/scenes/independence-galleries.ts");
 const { postIndependenceEvents } = require("../src/data/timeline/post-independence/events.ts");
 const { postIndependenceGalleries } = require("../src/data/scenes/post-independence-galleries.ts");
+const { prehistoryGalleries } = require("../src/data/scenes/prehistory-galleries.ts");
 const totalEvents =
   56 +
   classicalEvents.length +
@@ -187,6 +188,7 @@ async function main() {
       for (const [eventId, count] of [
         ["lower-palaeolithic-scaffold", 4],
         ["attirampakkam-middle-palaeolithic", 6],
+        ...Object.entries(prehistoryGalleries).map(([id, images]) => [id, images.length]),
       ]) {
         await navigate(eventId);
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
@@ -206,7 +208,7 @@ async function main() {
           );
           assert.equal(
             await evaluate(
-              `${active}.querySelector('.gallery-links a').href === ${active}.querySelector('.gallery-image-surface img').src`,
+              `Array.from(${active}.querySelectorAll('.gallery-links a')).some(link => link.href === ${active}.querySelector('.gallery-image-surface img').src)`,
             ),
             true,
           );
@@ -774,7 +776,7 @@ async function main() {
       postIndependenceEvents.length * 3,
     );
     console.log(
-      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 33 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
+      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 45 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {

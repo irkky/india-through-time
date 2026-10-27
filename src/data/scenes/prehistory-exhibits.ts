@@ -1,6 +1,7 @@
 import type { PrehistoryDiagram, PrehistoryExhibit } from "@/types/prehistory-exhibit";
 import type { TimelineScenePresentation } from "@/types/timeline-presentation";
 import { lowerPalaeolithicGallery, middlePalaeolithicGallery } from "./palaeolithic-gallery";
+import { prehistoryGalleries } from "./prehistory-galleries";
 
 const exhibit = (
   diagram: PrehistoryDiagram,
@@ -20,7 +21,7 @@ const exhibit = (
 });
 
 /** Original explanatory artwork, not excavation plans or replicas of individual finds. */
-export const prehistoryExhibits: Readonly<Record<string, PrehistoryExhibit>> = {
+const baseExhibits: Readonly<Record<string, PrehistoryExhibit>> = {
   "singi-talav-acheulian": exhibit(
     "acheulian",
     "Traditions overlap",
@@ -168,6 +169,16 @@ const themes = {
     muted: "#c3ceb8",
   },
 };
+
+export const prehistoryExhibits: Readonly<Record<string, PrehistoryExhibit>> = Object.fromEntries(
+  Object.entries(baseExhibits).map(([id, visual]) => {
+    const gallery = prehistoryGalleries[id];
+    return [
+      id,
+      gallery ? { ...visual, gallery, stageImages: [0, gallery.length > 1 ? 1 : 0, null] } : visual,
+    ];
+  }),
+);
 
 export const prehistoryExhibitPresentations: Readonly<Record<string, TimelineScenePresentation>> =
   Object.fromEntries(

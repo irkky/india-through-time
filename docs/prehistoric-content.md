@@ -1,5 +1,7 @@
 # Prehistoric India: content and completion guide
 
+**Visual research update (27 October 2026):** see the [current media inventory](prehistory-media-inventory.md) for twelve newly sourced files, licences, optional viewing and exact remaining image requests. The chronology remains unchanged.
+
 **Latest expansion (19 October 2026):** the chapter now has 24 dated records and visible research
 slots. See [the current chronological inventory and editing guide](prehistoric-expansion.md).
 The initial research-pass table below is retained as a record of the first 15 entries.

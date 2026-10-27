@@ -59,6 +59,7 @@ test("relationships, citations, and researched source requirements are enforced"
     contentStatus: "researched",
     sources: [],
     interpretationNotes: [],
+    details: [],
   });
   const errors = validateHistory(eras).filter(({ severity }) => severity === "error");
   assert.equal(errors.length, 3);

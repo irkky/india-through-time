@@ -2,6 +2,7 @@ import { yearsAgo } from "@/lib/historical-date";
 import type { HistoricalEra, HistoricalEvent, HistoricalPeriod } from "@/types/history";
 import { regionalExpansion, regionalContext } from "./prehistory/regional-expansion";
 import { prehistorySources as sources } from "./prehistory/sources";
+import { enrichPrehistoryEvent } from "./prehistory/evidence";
 import {
   middlePalaeolithicEvents,
   upperPalaeolithicEvents,
@@ -226,6 +227,6 @@ export const prehistoricIndiaEra = {
       ...regionalExpansion
         .filter((entry) => entry.periodId === period.id)
         .map(({ event }) => withExhibit(event)),
-    ],
+    ].map(enrichPrehistoryEvent),
   })),
 } as const satisfies HistoricalEra;

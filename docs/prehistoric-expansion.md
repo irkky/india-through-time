@@ -1,5 +1,7 @@
 ﻿# Prehistoric chapter expansion: 19 October 2026
 
+**Visual research update (27 October 2026):** see the [current media inventory](prehistory-media-inventory.md) for twelve newly sourced files, licences, optional viewing and exact remaining image requests. The chronology remains unchanged.
+
 The chapter now contains 24 dated records. This is a sourced regional overview, not an exhaustive catalogue. Site phases, regional teaching frameworks and uncertain interpretations are distinguished in each evidence note. The earlier 15-record table in prehistoric-content.md describes the initial pass.
 
 | Order | Record                                     | Published date / range                             | Period                                           |
