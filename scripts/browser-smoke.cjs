@@ -14,12 +14,15 @@ const { colonialEvents } = require("../src/data/timeline/colonial/events.ts");
 const { colonialGalleries } = require("../src/data/scenes/colonial-galleries.ts");
 const { independenceEvents } = require("../src/data/timeline/independence/events.ts");
 const { independenceGalleries } = require("../src/data/scenes/independence-galleries.ts");
+const { postIndependenceEvents } = require("../src/data/timeline/post-independence/events.ts");
+const { postIndependenceGalleries } = require("../src/data/scenes/post-independence-galleries.ts");
 const totalEvents =
   56 +
   classicalEvents.length +
   earlyModernEvents.length +
   colonialEvents.length +
-  independenceEvents.length;
+  independenceEvents.length +
+  postIndependenceEvents.length;
 
 async function main() {
   const base = process.argv[2] || "http://localhost:3000";
@@ -389,6 +392,7 @@ async function main() {
         ...earlyModernEvents,
         ...colonialEvents,
         ...independenceEvents,
+        ...postIndependenceEvents,
       ]) {
         await navigate(record.id);
         for (let step = 1; step <= 3; step++) {
@@ -404,7 +408,8 @@ async function main() {
             (classicalGalleries[record.id] ||
               earlyModernGalleries[record.id] ||
               colonialGalleries[record.id] ||
-              independenceGalleries[record.id])
+              independenceGalleries[record.id] ||
+              postIndependenceGalleries[record.id])
           ) {
             await waitFor(
               `(()=>{const i=${active}.querySelector('.exhibit-drawing img');return i?.complete && i.naturalWidth>0})()`,
@@ -553,6 +558,20 @@ async function main() {
         "#independence-reader",
       );
       await screenshot(`independence-filters-${width}`);
+      await click(".history-reset");
+      await selectFilter("Era", "post-independence-present");
+      await waitFor(
+        `document.querySelectorAll('.history-event-result').length === ${postIndependenceEvents.length}`,
+      );
+      assert.equal(
+        await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
+        "#post-independence-reader",
+      );
+      await selectFilter("Century", "CE-21");
+      await waitFor(
+        `document.querySelectorAll('.history-event-result').length === ${postIndependenceEvents.filter((e) => e.dateStart.year >= 2001).length}`,
+      );
+      await screenshot(`post-independence-filters-${width}`);
       await click(".history-dialog:not(.exhibit-dialog) .history-dialog-header button");
       await navigate("freedom-round-table");
       await screenshot(`independence-photo-${width}`);
@@ -662,6 +681,10 @@ async function main() {
       ["colonial-transfer-1946", "freedom-naval-uprising"],
       ["freedom-bhagat-singh", "freedom-karachi"],
       ["freedom-objectives", "colonial-independence-1947"],
+      ["colonial-independence-1947", "republic-gandhi-1948"],
+      ["republic-constitution-adopted", "republic-republic"],
+      ["republic-emergency", "republic-election-1977"],
+      ["republic-spadex", "republic-maratha-unesco"],
     ]) {
       await navigate(pair[0]);
       await delay(1200);
@@ -741,8 +764,17 @@ async function main() {
       ),
       independenceEvents.length * 3,
     );
+    await waitFor(
+      `document.querySelectorAll('#post-independence-reader details').length === ${postIndependenceEvents.length}`,
+    );
+    assert.equal(
+      await evaluate(
+        "document.querySelectorAll('#post-independence-reader .event-details section').length",
+      ),
+      postIndependenceEvents.length * 3,
+    );
     console.log(
-      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 30 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all seven readers without JavaScript.`,
+      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 33 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {

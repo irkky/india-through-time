@@ -19,7 +19,8 @@ test("canonical data compiles and navigation round-trips through the resolver", 
       require("../src/data/timeline/classical/events.ts").classicalEvents.length +
       require("../src/data/timeline/early-modern/events.ts").earlyModernEvents.length +
       require("../src/data/timeline/colonial/events.ts").colonialEvents.length +
-      require("../src/data/timeline/independence/events.ts").independenceEvents.length,
+      require("../src/data/timeline/independence/events.ts").independenceEvents.length +
+      require("../src/data/timeline/post-independence/events.ts").postIndependenceEvents.length,
   );
   model.events.forEach((event, index) => {
     assert.equal(
@@ -28,7 +29,7 @@ test("canonical data compiles and navigation round-trips through the resolver", 
     );
     assert.equal(model.scenes[index].timelinePointId, event.id);
   });
-  assert.equal(model.navigation.at(-1).firstEventIndex, null);
+  assert.ok(model.navigation.every((era) => era.firstEventIndex !== null));
   assert.ok(!model.issues.some(({ message }) => message.includes("sources")));
 });
 test("new content without a visual gets a default scene", () => {

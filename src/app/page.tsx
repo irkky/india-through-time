@@ -10,6 +10,10 @@ import { classicalMedievalEra, classicalGaps } from "@/data/timeline/classical-m
 import { earlyModernIndiaEra, earlyModernGaps } from "@/data/timeline/early-modern-india";
 import { colonialIndiaEra, colonialGaps } from "@/data/timeline/colonial-india";
 import { independenceIndiaEra, independenceGaps } from "@/data/timeline/independence-india";
+import {
+  postIndependenceIndiaEra,
+  postIndependenceGaps,
+} from "@/data/timeline/post-independence-india";
 
 export default function Home() {
   const model = compileHistory(indianHistoryTimeline, scenePresentations);
@@ -25,6 +29,11 @@ export default function Home() {
         era={independenceIndiaEra}
         id="independence-reader"
         gaps={independenceGaps}
+      />
+      <PrehistoryReader
+        era={postIndependenceIndiaEra}
+        id="post-independence-reader"
+        gaps={postIndependenceGaps}
       />
     </TimelineExperience>
   );

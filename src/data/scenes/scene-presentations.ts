@@ -7,6 +7,7 @@ import { classicalExhibitPresentations } from "./classical-exhibits";
 import { earlyModernExhibitPresentations } from "./early-modern-exhibits";
 import { colonialExhibitPresentations } from "./colonial-exhibits";
 import { independenceExhibitPresentations } from "./independence-exhibits";
+import { postIndependenceExhibitPresentations } from "./post-independence-exhibits";
 import type { TimelineScenePresentation } from "@/types/timeline-presentation";
 
 export const scenePresentations: Readonly<Record<string, TimelineScenePresentation>> = {
@@ -19,4 +20,5 @@ export const scenePresentations: Readonly<Record<string, TimelineScenePresentati
   ...earlyModernExhibitPresentations,
   ...colonialExhibitPresentations,
   ...independenceExhibitPresentations,
+  ...postIndependenceExhibitPresentations,
 };

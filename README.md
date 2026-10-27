@@ -1,190 +1,458 @@
+<div align="center">
+
 # History of India
 
-The [Independence Movement guide](docs/independence-movement-content.md) adds 29 entries,
-87 evidence sections and two credited public-domain photographs. Its [media inventory](docs/independence-inventory.md)
-lists the 27 remaining image slots and the research tags, with instructions for supplying each item.
+**An interactive journey through Indian history, brought to life through scrolling, visual evidence and stories.**
 
-The [Colonial Era guide](docs/colonial-india-content.md) adds 36 entries across five phases through 1947,
-with two credited archival photographs and [tagged image/research briefs](docs/colonial-inventory.md).
-The project now has 197 events and seven populated chapters. The optional
-`scripts/fetch-colonial-media.cjs` downloads only the two selected public-domain images; it never runs during website use.
+From prehistoric landscapes to independent India in **2025**.
 
-An original, interactive website for exploring Indian history by scrolling through time. The
-eventual experience will combine a changing historical timeline with responsive text, maps,
-illustrations, and visual scenes.
+![Next.js](https://img.shields.io/badge/Next.js-16.3-111827?style=flat-square&logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-149ECA?style=flat-square&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-ScrollTrigger-88CE02?style=flat-square)
+![Chapters](https://img.shields.io/badge/Chapters-8-C2955B?style=flat-square)
+![Events](https://img.shields.io/badge/Events-252-236E68?style=flat-square)
 
-This repository contains 24 sourced Prehistoric India records, 15 researched Ancient India &
-Early Transitions records, 17 Second Urbanization & Empires records, 22 Classical & Medieval
-Indian-history records, 54 Early Modern India records, 36 Colonial Era records, and 29 Independence Movement records, with interactive scenes
-and readable evidence sections. Regional overlaps and uncertainty notes are explicit; these are expandable
-overviews, not an exhaustive historical narrative. There is no database, authentication, CMS, or
-external storage. See [the ancient chapter guide](docs/ancient-india-content.md) for sources,
-image credits and tagged additions.
+[Get started](#get-started) · [Historical coverage](#historical-coverage) · [Folder structure](#project-structure) · [Add content](#content-and-media-workflow) · [Documentation](#documentation)
 
-The [Second Urbanization & Empires guide](docs/second-urbanization-content.md) covers the new
-chapter, its seven credited photographs and visual examples, chronology and exactly where to add further evidence.
+</div>
 
-The [Classical & Medieval research guide](docs/classical-medieval-content.md) explains the Indian-history
-scope, regional chronology, sources and two public-domain museum photographs. The
-[event and image inventory](docs/classical-medieval-inventory.md) lists every new record and its
-remaining image or map brief. Explore chapter now supports era, period, civilization/community and
-century filters, people/place/detail search, and links to overlapping historical windows.
+---
 
-`scripts/fetch-classical-media.cjs` is an optional manual maintenance script that downloads the two
-selected Met Open Access images and records their provenance. It never runs during normal website use.
+## About the project
 
-Start with [the Prehistoric India content guide](docs/prehistoric-content.md) for the chronology,
-editable files, sources, missing-research slots and asset checklist.
+History of India is an educational website built around one continuous timeline. Scrolling moves
+through a cinematic opening, historical exhibits, images and source-backed explanations. Visitors
+can also jump between events, search the collection or read the evidence independently.
 
-The [Early Modern India guide](docs/early-modern-india-content.md) covers 1498–1765 in five phases,
-with 162 evidence sections and five public-domain museum images. The
-[Early Modern inventory](docs/early-modern-inventory.md) lists every entry, source and remaining
-image/map/research request. `scripts/fetch-early-modern-media.cjs` is an optional manual downloader;
-it never runs during normal website use. The timeline now contains 197 records across seven populated chapters.
+The current collection contains **252 entries across eight populated chapters**, with **33 distinct
+gallery image files** and tagged spaces for missing images or research. Historical content,
+presentation and animation are maintained separately so the project can grow without placing
+historical facts inside UI or animation code.
 
-## Recovering a stale development page
+> **Scope:** Indian history through **2025**. This is an expanding, sourced overview rather than an
+> exhaustive account. Regional overlap, approximate dates and interpretation limits remain explicit.
+> The final entry is the 2025 UNESCO inscription of the Maratha Military Landscapes. Research review
+> dates may be later than 2025; they describe editorial work, not additional timeline events.
 
-If a hydration error appears after editing content or components, stop the development server
-with **Ctrl+C**. From `D:\Indian History`, run `npm run dev:fresh`, then open the URL printed by
-Next.js and hard-refresh the browser with **Ctrl+Shift+R**.
+## The experience
 
-This optional command clears only generated `.next/dev` output before starting development.
-It preserves your source files, images and production build. It refuses to clean while a Next.js
-development lock exists or if the output directory is redirected. It does not run during normal
-website use. An already-open page can still contain older HTML; reload after restarting.
+| Feature                     | What visitors can do                                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Cinematic opening**       | Enter through reversible typography, imagery and deep-time visuals.                                                 |
+| **Scroll through time**     | Watch the journey year change in both directions, with weighted scene durations and reversible transitions.         |
+| **Interactive exhibits**    | Select explanatory stages, examine diagrams and open images with contextual captions.                               |
+| **Direct navigation**       | Jump by era, period or event, or move one event at a time.                                                          |
+| **Search and filters**      | Search people, places and detail text; combine era, period, community and century filters through the 21st century. |
+| **Evidence and sources**    | Read background, consequences, citations, interpretation notes and related events.                                  |
+| **Shareable events**        | Link to a stable event with a fragment such as `#event=republic-chandrayaan-3`.                                     |
+| **Accessible alternatives** | Use keyboard controls, reduced-motion behaviour and server-rendered readers for all eight chapters.                 |
 
-The browser regression can run against either a development or production server:
-`npm run test:browser -- http://localhost:3000` (replace the URL with the running server's URL).
-It captures hydration errors before loading the page and checks scrolling to the bottom and reloading.
+The animated journey requires JavaScript. The chapter readers retain historical text and sources
+when JavaScript is disabled.
 
-## Current stack
+## Historical coverage
 
-The data pipeline now validates and compiles historical content on the server before handing a
-single model to the interactive timeline. New events can use a default scene; custom scenes remain
-separate from historical content. See [the project review and roadmap](docs/project-review.md) for
-the current limits, data-flow diagram, and step-by-step authoring workflow.
+Events are globally sorted by their start dates. Chapters are editorial groupings, so regional
+histories and long-running developments can overlap.
 
-- Next.js 16 with the App Router
-- React 19
-- TypeScript with strict checking
-- Tailwind CSS 4
-- GSAP with ScrollTrigger
-- ESLint 9 and Prettier
+| Chapter                               | Entries | Coverage and guide                                                                                                  |
+| ------------------------------------- | ------: | ------------------------------------------------------------------------------------------------------------------- |
+| **Prehistoric India**                 |      24 | Palaeolithic traditions, Mesolithic communities, farming and settlement. [Guide](docs/prehistoric-content.md)       |
+| **Ancient India & Early Transitions** |      15 | Harappan urbanism, material culture and early intellectual transitions. [Guide](docs/ancient-india-content.md)      |
+| **Second Urbanization & Empires**     |      17 | Cities, religious traditions, states and Mauryan history. [Guide](docs/second-urbanization-content.md)              |
+| **Classical & Medieval India**        |      22 | Regional kingdoms, learning, devotion, art and architecture. [Guide](docs/classical-medieval-content.md)            |
+| **Early Modern India**                |      54 | Courts, maritime connections, regional powers and economic change. [Guide](docs/early-modern-india-content.md)      |
+| **Colonial Era & British Rule**       |      36 | Company expansion, colonial institutions, resistance and transfer of power. [Guide](docs/colonial-india-content.md) |
+| **Indian Independence Movement**      |      29 | Organisations, campaigns, political ideas and struggles for freedom. [Guide](docs/independence-movement-content.md) |
+| **Post-Independence to 2025**         |      55 | The republic, democracy, society, development, rights and science. [Guide](docs/post-independence-content.md)       |
+| **Total**                             | **252** | **Eight populated chapters**                                                                                        |
 
-D3, Three.js, React Three Fiber, and MapLibre will be added individually when a concrete feature
-requires them. Keeping them out of the initial bundle avoids unused dependencies and makes
-performance costs explicit.
+The existing 1947 independence and Partition milestone is shared through the timeline; the
+post-independence chapter continues from 1948.
 
-## Opening cinematic and prototype interaction
+## Get started
 
-The homepage is one continuous storytelling section containing a sticky viewport. Scroll space
-grows with the event count, while the opening retains its own allocation. Its
-first phase is a data-driven opening cinematic: nine reversible beats move from darkness through
-the supplied opening copy, abstract deep-time visuals, a placeholder landform, and a placeholder
-artifact before resolving to `PREHISTORIC INDIA`. No external media or additional historical copy
-is included.
+### Requirements
 
-A single ScrollTrigger maps the full section to normalized progress. The opening owns the first
-portion, then dissolves into timeline progress zero without introducing a second scroll controller.
-The remaining progress:
+- **Node.js 20.9 or newer** and npm. Browser regression checks require **Node.js 22+**.
+- A local checkout of this repository.
+- Chrome or Chromium only for the optional browser checks.
 
-- animates a full-year journey counter between event start dates; event cards retain their published ranges;
-- moves the timeline rail indicator;
-- selects the active record across all six researched chapters;
-- scrubs GSAP crossfades between event copy and abstract SVG scenes.
+No API keys, database, account setup or environment variables are required for the current app.
 
-With reduced motion enabled, the same scroll positions switch states directly without scrubbed
-crossfade or movement effects.
+### Run locally
 
-Opening copy, progress ranges, visual kinds, transition choices, and animation settings live in
-`src/data/opening/opening-sequence.ts`. React renderers live in `src/components/opening`, and the
-scrubbed controller and frame interpolation live in `src/animations/opening`. The historical event
-model remains unaware of the opening.
+Open a terminal in the repository root. For the existing Windows workspace:
 
-A persistent navigation panel shows the resolved date, era, period, event, nearby events, and
-overall progress. Event, era, and period controls navigate through the same central GSAP timeline;
-they do not maintain a second timeline calculation.
-
-The storytelling viewport uses a reusable layered Scene System. Scene definitions live outside
-React and declare their timeline point, transition, duration, and background/decorative/text/media
-or map layers. A generic GSAP Scene Controller consumes the resolved timeline position and renders
-reversible, scroll-scrubbed fade, crossfade, slide, scale, and parallax transitions. Prehistoric exhibits use original explanatory SVG diagrams with selectable evidence points; the
-Lower Palaeolithic exhibit now shares this layout and uses an original handaxe-and-cleaver diagram.
-
-The content system is organized as `Era -> Period -> Event`. The eight planned eras are declared
-in the canonical dataset. Prehistoric India has eight reading sections: an undated introduction
-and seven archaeological periods containing 24 sourced records. Dates use separate calendar and
-years-ago representations. The timeline sorts by event start dates rather than forcing regional
-periods into a non-overlapping sequence. The original later-era prototype IDs now point to researched exhibits.
-
-Prehistoric period composition and the existing Lower Palaeolithic record belong in
-`src/data/timeline/prehistoric-india.ts`; the other events, bibliography and research gaps live in
-`src/data/timeline/prehistory/`. Their presentation-only scene definitions belong in
-`src/data/scenes/prehistoric-scenes.ts`. See the Prehistoric India ingestion workflow in
-[docs/architecture.md](docs/architecture.md#prehistoric-india-ingestion-workflow).
-
-Future opening assets should be stored under `public/assets/opening/`: images in `images/`, video
-in `video/`, and music or atmospheric sound in `audio/`. Add their serializable references to the
-matching scene in `src/data/opening/opening-sequence.ts`, render or seek them through
-`src/components/opening/OpeningVisual.tsx` and `src/animations/opening/cinematic.ts`, and keep audio
-opt-in behind a user control. Historical event media continues to use event-owned media references
-and the generic scene layer system rather than the opening asset path.
-
-## Getting started
-
-Requires Node.js 20.9 or newer.
-
-```bash
-npm install
+```powershell
+Set-Location "D:\Indian History"
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+For another checkout, use its folder instead. `npm ci` installs the versions recorded in
+`package-lock.json`; run it on initial setup or after dependency changes.
 
-## Available commands
+Open the **Local URL printed by Next.js**. It is commonly `http://localhost:3000`, but the port may
+change if another process is using it. Stop the server with **Ctrl+C**.
 
-```bash
-npm run dev          # Start the development server
-npm run build        # Create a production build
-npm run start        # Serve the production build
-npm run lint         # Run ESLint
-npm run typecheck    # Run the TypeScript compiler without emitting files
-npm run format       # Format supported files
-npm run format:check # Verify formatting
-npm run check        # Run lint, type checking, and formatting checks
-npm run test         # Run content and timeline regression tests
-npm run test:browser -- http://localhost:3000 # Check a running production site in headless Chrome
-npm run validate:content # Audit content references, scene assets, and editorial gaps
+### Explore the website
+
+1. Scroll through the opening or use its start control to enter the timeline.
+2. Scroll forward or backward to change the active event and journey year.
+3. Use chapter tabs, period/event selectors or previous/next buttons to jump directly.
+4. Select an exhibit stage, then open its gallery or **Evidence & sources** for more detail.
+5. Use **Explore chapter** to search, combine filters or follow the chapter reader link.
+
+Standard keyboard scrolling and **Tab**, **Enter** and **Escape** work with the page and dialogs.
+The site respects the operating system's reduced-motion setting.
+
+### Preview production
+
+```powershell
+npm run build
+npm run start
 ```
+
+To use a specific port after building:
+
+```powershell
+node node_modules/next/dist/bin/next start -p 3121
+```
+
+## Commands
+
+Run commands from the repository root.
+
+| Command                                         | Purpose                                                                        |
+| ----------------------------------------------- | ------------------------------------------------------------------------------ |
+| `npm run dev`                                   | Start the development server.                                                  |
+| `npm run dev:fresh`                             | Clear generated development output safely and restart development.             |
+| `npm run build`                                 | Compile and prerender the production app.                                      |
+| `npm run start`                                 | Serve an existing production build.                                            |
+| `npm run lint`                                  | Run ESLint.                                                                    |
+| `npm run typecheck`                             | Check TypeScript without emitting application files.                           |
+| `npm run format`                                | Format supported files with Prettier; this modifies files.                     |
+| `npm run format:check`                          | Check formatting without changing files.                                       |
+| `npm run test`                                  | Run Node.js content and timeline regression tests.                             |
+| `npm run validate:content`                      | Compile content and audit references, local assets and editorial warnings.     |
+| `npm run check`                                 | Run lint, type checking, formatting, tests and content validation in sequence. |
+| `npm run test:browser -- http://localhost:3121` | Check an already-running site in headless Chrome/Chromium; use its actual URL. |
+
+Use `npm run validate:content -- --strict` to treat warnings as failures. It currently fails on
+four existing prehistoric media-credit warnings until those records are completed.
+
+## Technology
+
+| Layer              | Implementation                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| Framework          | Next.js 16.3, App Router, React 19                                                 |
+| Language           | TypeScript with `strict` and `noUncheckedIndexedAccess`                            |
+| Styling            | Tailwind CSS 4 and domain-specific CSS                                             |
+| Motion             | GSAP 3 and ScrollTrigger                                                           |
+| Historical content | Typed local TypeScript records and bibliographies                                  |
+| Visuals            | React-rendered SVG diagrams and local image galleries                              |
+| Quality tools      | ESLint 9, Prettier, TypeScript, Node.js tests and a Chrome DevTools browser script |
+
+There is currently no database, CMS, authentication system or application API. MDX, D3, Three.js
+and MapLibre are not installed. Reserved folders do not imply those features are implemented.
+Dependency ranges are in [package.json](package.json); resolved versions are in
+[package-lock.json](package-lock.json).
+
+## Architecture and data flow
+
+```mermaid
+flowchart TD
+    A[Historical records and sources] --> B[Era / Period / Event hierarchy]
+    B --> C[Validate and compile on the server]
+    D[Scene definitions and gallery metadata] --> C
+    C --> E[Compiled events, navigation and weighted positions]
+    E --> F[TimelineExperience]
+    B --> G[Server-rendered chapter readers]
+    H[Scroll and navigation controls] --> I[Shared timeline resolver]
+    F --> I
+    I --> J[Opening and historical scene controllers]
+    J --> K[GSAP transitions, exhibit stages and journey year]
+```
+
+[src/app/page.tsx](src/app/page.tsx) calls [compileHistory](src/lib/content/compile.ts) before
+rendering. Compilation validates the hierarchy, sorts events, connects presentations and generates
+weighted timeline positions from scene durations. Invalid IDs, references and ranges fail early.
+
+[TimelineExperience](src/components/timeline/timeline-experience.tsx) owns the interactive experience.
+One ScrollTrigger partitions the journey between the opening and historical scenes. Navigation
+uses the same positions as scrolling; scene controllers apply reversible transitions. Continuous
+animation updates do not require React to render every frame.
+
+Dates distinguish **BCE/CE calendar years** from **years ago**. Calendar years are positive and have
+no year zero. Approximation and date scope remain explicit. The moving year is an interpolated
+navigation aid; each event retains its own published date or range. Deep-time sorting uses a
+synthetic ordinal rather than a scientific BP reference epoch.
 
 ## Project structure
 
+### Repository map
+
 ```text
-src/
-  app/                 Routes, layouts, metadata, and global styles
-  animations/          Framework-agnostic animation setup and lifecycle code
-  components/          Reusable React UI grouped by domain
-  content/             Authored historical narratives (MDX later, when needed)
-  data/                Structured historical, timeline, and map data
-  lib/                 Shared utilities and third-party integration adapters
-  types/               Shared TypeScript domain types
-public/
-  assets/               Static images, illustrations, maps, and 3D models
-docs/
-  architecture.md       Boundaries, responsibilities, and development rules
+Indian History/
+├── src/
+│   ├── app/                       # App Router entry points and styles
+│   │   ├── layout.tsx             # HTML shell, metadata and style imports
+│   │   ├── page.tsx               # Server compilation and chapter composition
+│   │   ├── globals.css            # Global layout and timeline styles
+│   │   ├── prehistory.css         # Shared exhibit, reader and gallery styles
+│   │   └── opening-polish.css     # Opening presentation
+│   ├── animations/
+│   │   ├── opening/               # Cinematic controller and frame transitions
+│   │   ├── scenes/                # Scene controller and transition strategies
+│   │   ├── timeline/              # ScrollTrigger setup, navigation and cleanup
+│   │   └── visual-scenes/         # Reserved scaffold
+│   ├── components/
+│   │   ├── historical-events/     # Event content, details, readers and gap tags
+│   │   ├── opening/               # Cinematic text, visuals, progress and stages
+│   │   ├── timeline/              # Experience, navigation, explorer and rail
+│   │   ├── visual-scenes/         # Layers, diagrams, exhibits and galleries
+│   │   ├── maps/                  # Reserved map-component scaffold
+│   │   └── site/                  # Empty local scaffold
+│   ├── content/
+│   │   ├── eras/                  # Reserved long-form narrative scaffold
+│   │   └── events/                # Reserved long-form narrative scaffold
+│   ├── data/                      # Historical records and scene definitions
+│   ├── lib/
+│   │   ├── content/
+│   │   │   ├── compile.ts         # Validated, serializable UI model
+│   │   │   └── validate.ts        # Historical schema and reference checks
+│   │   ├── historical-date.ts     # Date creation, sorting and formatting
+│   │   ├── history-explorer.ts    # Search, filters and related events
+│   │   ├── timeline.ts            # Flattened hierarchy and navigation
+│   │   └── timeline-position.ts   # Weighted progress and inverse navigation
+│   └── types/                     # History, dates, scenes, opening and UI types
+├── public/assets/                 # Static media served directly by Next.js
+├── docs/                          # Guides, inventories and media manifests
+├── scripts/                       # Checks, recovery and maintenance tools
+├── tests/                         # Content and timeline regression tests
+├── AGENTS.md                      # Repository guidance for coding agents
+├── package.json                   # Scripts, dependencies and Node requirement
+├── package-lock.json              # Reproducible dependency resolution
+├── next.config.ts                 # Next.js configuration
+├── tsconfig.json                  # Strict TS settings; @/* maps to src/*
+├── eslint.config.mjs              # Lint rules
+├── postcss.config.mjs             # Tailwind/PostCSS integration
+├── .prettierrc.json                # Formatting rules
+├── .prettierignore                 # Formatting exclusions
+├── .editorconfig                  # Editor conventions
+├── .gitignore                     # Generated/local file exclusions
+└── README.md                      # Project guide
 ```
 
-See [docs/architecture.md](docs/architecture.md) for the full architectural guidance and
-[docs/project-review.md](docs/project-review.md) for the implemented compilation boundary and roadmap.
+Some empty local folders may disappear in a fresh Git checkout; `.gitkeep` files preserve tracked
+scaffolding. Existing `prehistory-*` component names also serve later chapters.
+
+<details>
+<summary><strong>Expand: historical data and presentation files</strong></summary>
+
+```text
+src/data/
+├── opening/
+│   └── opening-sequence.ts        # Copy, beats, timing and media metadata
+├── timeline/
+│   ├── indian-history.ts          # Canonical registry of all eight eras
+│   ├── timeline-presentation.ts   # Event-to-presentation projection
+│   ├── prehistoric-india.ts       # Periods and original lower-Palaeolithic record
+│   ├── ancient-india.ts
+│   ├── second-urbanization.ts
+│   ├── classical-medieval.ts
+│   ├── early-modern-india.ts
+│   ├── colonial-india.ts
+│   ├── independence-india.ts
+│   ├── post-independence-india.ts
+│   ├── prehistory/                # Events, sources, gaps, regional expansion
+│   ├── ancient/                   # Events and bibliography
+│   ├── empires/                   # Events, details, sources and image needs
+│   ├── classical/                 # Records, event builder and sources
+│   ├── early-modern/              # Records, event builder and sources
+│   ├── colonial/                  # Records, event builder and sources
+│   ├── independence/              # Records with sources, plus event builder
+│   ├── post-independence/         # Records with sources, plus event builder
+│   └── world/                     # Empty scaffold; no world-history chapter
+├── scenes/
+│   ├── scene-presentations.ts     # Shared presentation registry
+│   ├── default-scene.ts           # Fallback for events without custom visuals
+│   ├── prehistoric-scenes.ts      # Prehistoric scene composition
+│   ├── prehistory-exhibits.ts     # Diagrams and exhibit definitions
+│   ├── palaeolithic-gallery.ts    # Palaeolithic image metadata
+│   ├── ancient-exhibits.ts        # Ancient exhibits and galleries
+│   ├── empire-exhibits.ts         # Empire exhibits and galleries
+│   ├── classical-exhibits.ts
+│   ├── classical-galleries.ts
+│   ├── early-modern-exhibits.ts
+│   ├── early-modern-galleries.ts
+│   ├── colonial-exhibits.ts
+│   ├── colonial-galleries.ts
+│   ├── independence-exhibits.ts
+│   ├── independence-galleries.ts
+│   ├── post-independence-exhibits.ts
+│   ├── post-independence-galleries.ts
+│   └── prototype-scenes.ts        # Retained prototype/presentation definitions
+├── historical-events/             # Reserved; active records live in timeline/
+└── maps/                          # Reserved structured map-data scaffold
+```
+
+Keep facts and citations in `timeline/`; place palettes, diagrams, stage images and transitions
+in `scenes/`. Source organisation varies by chapter, so consult its guide before editing.
+
+</details>
+
+<details>
+<summary><strong>Expand: static assets and generated folders</strong></summary>
+
+```text
+public/assets/
+├── images/
+│   ├── opening/                  # Current opening image assets
+│   ├── prehistoric_india/
+│   │   ├── lower_palaeolithic_india/
+│   │   └── middle_palaeolithic_india/
+│   ├── ancient_india/
+│   ├── empires/
+│   ├── classical/
+│   ├── early-modern/
+│   ├── colonial/
+│   ├── independence/
+│   ├── post-independence/
+│   └── world/                    # Empty local scaffold, unused
+├── illustrations/                # Reserved asset scaffold
+├── maps/                         # Reserved asset scaffold
+└── models/                       # Reserved scaffold; no 3D runtime
+```
+
+An image at `public/assets/images/post-independence/raigad-2018.jpg` is served as
+`/assets/images/post-independence/raigad-2018.jpg`. Public URLs exclude the `public` directory.
+
+| Generated/local path   | Purpose                                                    |
+| ---------------------- | ---------------------------------------------------------- |
+| `node_modules/`        | Installed dependencies; regenerate with `npm ci`.          |
+| `.next/`               | Next.js development and production output.                 |
+| `.browser-artifacts/`  | Screenshots from browser regression runs.                  |
+| `next-env.d.ts`        | Next.js-generated type declarations.                       |
+| `*.tsbuildinfo`        | TypeScript incremental cache.                              |
+| Local logs and `.env*` | Local diagnostics or future configuration; ignored by Git. |
+
+Do not commit generated output. There is no required `.env` file. Earlier design notes describe
+possible opening audio/video folders; current opening images live in `public/assets/images/opening/`.
+
+</details>
+
+## Quality checks
+
+```powershell
+npm run check
+npm run build
+```
+
+The current suite contains **31 tests** covering validation, date boundaries, chronology, weighted
+navigation, filters, citations, relationships and local media. Content validation currently reports
+**four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
+rights clearance for every image.
+
+### Browser verification
+
+Start the production server in one terminal. In a second terminal:
+
+```powershell
+npm run test:browser -- http://localhost:3121
+```
+
+Use the actual running URL. The script requires **Node.js 22+** and Chrome/Chromium. On Windows it
+defaults to `C:\Program Files\Google\Chrome\Application\chrome.exe`. If your executable is elsewhere:
+
+```powershell
+$env:CHROME_PATH = "C:\Path\To\Chrome\chrome.exe"
+npm run test:browser -- http://localhost:3121
+```
+
+It checks exhibits at **1440px, 768px and 390px**, images, evidence tags, filters, dialogs, focus,
+shared links, chapter transitions, reverse scrolling, reduced motion, hydration/runtime errors and
+all eight readers without JavaScript. Screenshots go to `.browser-artifacts/`. A full pass takes
+several minutes and does not replace physical-device or other-browser testing.
+
+## Maintenance scripts
+
+These are developer tools. **None runs automatically when a visitor opens the website.**
+
+| File                                                                 | Purpose                                                                      |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [validate-content.cjs](scripts/validate-content.cjs)                 | Compiles content, checks local scene/gallery assets and prints warnings.     |
+| [browser-smoke.cjs](scripts/browser-smoke.cjs)                       | Exercises a running site in headless Chrome and saves screenshots.           |
+| [dev-fresh.cjs](scripts/dev-fresh.cjs)                               | Clears only `.next/dev` after lock/path checks, then starts development.     |
+| [register-typescript.cjs](scripts/register-typescript.cjs)           | Loads TypeScript and the `@/` alias for Node tools; not a standalone task.   |
+| [fetch-classical-media.cjs](scripts/fetch-classical-media.cjs)       | Downloads two selected Met public-domain images and updates their manifest.  |
+| [fetch-early-modern-media.cjs](scripts/fetch-early-modern-media.cjs) | Downloads five selected Met public-domain images and updates their manifest. |
+| [fetch-colonial-media.cjs](scripts/fetch-colonial-media.cjs)         | Downloads two selected Met public-domain images and updates their manifest.  |
+
+The downloaders require network access and currently call **`curl.exe`**, so their implementation
+is Windows-specific. They can overwrite selected images and manifests. They are optional
+maintenance commands, not installation prerequisites:
+
+```powershell
+node scripts/fetch-classical-media.cjs
+node scripts/fetch-early-modern-media.cjs
+node scripts/fetch-colonial-media.cjs
+```
+
+## Documentation
+
+| Resource                                                                                                       | Contents                                                                              |
+| -------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| [Architecture](docs/architecture.md)                                                                           | Domain boundaries, date model, scene contracts and original ingestion design.         |
+| [Project review](docs/project-review.md)                                                                       | Earlier architectural review and roadmap; some proposed features are now implemented. |
+| [Prehistoric content](docs/prehistoric-content.md) · [Expansion notes](docs/prehistoric-expansion.md)          | Chronology, regional additions, evidence and assets.                                  |
+| [Ancient India](docs/ancient-india-content.md)                                                                 | Sources, images and tagged additions.                                                 |
+| [Second Urbanization & Empires](docs/second-urbanization-content.md)                                           | Coverage, image credits and remaining evidence.                                       |
+| [Classical & Medieval](docs/classical-medieval-content.md) · [Inventory](docs/classical-medieval-inventory.md) | Research scope, entries and media needs.                                              |
+| [Early Modern](docs/early-modern-india-content.md) · [Inventory](docs/early-modern-inventory.md)               | Regional chronology, sources and research requests.                                   |
+| [Colonial Era](docs/colonial-india-content.md) · [Inventory](docs/colonial-inventory.md)                       | Colonial records and media briefs.                                                    |
+| [Independence Movement](docs/independence-movement-content.md) · [Inventory](docs/independence-inventory.md)   | Movement entries, evidence and image slots.                                           |
+| [Post-Independence](docs/post-independence-content.md) · [Inventory](docs/post-independence-inventory.md)      | 55 entries, 165 evidence sections, three images and 52 image briefs through 2025.     |
+
+Media manifests cover [Classical](docs/classical-media-manifest.json),
+[Early Modern](docs/early-modern-media-manifest.json), [Colonial](docs/colonial-media-manifest.json)
+and [Independence](docs/independence-media-manifest.json) images. Other provenance lives in gallery
+definitions and chapter guides. Some architecture passages describe the original prototype; current
+code uses weighted positions and all eight chapters are populated.
+
+## Troubleshooting
+
+| Symptom                                       | Action                                                                                                                                                                                                                  |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Old content or hydration mismatch after edits | Stop development with **Ctrl+C**, run `npm run dev:fresh`, open the printed URL and hard-refresh with **Ctrl+Shift+R**. Persistent errors need investigation; clearing a cache does not fix nondeterministic rendering. |
+| `dev:fresh` refuses to run                    | Stop the existing dev server. The script refuses an existing dev lock or redirected output path.                                                                                                                        |
+| Port already in use                           | Use the printed URL or choose another port, for example `npm run dev -- --port 3001`.                                                                                                                                   |
+| Production build missing                      | Run `npm run build` before `npm run start`.                                                                                                                                                                             |
+| Missing image                                 | Check filename/case and gallery metadata. URLs begin with `/assets/`, not `/public/assets/`. Run content validation.                                                                                                    |
+| Duplicate ID or unresolved source/event       | Correct the authored record or relationship; the compiler intentionally rejects invalid references.                                                                                                                     |
+| Chrome cannot launch                          | Confirm Node 22+, set `CHROME_PATH` if necessary and check process-launch permissions.                                                                                                                                  |
+| Browser check cannot connect                  | Start the site separately and pass its actual URL and port.                                                                                                                                                             |
+| Strict content validation fails               | Complete the reported metadata; four existing warnings concern prehistoric media credits.                                                                                                                               |
+
+`dev:fresh` removes only generated `.next/dev` output. It preserves source, assets and production
+build output and does not run during normal website use.
 
 ## Deployment
 
-The app is compatible with Vercel's standard Next.js deployment flow. No Vercel-specific runtime
-configuration is required at this stage.
+For a Node.js host, install dependencies, build and start the production server:
 
-## Content and asset policy
+```powershell
+npm ci
+npm run build
+npm run start
+```
 
-Historical content must be stored outside component and animation code, sourced carefully, and
-represented with explicit types. Only assets with clear usage rights should be committed, along
-with attribution or license information when required. The project is original and does not copy
-Neal.fun source code, visual designs, or assets.
+For a Next.js-capable platform such as Vercel, import the repository, select the **Next.js** preset
+and use the repository root. The current app needs no project-specific secrets. Verify the deployed
+URL, assets and timeline after publishing; a local build does not verify a deployment.
+
+The configuration does **not** enable `output: "export"`. Prerendered pages inside `.next/` are not
+a ready-to-upload GitHub Pages site. Static-only hosting needs a separate export and asset-path
+review. No deployment workflow is included.

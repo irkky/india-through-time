@@ -13,7 +13,10 @@ test("colonial chronology, citations, regional ranges and twentieth-century filt
   const model = compileHistory(indianHistoryTimeline, scenePresentations);
   assert.equal(colonialEvents.length, 36);
   assert.equal(colonialIndiaEra.periods.flatMap((p) => p.events).length, 36);
-  assert.equal(model.events.at(-1).id, "colonial-independence-1947");
+  assert.equal(
+    model.events.filter((e) => e.node.era.id === "colonial-era-british-rule").at(-1).id,
+    "colonial-independence-1947",
+  );
   const results = filterHistory(model.events, {
     ...emptyHistoryFilters,
     era: "colonial-era-british-rule",
