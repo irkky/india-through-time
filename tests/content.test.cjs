@@ -250,7 +250,7 @@ test("empire chapter preserves anchors, dated evidence and a navigable endpoint"
   for (const event of events) {
     assert.equal(event.contentStatus, "researched");
     assert.ok(event.dateScope && event.sources.length && event.citations.length);
-    assert.equal(event.details.length, 2);
+    assert.ok(event.details.length >= 3);
     assert.ok(
       event.details.every((d) => d.sourceIds.every((id) => event.sources.some((s) => s.id === id))),
     );
@@ -266,7 +266,7 @@ test("empire chapter preserves anchors, dated evidence and a navigable endpoint"
     empireGaps.every((g) => secondUrbanizationEra.periods.some((p) => p.id === g.periodId)),
   );
   const { empireGalleries } = require("../src/data/scenes/empire-exhibits.ts");
-  assert.equal(Object.keys(empireGalleries).length, 7);
+  assert.equal(Object.keys(empireGalleries).length, 17);
   for (const gallery of Object.values(empireGalleries))
     for (const image of gallery) {
       assert.ok(image.credit && image.sourceUrl && image.license);

@@ -18,6 +18,8 @@ const { postIndependenceEvents } = require("../src/data/timeline/post-independen
 const { postIndependenceGalleries } = require("../src/data/scenes/post-independence-galleries.ts");
 const { prehistoryGalleries } = require("../src/data/scenes/prehistory-galleries.ts");
 const { ancientGalleries } = require("../src/data/scenes/ancient-galleries.ts");
+const { empireGalleries } = require("../src/data/scenes/empire-galleries.ts");
+const { empireEvents } = require("../src/data/timeline/empires/events.ts");
 const totalEvents =
   56 +
   classicalEvents.length +
@@ -55,12 +57,19 @@ async function main() {
   fs.mkdirSync(artifactDir, { recursive: true });
   try {
     const portFile = path.join(profile, "DevToolsActivePort");
-    for (let tries = 0; !fs.existsSync(portFile); tries++) {
+    let port;
+    for (let tries = 0; !port; tries++) {
       if (launchError) throw launchError;
       if (tries > 100) throw Error("Chrome debugging endpoint did not start.");
+      try {
+        const candidate = fs.readFileSync(portFile, "utf8").split("\n")[0].trim();
+        if (/^\d+$/.test(candidate)) port = candidate;
+      } catch (error) {
+        if (!["ENOENT", "EBUSY"].includes(error.code)) throw error;
+      }
+      if (port) break;
       await delay(100);
     }
-    const port = fs.readFileSync(portFile, "utf8").split("\n")[0].trim();
     const page = await (
       await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, {
         method: "PUT",
@@ -101,7 +110,7 @@ async function main() {
         const requestId = ++id;
         const timeout = setTimeout(() => {
           pending.delete(requestId);
-          reject(Error(`CDP timeout: ${method}`));
+          reject(Error(`CDP timeout: ${method} ${params.expression ?? ""}`));
         }, 10000);
         pending.set(requestId, (message) => {
           clearTimeout(timeout);
@@ -145,7 +154,7 @@ async function main() {
     await send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
     });
-    for (const width of [1440, 768, 390]) {
+    for (const width of process.env.BROWSER_MOTION_ONLY ? [] : [1440, 768, 390]) {
       await send("Emulation.setDeviceMetricsOverride", {
         width,
         height: 900,
@@ -191,6 +200,7 @@ async function main() {
         ["attirampakkam-middle-palaeolithic", 6],
         ...Object.entries(prehistoryGalleries).map(([id, images]) => [id, images.length]),
         ...Object.entries(ancientGalleries).map(([id, images]) => [id, images.length]),
+        ...Object.entries(empireGalleries).map(([id, images]) => [id, images.length]),
       ]) {
         await navigate(eventId);
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
@@ -211,6 +221,9 @@ async function main() {
           );
           await waitFor(
             `${active}.querySelector('.gallery-choices button:nth-child(${index + 1})').getAttribute('aria-pressed') === 'true'`,
+          );
+          await evaluate(
+            `${active}.querySelector('.gallery-image-surface').scrollIntoView({block:'center',inline:'nearest'})`,
           );
           await waitFor(
             `(()=>{const img=${active}.querySelector('.gallery-image-surface img'); return img?.complete && img.naturalWidth > 0;})()`,
@@ -331,18 +344,7 @@ async function main() {
           assert.ok(
             await evaluate(`${active}.querySelector('.exhibit-insight p').textContent.length > 30`),
           );
-          if (
-            step === 2 &&
-            [
-              "mauryan-ringstone",
-              "sanchi-mauryan-core",
-              "ashoka-lumbini",
-              "magadha-rise",
-              "early-punchmarked-money",
-              "kalinga-war",
-              "barabar-ajivikas",
-            ].includes(eventId)
-          ) {
+          if (step === 2 && Boolean(empireGalleries[eventId]?.length)) {
             await waitFor(
               `(()=>{const i=${active}.querySelector('.exhibit-drawing img');return i?.complete && i.naturalWidth>0})()`,
             );
@@ -363,28 +365,17 @@ async function main() {
             "document.querySelectorAll('.exhibit-dialog[open] .history-source-list a').length > 0",
           ),
         );
-        assert.equal(
+        assert.ok(
           await evaluate(
-            "document.querySelectorAll('.exhibit-dialog[open] .event-details section').length",
+            "document.querySelectorAll('.exhibit-dialog[open] .event-details section').length >= 3",
           ),
-          2,
         );
         assert.ok(
           await evaluate(
             "!!document.querySelector('.exhibit-dialog[open] .image-spaces .content-need-tag')",
           ),
         );
-        if (
-          [
-            "mauryan-ringstone",
-            "sanchi-mauryan-core",
-            "ashoka-lumbini",
-            "magadha-rise",
-            "early-punchmarked-money",
-            "kalinga-war",
-            "barabar-ajivikas",
-          ].includes(eventId)
-        ) {
+        if (Boolean(empireGalleries[eventId]?.length)) {
           await waitFor(
             "(()=>{const i=document.querySelector('.exhibit-dialog[open] .gallery-image-surface img');return i?.complete && i.naturalWidth>0})()",
           );
@@ -609,6 +600,7 @@ async function main() {
       await click(".history-dialog:not(.exhibit-dialog) .history-dialog-header button");
       console.log(`Verified ${totalEvents} exhibits and chapter filters at ${width}px.`);
     }
+    console.log("Checking motion, chapter transitions and static readers.");
     await send("Page.navigate", { url: `${base}/#event=inamgaon-settlement` });
     await waitFor(`${active}?.dataset.timelinePointId === 'inamgaon-settlement'`);
     await send("Emulation.setEmulatedMedia", {
@@ -758,7 +750,7 @@ async function main() {
     );
     assert.equal(
       await evaluate("document.querySelectorAll('#empires-reader .event-details section').length"),
-      34,
+      empireEvents.reduce((total, event) => total + event.details.length, 0),
     );
     assert.equal(
       await evaluate(
@@ -788,7 +780,9 @@ async function main() {
       postIndependenceEvents.length * 3,
     );
     console.log(
-      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 57 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
+      process.env.BROWSER_MOTION_ONLY
+        ? "PASS: motion and chapter transitions; forward/reverse crossfades; no hydration/runtime exceptions; all eight readers without JavaScript."
+        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 68 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {

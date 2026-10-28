@@ -1,20 +1,15 @@
 # Second Urbanization & Empires
 
-The expanded edition adds **34 detailed reading sections** across the existing 17 records,
-**seven photographs/visual examples**, and **17 explicitly tagged image spaces**. Open an event's
-full evidence view for the longer account. A scene without a photograph displays its image request
-during **Examine**; all requests also remain available in the evidence dialog and no-JavaScript reader.
+Expanded 28 October 2026: **55 detailed reading sections** across the existing 17 records,
+**18 distinct local images** (11 new additions), and specific remaining evidence requests.
+All 17 entries now have a relevant gallery; shared images are explicitly used as regional
+or chronological comparisons. Read the [media inventory](empires-media-inventory.md) for
+coverage, rights, sources and the exact material still needed.
 
-New detail covers the sixteen-state list, pottery production and distribution, Magadha's geography,
-Jain vows, Buddhist teachings, domestic finds at Bhir, museum coin measurements, imperial centres,
-inscription audiences, the separate Kalinga edicts, Sudama's chambers, Sanchi's phases and Lumbini's
-fiscal provision. Each reading block links directly to its supporting source.
-
-Edit `src/data/timeline/empires/details.ts` for extended reading and
-`src/data/timeline/empires/image-needs.ts` for image requests. Place a supplied image in
-`public/assets/images/empires/`, register it under the event ID in `empireGalleries` in
-`src/data/scenes/empire-exhibits.ts`, and remove or revise the fulfilled image request.
-Scenes use the first gallery image during Examine automatically. No upload service is required.
+Edit `src/data/scenes/empire-galleries.ts` for image metadata and
+`src/data/timeline/empires/evidence.ts` for the new evidence notes and reading/viewing links.
+Two-image scenes use both images before returning to the explanatory diagram. Single-image
+scenes retain their diagram/image/diagram sequence. Dates and event identifiers are unchanged.
 
 The chapter now has **17 researched records**, replacing its two prototype events. It follows
 early historic cities and states through Mauryan rule and the conventional dynastic endpoint
@@ -69,7 +64,7 @@ conventions for coronation and regnal years are acknowledged rather than silentl
 | `src/data/timeline/empires/events.ts`                 | Historical records, dates, limitations, source locators and addition tags |
 | `src/data/timeline/empires/sources.ts`                | Bibliography                                                              |
 | `src/data/timeline/second-urbanization.ts`            | Reading sections and broader research gaps                                |
-| `src/data/scenes/empire-exhibits.ts`                  | Palettes, visual types, pacing and image galleries                        |
+| `src/data/scenes/empire-exhibits.ts`                  | Palettes, visual types, pacing and gallery stage assignments              |
 | `public/assets/images/empires/`                       | Local photographs                                                         |
 | `src/components/visual-scenes/prehistory-diagram.tsx` | Original explanatory SVGs shared by chapters                              |
 
@@ -98,41 +93,29 @@ stupa phases and ring stones; their captions identify them as conceptual illustr
 
 ## What you can add next
 
-Every record has a visible tag in its full evidence view. Most useful additions:
-
-- `ADD_STATE_MAP` / `ADD_PHASED_EMPIRE_MAP`: sourced maps with dates, legends and uncertain borders.
-- `ADD_EXCAVATION_PLATE`: NBPW photograph with site, excavation layer, scale and licence.
-- `ADD_COIN_PHOTO`: both sides, accession number, weight and catalogue date.
-- `ADD_INSCRIPTION_PHOTO` / `ADD_SCRIPT_PANEL`: located inscriptions with verified script and translation.
-- `ADD_CAVE_PLAN`: a named Barabar cave's measured plan and photograph.
-- `ADD_SANCHI_PHASES`: phase plan separating the early core from later construction; a site photo is included.
-- `ADD_LUMBINI_RECORD`: scholarly transcription and translation; the pillar photo is included.
-- `ADD_JAIN_PASSAGE` / `ADD_BUDDHIST_PASSAGE`: edition and translator details, plus permission for any recording.
-
-Keep photographer, original URL, licence link and modification notes with each new image. Supply
-regional excavation and textual research in the reader's broader research slots before adding
-precise dates for uncertain events. The following Classical & Medieval chapter remains unbuilt.
-
-The coin photograph is a teaching comparison with uncertain dynastic attribution: its filename and description disagree. It is not British Museum 1869,1203.48. The Dhauli photograph is site context, not the text of Major Rock Edict XIII. An ambiguously identified modern cave image was excluded in favour of the archival Sudama view.
+The [media inventory](empires-media-inventory.md) explains the remaining evidence for every
+entry. Keep photographer, original URL, licence link and modification notes with each image.
+The included images are not a substitute for measured plans, stratigraphy or specimen records.
+The following Classical & Medieval chapter is populated; preserve cross-chapter chronology.
 
 ## Image completion list
 
-| Record                                        | Image status                        | Tag to fill                      |
-| --------------------------------------------- | ----------------------------------- | -------------------------------- |
-| Mahajanapadas: a landscape of states          | Tagged space                        | `ADD_MAHAJANAPADA_MAP`           |
-| Cities, fields and workshops                  | Tagged space                        | `ADD_NBPW_EXCAVATION_IMAGE`      |
-| Magadha: toward a larger kingdom              | Included; additional view requested | `ADD_PATALIPUTRA_PHASE_PLAN`     |
-| Mahavira and Jain paths of liberation         | Tagged space                        | `ADD_JAIN_CONTEXT_IMAGE`         |
-| Taxila: a northwestern crossroads             | Tagged space                        | `ADD_BHIR_MOUND_PHOTO`           |
-| The Buddha and the early sangha               | Tagged space                        | `ADD_EARLY_BUDDHIST_CONTEXT`     |
-| Silver, weight and punched marks              | Included; additional view requested | `ADD_CATALOGUED_COIN_PLATE`      |
-| 326 BCE: Alexander at Taxila                  | Tagged space                        | `ADD_TAXILA_ENCOUNTER_MAP`       |
-| Chandragupta and the Mauryan Empire           | Tagged space                        | `ADD_MAURYAN_PHASE_MAP`          |
-| A carved ring stone: evidence in miniature    | Included; additional view requested | `ADD_RINGSTONE_DETAIL_VIEW`      |
-| Ashoka: kingship in his own inscriptions      | Tagged space                        | `ADD_IDENTIFIED_ASHOKAN_PILLAR`  |
-| Kalinga: conquest and its human cost          | Included; additional view requested | `ADD_ROCK_EDICT_XIII_PLATE`      |
-| Dhamma: welfare, restraint and communication  | Tagged space                        | `ADD_EDICT_SCRIPT_COMPARISON`    |
-| Barabar: stone shelters for ascetics          | Included; additional view requested | `ADD_SUDAMA_INTERIOR_PLAN`       |
-| Sanchi: an early core, centuries of additions | Included; additional view requested | `ADD_SANCHI_CONSTRUCTION_PHASES` |
-| Lumbini: a visit recorded in stone            | Included; additional view requested | `ADD_LUMBINI_INSCRIPTION_DETAIL` |
-| After Ashoka: a changing political landscape  | Tagged space                        | `ADD_POST_MAURYAN_REGIONAL_MAP`  |
+| Record                                        | Gallery images | Remaining tag                       |
+| --------------------------------------------- | -------------: | ----------------------------------- |
+| Mahajanapadas: a landscape of states          |              1 | `ADD_MAHAJANAPADA_MAP`              |
+| Cities, fields and workshops                  |              1 | `ADD_NBPW_STRATIGRAPHIC_PLATE`      |
+| Magadha: toward a larger kingdom              |              2 | `ADD_PATALIPUTRA_PHASE_PLAN`        |
+| Mahavira and Jain paths of liberation         |              1 | `ADD_JAIN_FOLIO_TRANSCRIPTION`      |
+| Taxila: a northwestern crossroads             |              1 | `ADD_BHIR_PHASE_PLAN`               |
+| The Buddha and the early sangha               |              1 | `ADD_EARLY_BUDDHIST_SITE_SEQUENCE`  |
+| Silver, weight and punched marks              |              2 | `ADD_CATALOGUED_COIN_PLATE`         |
+| 326 BCE: Alexander at Taxila                  |              1 | `ADD_TAXILA_ENCOUNTER_MAP`          |
+| Chandragupta and the Mauryan Empire           |              1 | `ADD_MAURYAN_PHASE_MAP`             |
+| A carved ring stone: evidence in miniature    |              1 | `ADD_RINGSTONE_DETAIL_VIEW`         |
+| Ashoka: kingship in his own inscriptions      |              1 | `ADD_SARNATH_PILLAR_RECORD`         |
+| Kalinga: conquest and its human cost          |              2 | `ADD_EDICT_XIII_VERSION_COMPARISON` |
+| Dhamma: welfare, restraint and communication  |              2 | `ADD_GREEK_ARAMAIC_EDICT_EVIDENCE`  |
+| Barabar: stone shelters for ascetics          |              2 | `ADD_SUDAMA_MEASURED_PLAN`          |
+| Sanchi: an early core, centuries of additions |              1 | `ADD_SANCHI_CONSTRUCTION_PHASES`    |
+| Lumbini: a visit recorded in stone            |              2 | `ADD_LUMBINI_LINE_ALIGNMENT`        |
+| After Ashoka: a changing political landscape  |              1 | `ADD_POST_MAURYAN_REGIONAL_MAP`     |

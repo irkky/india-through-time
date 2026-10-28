@@ -4,6 +4,7 @@ import type { PrehistoryDiagram } from "@/types/prehistory-exhibit";
 import { empireSources as s } from "./sources";
 import { empireDetails } from "./details";
 import { empireImageNeeds } from "./image-needs";
+import { enrichEmpireEvent } from "./evidence";
 
 export type EmpirePeriodId =
   "landscape-of-states" | "an-empire-emerges" | "ashokan-evidence" | "after-mauryas";
@@ -383,46 +384,51 @@ export const empireEntries: readonly Entry[] = [
   },
 ];
 
-export const empireEvents: readonly HistoricalEvent[] = empireEntries.map((entry) => ({
-  id: entry.id,
-  title: entry.title,
-  dateStart: bce(entry.start),
-  ...(entry.end ? { dateEnd: bce(entry.end) } : {}),
-  approximateDate: entry.id !== "alexander-taxila",
-  contentStatus: "researched",
-  dateScope: entry.scope,
-  description: entry.description,
-  significance: entry.significance,
-  regions: [entry.region],
-  categories: ["early-historic", "evidence"],
-  people: [],
-  relatedEvents: entry.related,
-  sources: [
-    ...new Map(
-      [s[entry.source], ...(empireDetails[entry.id] ?? []).map((d) => d.source)].map((source) => [
-        source.id,
-        source,
-      ]),
-    ).values(),
-  ],
-  details: (empireDetails[entry.id] ?? []).map((d) => ({
-    title: d.title,
-    text: d.text,
-    sourceIds: [d.source.id],
-  })),
-  imageNeeds: empireImageNeeds[entry.id] ? [empireImageNeeds[entry.id]!] : [],
-  citations: [
-    { sourceId: s[entry.source].id, locator: entry.locator },
-    ...(empireDetails[entry.id] ?? []).map((d) => ({ sourceId: d.source.id, locator: d.locator })),
-  ],
-  interpretationNotes: [
-    { kind: "uncertainty", text: entry.limits, sourceIds: [s[entry.source].id] },
-  ],
-  visualReference: { id: `exhibit-${entry.id}`, kind: "svg" },
-  contentNeeds: [
-    { tag: entry.need.split(": ")[0]!, instruction: entry.need.split(": ").slice(1).join(": ") },
-  ],
-}));
+export const empireEvents: readonly HistoricalEvent[] = empireEntries.map((entry) =>
+  enrichEmpireEvent({
+    id: entry.id,
+    title: entry.title,
+    dateStart: bce(entry.start),
+    ...(entry.end ? { dateEnd: bce(entry.end) } : {}),
+    approximateDate: entry.id !== "alexander-taxila",
+    contentStatus: "researched",
+    dateScope: entry.scope,
+    description: entry.description,
+    significance: entry.significance,
+    regions: [entry.region],
+    categories: ["early-historic", "evidence"],
+    people: [],
+    relatedEvents: entry.related,
+    sources: [
+      ...new Map(
+        [s[entry.source], ...(empireDetails[entry.id] ?? []).map((d) => d.source)].map((source) => [
+          source.id,
+          source,
+        ]),
+      ).values(),
+    ],
+    details: (empireDetails[entry.id] ?? []).map((d) => ({
+      title: d.title,
+      text: d.text,
+      sourceIds: [d.source.id],
+    })),
+    imageNeeds: empireImageNeeds[entry.id] ? [empireImageNeeds[entry.id]!] : [],
+    citations: [
+      { sourceId: s[entry.source].id, locator: entry.locator },
+      ...(empireDetails[entry.id] ?? []).map((d) => ({
+        sourceId: d.source.id,
+        locator: d.locator,
+      })),
+    ],
+    interpretationNotes: [
+      { kind: "uncertainty", text: entry.limits, sourceIds: [s[entry.source].id] },
+    ],
+    visualReference: { id: `exhibit-${entry.id}`, kind: "svg" },
+    contentNeeds: [
+      { tag: entry.need.split(": ")[0]!, instruction: entry.need.split(": ").slice(1).join(": ") },
+    ],
+  }),
+);
 
 export const empireEventsForPeriod = (periodId: EmpirePeriodId): readonly HistoricalEvent[] => {
   const ids = new Set(

@@ -3,6 +3,7 @@ node_modules
 out
 build
 coverage
+.browser-artifacts
 package-lock.json
 AGENTS.md
 CLAUDE.md
