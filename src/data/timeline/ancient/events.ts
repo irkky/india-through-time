@@ -1,6 +1,7 @@
 import { bce } from "@/lib/historical-date";
 import type { HistoricalEvent, HistoricalSource } from "@/types/history";
 import { ancientSources as s } from "./sources";
+import { enrichAncientEvent } from "./evidence";
 
 type RecordInput = {
   id: string;
@@ -16,59 +17,60 @@ type RecordInput = {
   related: readonly string[];
   needs: readonly [string, string][];
 };
-const record = (r: RecordInput): HistoricalEvent => ({
-  id: r.id,
-  title: r.title,
-  dateStart: bce(r.start),
-  dateEnd: bce(r.end),
-  approximateDate: true,
-  contentStatus: "researched",
-  dateScope: r.scope,
-  description: r.description,
-  significance: r.significance,
-  regions: [r.region],
-  categories: ["ancient-india", "evidence"],
-  ...(r.id === "indus-seals-writing"
-    ? {
-        media: [
-          {
-            id: "met-49-40-1-image",
-            kind: "image" as const,
-            alt: "Indus seal and modern impression, The Met 49.40.1",
-            credit: "The Metropolitan Museum of Art, Dodge Fund, 1949",
-            license: "Public Domain / The Met Open Access",
-            sourceUrl: s.seal.url,
-            historicalContext:
-              "Ancient burnt-steatite seal, ca. 2600-1900 BCE; impression is modern.",
-          },
-        ],
-      }
-    : {}),
-  people: [],
-  ...(r.id === "rakhigarhi-cemetery"
-    ? {
-        media: [
-          {
-            id: "rakhigarhi-shinde-fig3",
-            kind: "image" as const,
-            alt: "Rakhigarhi excavation localities, Shinde et al. Figure 3",
-            credit: "© 2018 Shinde et al., PLOS ONE",
-            license: "CC BY 4.0",
-            sourceUrl: "https://doi.org/10.1371/journal.pone.0192299.g003",
-            historicalContext: "Modern aerial excavation record, reproduced unchanged.",
-          },
-        ],
-      }
-    : {}),
-  relatedEvents: r.related,
-  sources: r.sources.map(([source]) => source),
-  citations: r.sources.map(([source, locator]) => ({ sourceId: source.id, locator })),
-  interpretationNotes: [
-    { kind: "uncertainty", text: r.limits, sourceIds: r.sources.map(([source]) => source.id) },
-  ],
-  visualReference: { id: `exhibit-${r.id}`, kind: "svg" },
-  contentNeeds: r.needs.map(([tag, instruction]) => ({ tag, instruction })),
-});
+const record = (r: RecordInput): HistoricalEvent =>
+  enrichAncientEvent({
+    id: r.id,
+    title: r.title,
+    dateStart: bce(r.start),
+    dateEnd: bce(r.end),
+    approximateDate: true,
+    contentStatus: "researched",
+    dateScope: r.scope,
+    description: r.description,
+    significance: r.significance,
+    regions: [r.region],
+    categories: ["ancient-india", "evidence"],
+    ...(r.id === "indus-seals-writing"
+      ? {
+          media: [
+            {
+              id: "met-49-40-1-image",
+              kind: "image" as const,
+              alt: "Indus seal and modern impression, The Met 49.40.1",
+              credit: "The Metropolitan Museum of Art, Dodge Fund, 1949",
+              license: "Public Domain / The Met Open Access",
+              sourceUrl: s.seal.url,
+              historicalContext:
+                "Ancient burnt-steatite seal, ca. 2600-1900 BCE; impression is modern.",
+            },
+          ],
+        }
+      : {}),
+    people: [],
+    ...(r.id === "rakhigarhi-cemetery"
+      ? {
+          media: [
+            {
+              id: "rakhigarhi-shinde-fig3",
+              kind: "image" as const,
+              alt: "Rakhigarhi excavation localities, Shinde et al. Figure 3",
+              credit: "© 2018 Shinde et al., PLOS ONE",
+              license: "CC BY 4.0",
+              sourceUrl: "https://doi.org/10.1371/journal.pone.0192299.g003",
+              historicalContext: "Modern aerial excavation record, reproduced unchanged.",
+            },
+          ],
+        }
+      : {}),
+    relatedEvents: r.related,
+    sources: r.sources.map(([source]) => source),
+    citations: r.sources.map(([source, locator]) => ({ sourceId: source.id, locator })),
+    interpretationNotes: [
+      { kind: "uncertainty", text: r.limits, sourceIds: r.sources.map(([source]) => source.id) },
+    ],
+    visualReference: { id: `exhibit-${r.id}`, kind: "svg" },
+    contentNeeds: r.needs.map(([tag, instruction]) => ({ tag, instruction })),
+  });
 
 export const cityEvents = [
   record({

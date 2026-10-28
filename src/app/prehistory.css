@@ -792,6 +792,11 @@
   max-width: none;
 }
 .exhibit-dialog {
+  position: fixed;
+  inset: 6dvh auto auto max(12px, calc((100vw - 840px) / 2));
+  width: min(840px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  margin: 0;
   overscroll-behavior: contain;
 }
 .story-full-note {

@@ -17,6 +17,7 @@ const { independenceGalleries } = require("../src/data/scenes/independence-galle
 const { postIndependenceEvents } = require("../src/data/timeline/post-independence/events.ts");
 const { postIndependenceGalleries } = require("../src/data/scenes/post-independence-galleries.ts");
 const { prehistoryGalleries } = require("../src/data/scenes/prehistory-galleries.ts");
+const { ancientGalleries } = require("../src/data/scenes/ancient-galleries.ts");
 const totalEvents =
   56 +
   classicalEvents.length +
@@ -189,9 +190,17 @@ async function main() {
         ["lower-palaeolithic-scaffold", 4],
         ["attirampakkam-middle-palaeolithic", 6],
         ...Object.entries(prehistoryGalleries).map(([id, images]) => [id, images.length]),
+        ...Object.entries(ancientGalleries).map(([id, images]) => [id, images.length]),
       ]) {
         await navigate(eventId);
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+        assert.equal(
+          await evaluate(
+            `(()=>{const dialog=document.querySelector('.exhibit-dialog[open]');const r=dialog.getBoundingClientRect();const viewport=visualViewport;return r.left >= (viewport?.offsetLeft ?? 0) - 1 && r.right <= (viewport?.offsetLeft ?? 0) + (viewport?.width ?? innerWidth) + 1 && dialog.scrollWidth <= dialog.clientWidth + 1})()`,
+          ),
+          true,
+          `Evidence dialog fits visible viewport: ${eventId} at ${width}`,
+        );
         assert.equal(
           await evaluate(`${active}.querySelectorAll('.gallery-choices button').length`),
           count,
@@ -220,6 +229,9 @@ async function main() {
           true,
         );
         await evaluate(`${active}.querySelector('.gallery-image-surface img').decode()`);
+        await evaluate(
+          `${active}.querySelector(".gallery-image-surface").scrollIntoView({block:"center"})`,
+        );
         await delay(200);
         await screenshot(`gallery-${eventId}-${width}`);
         await click(".exhibit-dialog[open] .history-dialog-header button");
@@ -776,7 +788,7 @@ async function main() {
       postIndependenceEvents.length * 3,
     );
     console.log(
-      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 45 gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
+      `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 57 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {

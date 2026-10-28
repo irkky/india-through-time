@@ -1,6 +1,6 @@
 # Ancient India & Early Transitions
 
-Researched and integrated on 19 October 2026. This is an expandable, sourced overview,
+Initial research integrated on 19 October 2026; media and evidence expanded on 28 October 2026. This is an expandable, sourced overview,
 not an exhaustive catalogue or a claim that every historical question is settled.
 
 ## Chapter structure
@@ -11,8 +11,7 @@ Additional context covers Kalibangan, overseas exchange, oral preservation and
 megalithic monuments without inventing precise event dates.
 
 The single Indus prototype has been replaced; its `indus-valley-civilization` ID
-is preserved so existing links still work. The main timeline now has 41 events.
-The two later-era prototypes remain outside this research pass.
+is preserved so existing links still work. The full timeline contains 252 events across eight populated chapters, ending in 2025.
 
 ## Chronology and transitions
 
@@ -53,8 +52,8 @@ locations above, then remove or revise the fulfilled tag.
 
 Useful next additions:
 
-- Dholavira: reservoir photograph and phase-labelled measured plan.
-- Mohenjo-daro: drain/house section or Great Bath photograph.
+- Dholavira: phase-labelled measured plan; the reservoir photograph is now included.
+- Mohenjo-daro: drain/house section; the Great Bath photograph is now included.
 - Crafts and weights: catalogued specimens with materials, dimensions and scale.
 - Food: published archaeobotanical plate with site and phase.
 - Lothal: measured basin plan and object-based evidence for any mapped trade routes.
@@ -98,3 +97,16 @@ navigation. `npm run build` verifies server rendering. Run
 `node scripts/browser-smoke.cjs http://localhost:<port>` against the current build
 for desktop/mobile scene fit, image loading, checklists, citations, chapter
 boundaries, forward/reverse transitions, hydration and readers without JavaScript.
+
+## Expanded media collection
+
+The chapter now has 14 distinct local images across 14 of its 15 records, including
+12 newly researched files. Early iron retains its labelled explanatory diagram and
+a precise request for a securely contextualised photograph. The [media inventory](ancient-media-inventory.md)
+records coverage, remaining needs, external video/audio resources and reuse rules.
+
+Edit `src/data/scenes/ancient-galleries.ts` for images and attribution, and
+`src/data/timeline/ancient/evidence.ts` for evidence notes and further-reading links.
+The machine-readable [manifest](ancient-media-manifest.json) stores download URLs
+and SHA-256 checksums for the 12 new files. No external recording autoplays or loads
+inside the timeline; visitors choose whether to open its publisher website.

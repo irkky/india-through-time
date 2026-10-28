@@ -1,18 +1,8 @@
+import { ancientGalleries } from "./ancient-galleries";
+export { indusSealImage } from "./ancient-galleries";
 import type { TimelineScenePresentation } from "@/types/timeline-presentation";
-import type { PrehistoryDiagram, PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
+import type { PrehistoryDiagram } from "@/types/prehistory-exhibit";
 import { ancientIndiaEra } from "@/data/timeline/ancient-india";
-
-export const indusSealImage: PrehistoryGalleryImage = {
-  src: "/assets/images/ancient_india/indus-seal-met-49-40-1.jpg",
-  title: "Ancient seal, modern impression",
-  category: "Artefact",
-  alt: "Square stone seal at left and its modern clay impression at right, showing reversed animal and inscription",
-  caption:
-    "The Met, 49.40.1. Burnt steatite, about 2600-1900 BCE; seal 3.8 × 3.8 × 1 cm. The right-hand impression is modern. No translation is supplied for the undeciphered signs.",
-  credit: "The Metropolitan Museum of Art, Dodge Fund, 1949",
-  license: "Public Domain / The Met Open Access",
-  sourceUrl: "https://www.metmuseum.org/art/collection/search/324062",
-};
 
 const visuals: Record<string, [PrehistoryDiagram, string, string]> = {
   "rakhigarhi-cemetery": [
@@ -91,30 +81,13 @@ const visuals: Record<string, [PrehistoryDiagram, string, string]> = {
     "Generic painted bowl and stratigraphic context; not a replica or a dating tool on its own.",
   ],
 };
-const rakhigarhiImage: PrehistoryGalleryImage = {
-  src: "/assets/images/ancient_india/rakhigarhi-localities-shinde-2018.png",
-  title: "Rakhigarhi excavation localities",
-  category: "Site photograph",
-  alt: "Annotated aerial photograph of RGR 7.2 and 7.3 showing excavation trenches, dimensions and north arrow",
-  caption:
-    "Shinde et al. (2018), Figure 3: excavation localities RGR 7.2 and 7.3. This modern fieldwork image documents archaeological context; it is not a reconstruction of the ancient city. Reproduced without alteration.",
-  credit: "© 2018 Shinde et al., PLOS ONE 13(2): e0192299, Figure 3",
-  license: "CC BY 4.0",
-  licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
-  sourceUrl: "https://doi.org/10.1371/journal.pone.0192299.g003",
-};
 export const ancientExhibitPresentations: Readonly<Record<string, TimelineScenePresentation>> =
   Object.fromEntries(
     ancientIndiaEra.periods.flatMap((period) =>
       period.events.map((event) => {
         const [diagram, title, caption] = visuals[event.id]!;
         const textual = diagram === "oral";
-        const gallery =
-          diagram === "seal"
-            ? [indusSealImage]
-            : event.id === "rakhigarhi-cemetery"
-              ? [rakhigarhiImage]
-              : undefined;
+        const gallery = ancientGalleries[event.id];
         return [
           `exhibit-${event.id}`,
           {
@@ -137,7 +110,9 @@ export const ancientExhibitPresentations: Readonly<Record<string, TimelineSceneP
                     : diagram === "oral"
                       ? "comparison"
                       : "artefact",
-              ...(gallery ? { gallery, stageImages: [null, 0, null] } : {}),
+              ...(gallery
+                ? { gallery, stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null] }
+                : {}),
               points: [
                 { label: "Evidence", field: "description", x: 25, y: 40 },
                 { label: "Context", field: "significance", x: 65, y: 50 },

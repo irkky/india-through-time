@@ -25,7 +25,7 @@ History of India is an educational website built around one continuous timeline.
 through a cinematic opening, historical exhibits, images and source-backed explanations. Visitors
 can also jump between events, search the collection or read the evidence independently.
 
-The current collection contains **252 entries across eight populated chapters**, with **45 distinct
+The current collection contains **252 entries across eight populated chapters**, with **57 distinct
 gallery image files** and tagged spaces for missing images or research. Historical content,
 presentation and animation are maintained separately so the project can grow without placing
 historical facts inside UI or animation code.
@@ -268,7 +268,7 @@ src/data/
 │   ├── independence-india.ts
 │   ├── post-independence-india.ts
 │   ├── prehistory/                # Events, sources, gaps, regional expansion
-│   ├── ancient/                   # Events and bibliography
+│   ├── ancient/                   # Events, evidence notes and bibliography
 │   ├── empires/                   # Events, details, sources and image needs
 │   ├── classical/                 # Records, event builder and sources
 │   ├── early-modern/              # Records, event builder and sources
@@ -282,7 +282,8 @@ src/data/
 │   ├── prehistoric-scenes.ts      # Prehistoric scene composition
 │   ├── prehistory-exhibits.ts     # Diagrams and exhibit definitions
 │   ├── palaeolithic-gallery.ts    # Palaeolithic image metadata
-│   ├── ancient-exhibits.ts        # Ancient exhibits and galleries
+│   ├── ancient-exhibits.ts        # Ancient scene presentation
+│   ├── ancient-galleries.ts       # Researched ancient images and attribution
 │   ├── empire-exhibits.ts         # Empire exhibits and galleries
 │   ├── classical-exhibits.ts
 │   ├── classical-galleries.ts
@@ -351,7 +352,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **33 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **35 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -408,7 +409,7 @@ node scripts/fetch-colonial-media.cjs
 | [Architecture](docs/architecture.md)                                                                           | Domain boundaries, date model, scene contracts and original ingestion design.         |
 | [Project review](docs/project-review.md)                                                                       | Earlier architectural review and roadmap; some proposed features are now implemented. |
 | [Prehistoric content](docs/prehistoric-content.md) · [Expansion notes](docs/prehistoric-expansion.md)          | Chronology, regional additions, evidence and assets.                                  |
-| [Ancient India](docs/ancient-india-content.md)                                                                 | Sources, images and tagged additions.                                                 |
+| [Ancient India](docs/ancient-india-content.md) and [media inventory](docs/ancient-media-inventory.md)          | Sources, images and tagged additions.                                                 |
 | [Second Urbanization & Empires](docs/second-urbanization-content.md)                                           | Coverage, image credits and remaining evidence.                                       |
 | [Classical & Medieval](docs/classical-medieval-content.md) · [Inventory](docs/classical-medieval-inventory.md) | Research scope, entries and media needs.                                              |
 | [Early Modern](docs/early-modern-india-content.md) · [Inventory](docs/early-modern-inventory.md)               | Regional chronology, sources and research requests.                                   |
