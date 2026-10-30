@@ -25,7 +25,7 @@ History of India is an educational website built around one continuous timeline.
 through a cinematic opening, historical exhibits, images and source-backed explanations. Visitors
 can also jump between events, search the collection or read the evidence independently.
 
-The current collection contains **252 entries across eight populated chapters**, with **68 distinct
+The current collection contains **252 entries across eight populated chapters**, with **138 distinct
 gallery image files** and tagged spaces for missing images or research. Historical content,
 presentation and animation are maintained separately so the project can grow without placing
 historical facts inside UI or animation code.
@@ -270,8 +270,8 @@ src/data/
 │   ├── prehistory/                # Events, sources, gaps, regional expansion
 │   ├── ancient/                   # Events, evidence notes and bibliography
 │   ├── empires/                   # Events, details, sources and image needs
-│   ├── classical/                 # Records, event builder and sources
-│   ├── early-modern/              # Records, event builder and sources
+│   ├── classical/                 # Records, evidence/video guides, event builder and sources
+│   ├── early-modern/              # Records, sources, visual evidence and film guides
 │   ├── colonial/                  # Records, event builder and sources
 │   ├── independence/              # Records with sources, plus event builder
 │   ├── post-independence/         # Records with sources, plus event builder
@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **37 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **43 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -418,8 +418,9 @@ node scripts/fetch-colonial-media.cjs
 | [Independence Movement](docs/independence-movement-content.md) · [Inventory](docs/independence-inventory.md)                | Movement entries, evidence and image slots.                                           |
 | [Post-Independence](docs/post-independence-content.md) · [Inventory](docs/post-independence-inventory.md)                   | 55 entries, 165 evidence sections, three images and 52 image briefs through 2025.     |
 
-Media manifests cover [Classical](docs/classical-media-manifest.json),
-[Early Modern](docs/early-modern-media-manifest.json), [Colonial](docs/colonial-media-manifest.json)
+Media manifests cover [Classical original photographs](docs/classical-media-manifest.json)
+and [Classical researched images](docs/classical-researched-media-manifest.json),
+[Early Modern: original](docs/early-modern-media-manifest.json), [researched additions](docs/early-modern-researched-media-manifest.json), [Colonial: original](docs/colonial-media-manifest.json), [researched additions](docs/colonial-researched-media-manifest.json)
 and [Independence](docs/independence-media-manifest.json) images. Other provenance lives in gallery
 definitions and chapter guides. Some architecture passages describe the original prototype; current
 code uses weighted positions and all eight chapters are populated.

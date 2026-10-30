@@ -1,3 +1,4 @@
+import researchedMedia from "../../../docs/early-modern-researched-media-manifest.json";
 import manifest from "../../../docs/early-modern-media-manifest.json";
 import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
 
@@ -17,7 +18,7 @@ function museumImage(id: number, alt: string, context: string): PrehistoryGaller
   };
 }
 
-export const earlyModernGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> = {
+const originalGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> = {
   "hamzanama-workshop": [
     museumImage(
       447743,
@@ -54,3 +55,36 @@ export const earlyModernGalleries: Readonly<Record<string, readonly PrehistoryGa
     ),
   ],
 };
+
+/** Reuse an identified object only when its caption explains its relevance to each event. */
+const reusedGalleries: Record<string, readonly PrehistoryGalleryImage[]> = {
+  "textile-workshops": originalGalleries["kalamkari-cover"] ?? [],
+  "chand-bibi-defence": originalGalleries["chand-bibi-memory"] ?? [],
+};
+const eventIds = new Set([
+  ...Object.keys(originalGalleries),
+  ...Object.keys(reusedGalleries),
+  ...researchedMedia.flatMap((item) => item.eventIds),
+]);
+export const earlyModernGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> =
+  Object.fromEntries(
+    [...eventIds].map((id) => [
+      id,
+      [
+        ...(originalGalleries[id] ?? reusedGalleries[id] ?? []),
+        ...researchedMedia
+          .filter((item) => item.eventIds.includes(id))
+          .map((item) => ({
+            src: item.src,
+            title: item.title,
+            alt: item.alt,
+            caption: item.caption,
+            category: item.category as PrehistoryGalleryImage["category"],
+            credit: item.credit,
+            sourceUrl: item.sourceUrl,
+            license: item.license,
+            licenseUrl: item.licenseUrl,
+          })),
+      ],
+    ]),
+  );

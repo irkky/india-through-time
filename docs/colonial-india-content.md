@@ -1,33 +1,44 @@
-# Colonial Era & British Rule
+# Colonial Era & British Rule: content and media guide
 
-This chapter adds 36 sourced entries and 108 contextual reading sections to the Indian-history timeline, bringing the project to 168 events. The working chapter range is 1765–1947; the opening Diwani milestone remains in Early Modern India and links into the new chapter. The first new entry is the Bengal famine of 1770. The five phases are navigation conventions, not simultaneous changes across India.
+The chapter contains **36 chronological entries**, **154 evidence sections**, **17 illustrated galleries**, **21 distinct local images** and **six external film guides**. Reviewed 29 October 2026. It connects the 1765 Diwani entry in Early Modern India to independence and Partition in 1947; the wider timeline still ends in 2025.
 
-Coverage includes Company regulation, conquest, revenue, rural resistance, education and social reform, 1857, Crown government, photography, rail infrastructure, public politics, constitutional changes, wartime hunger, independence and Partition. It is an expandable researched overview, not an exhaustive account. The reader exposes further regional, economic, social and independence-movement research requests. The separate Independence Movement chapter remains available for future expansion; its future events should interleave chronologically rather than restart the timeline.
+## Explore the collection
 
-## Editing and supplying images
+Nineteen new images supplement the two existing Met photographs. They include Bhide Wada, Ram Mohan Roy, railway construction, Santhal press imagery, Lucknow after the rebellion, the Crown proclamation, indigo production, Bourne and Tripe photographs, the first Congress, a Bengal gazetteer map, an Indian soldier in France, salt protest imagery, Quit India remembrance and the Independence Act.
 
-- Historical records: `src/data/timeline/colonial/records.ts`. Rows contain the date, region, theme, source, event, background, consequences, qualification and requested image. Named people and explicit related-event links are maintained beneath the rows.
-- References: `src/data/timeline/colonial/sources.ts`. Add a bibliographic source before making new factual claims. Distinguish a source's claim from an independently established conclusion.
-- Chapter phases and broader gaps: `src/data/timeline/colonial-india.ts`.
-- Local photographs: `public/assets/images/colonial/`. Register each in `src/data/scenes/colonial-galleries.ts` with the matching event ID, caption, alt text, creator, date, source URL and licence. Gallery registration automatically replaces that event's image placeholder.
-- Scene presentation: `src/data/scenes/colonial-exhibits.ts`. Uses the existing three-stage interaction, reversible crossfades and source dialog. Diagrams are conceptual explanations, not reconstructed maps or primary evidence.
+The films are linked to UNESCO, IWM, BFI and British Council publisher pages. These are external viewing guides, not locally redistributed videos or autoplay embeds. Some pages contain several films: the guide names the exact title to select. Archive access and playback availability are controlled by the publisher.
 
-The [complete inventory](colonial-inventory.md) lists all 36 entries, references and exact image/research tags. There are 35 image slots still awaiting suitable material. Specific briefs distinguish archival evidence, later memorials and modern photographs. Do not use a generic battle painting for an unrelated conflict or an unidentified famine photograph.
+Every entry retains a specific `ADD_COLONIAL_*_EVIDENCE` request, including entries with contextual photographs. **19 entries still have no verified local gallery**. Their conceptual diagrams remain clearly labelled, with acquisition instructions in the [complete inventory](colonial-inventory.md).
 
-## Images already added
+## Where to edit
 
-Two public-domain Metropolitan Museum photographs dated 1858–61 accompany the Crown-rule entry: an equestrian statue of Lord Hardinge, photographed by an unidentified maker, and John Constantine Stanley's view of the Maidan from Government House. These illustrate colonial monuments and urban surroundings; neither depicts the transfer of government. Hardinge's statue commemorates an earlier governor-general. The captions explicitly state those limits.
+| File                                           | Purpose                                                                                   |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `src/data/timeline/colonial/records.ts`        | Dates, regional scope, core accounts and original research requests                       |
+| `src/data/timeline/colonial/sources.ts`        | Original historical references                                                            |
+| `src/data/timeline/colonial/evidence.ts`       | Visual reading notes, added sources, document context, film guides and remaining requests |
+| `src/data/timeline/colonial/events.ts`         | Combines records, media and references for the timeline and static reader                 |
+| `src/data/scenes/colonial-galleries.ts`        | Combines original and researched media by event ID                                        |
+| `src/data/scenes/colonial-exhibits.ts`         | Three-stage presentation, image choices, timing and reversible crossfades                 |
+| `public/assets/images/colonial/researched/`    | Nineteen local JPEG derivatives                                                           |
+| `docs/colonial-researched-media-manifest.json` | Credits, licences, source and download URLs, dates, event assignments and SHA-256 hashes  |
 
-The [media manifest](colonial-media-manifest.json) records accessions, dates, credits, source and download URLs. `node scripts/fetch-colonial-media.cjs` is an optional maintenance downloader for these two verified public-domain objects. It never runs during normal website use. A proposed Bourne album was excluded because its API record did not supply a verified public-domain image; that entry keeps its image request.
+The [original manifest](colonial-media-manifest.json) retains the two Met objects. `scripts/fetch-colonial-media.cjs` is an optional maintenance downloader for those originals only; it never runs during normal website use. New downloads are documented separately and are served locally without runtime requests to the archives.
 
-## Research and interpretation
+## Historical relevance and source limits
 
-Sources reviewed on 24 October 2026 include NCERT, SCERT Delhi, UNESCO, Indian government publications, museum catalogues, UK parliamentary histories, National Archives collections and contemporary diplomatic records. References appear with the individual entries. Some large textbook PDFs were available only through indexed extracts or institutional mirrors; further primary-source and regional research is explicitly requested rather than fabricated.
+- Separate event dates, artwork dates and modern capture dates. The railway construction photograph is later than the 1853 inaugural service; the Lucknow photograph records an aftermath, not combat or annexation.
+- The indigo image is Simpson's **1863 watercolour, WD 1017**. Commons describes it as the 1867 chromolithograph; the National Trust bulletin identifies the original and later print separately. Preserve the correction and catalogue links.
+- The salt-campaign image has conflicting day-level metadata. It is labelled April 1930 context without claiming the exact Dandi law-breaking moment.
+- The gazetteer map shows Eastern Bengal and Assam after 1905, not the final 1947 boundaries. A proposed Chenab-line map was rejected as unsuitable for a final Partition map.
+- The 1947 statute is correctly placed at independence, not the 1935 Act. The official 1935 text remains linked separately.
+- The BFI film's inherited title says Calcutta but the publisher identifies Varanasi. The 1915 IWM film is selected official wartime footage, not a complete account of Indian service overseas.
+- Later memorials, portraits, official records and colonial press illustrations have different evidential limits. Add Indian-language and community testimony with identifiable provenance. Do not substitute unidentified famine photographs or invent precise casualty totals.
 
-Official colonial records and military accounts have institutional viewpoints. Compare them with Indian-language documents, local histories and community testimony. Famine and massacre totals are not supplied without a documented method and uncertainty. The Bengal famine entry cites contemporary warnings, not a claim that one diplomatic letter explains the entire catastrophe.
+## Complete an evidence tag
 
-Major further additions include revenue systems beyond Permanent Settlement, labour and industrialisation, indenture, plantations, censuses, forest laws, the press, anti-caste organising, women beyond the selected reform entries, northeastern histories, the world wars, revolutionary organisations, the INA, the naval uprising and detailed constitutional negotiations. The existing overview entries do not make these research gaps complete.
+Use the inventory's event-specific brief. Supply the object/site title, archive identifier, historical date, recording date, creator, source URL, reuse permission or licence, alt text and a caption explaining its relevance. Keep document, map and research requests until those exact needs are met. An architectural photograph does not complete a request for a statute or participant account.
 
 ## Validation
 
-Run `npm run check` and `npm run build`; then run `npm run test:browser -- http://localhost:PORT` against the running production server. The browser regression includes the new scenes, transition from 1765, 1857 and 1947 anchors, and the sixth evidence reader without JavaScript. Century filters now extend through 2000 CE and still intersect overlapping ranges. Four older Lower Palaeolithic image-credit warnings remain unrelated to this chapter.
+Run `npm run check`, `npm run build`, then `npm run test:browser -- http://localhost:PORT` against a production server. Media tests verify JPEG completeness, hashes, credits, assignments, stage indices, source references and key chronology distinctions. The browser suite exercises all gallery choices, responsive exhibits, evidence requests, forward/reverse transitions, filters, reduced motion and static readers. Four older Lower Palaeolithic attribution warnings remain outside this chapter.

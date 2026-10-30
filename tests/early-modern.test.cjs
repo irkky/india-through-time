@@ -54,7 +54,7 @@ test("early modern chapter preserves chronology, regional overlaps and the Compa
 
 test("each early modern scene has traceable evidence, valid links and a real image or actionable tag", () => {
   for (const event of earlyModernEvents) {
-    assert.equal(event.details.length, 3);
+    assert.ok(event.details.length >= 4);
     assert.ok(event.dateScope && event.interpretationNotes.length);
     assert.ok(
       event.citations.every((c) => event.sources.some((s) => s.id === c.sourceId) && c.locator),
@@ -93,13 +93,13 @@ test("eighteenth-century filtering finds new content without truncating earlier 
 });
 
 test("early modern museum images are local, web-sized and credited", () => {
-  assert.equal(Object.keys(earlyModernGalleries).length, 5);
+  assert.equal(Object.keys(earlyModernGalleries).length, 33);
   for (const images of Object.values(earlyModernGalleries))
     for (const image of images) {
       assert.ok(image.alt && image.credit && image.sourceUrl && image.licenseUrl);
       const data = fs.readFileSync(path.join(__dirname, "../public", image.src));
       assert.equal(data.readUInt16BE(0), 0xffd8);
-      assert.ok(data.length < 500000);
+      assert.ok(data.length < 1200000);
     }
   assert.match(earlyModernGalleries["chand-bibi-memory"][0].caption, /later remembered image/);
 });

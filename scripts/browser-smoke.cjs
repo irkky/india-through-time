@@ -201,6 +201,9 @@ async function main() {
         ...Object.entries(prehistoryGalleries).map(([id, images]) => [id, images.length]),
         ...Object.entries(ancientGalleries).map(([id, images]) => [id, images.length]),
         ...Object.entries(empireGalleries).map(([id, images]) => [id, images.length]),
+        ...Object.entries(classicalGalleries).map(([id, images]) => [id, images.length]),
+        ...Object.entries(earlyModernGalleries).map(([id, images]) => [id, images.length]),
+        ...Object.entries(colonialGalleries).map(([id, images]) => [id, images.length]),
       ]) {
         await navigate(eventId);
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
@@ -423,7 +426,7 @@ async function main() {
           } else if (step === 2) {
             assert.ok(
               await evaluate(
-                `${active}.querySelector('.image-space-compact .content-need-tag')?.textContent.startsWith('IMAGE_PLACEHOLDER_')`,
+                `${active}.querySelector('.image-space-compact .content-need-tag')?.textContent === ${JSON.stringify(record.imageNeeds[0]?.tag)}`,
               ),
             );
           }
@@ -516,9 +519,9 @@ async function main() {
         await evaluate(
           "document.querySelectorAll('.exhibit-dialog[open] .gallery-choices button').length",
         ),
-        2,
+        colonialGalleries["colonial-crown-1858"].length,
       );
-      for (let photo = 1; photo <= 2; photo++) {
+      for (let photo = 1; photo <= colonialGalleries["colonial-crown-1858"].length; photo++) {
         await click(`.exhibit-dialog[open] .gallery-choices button:nth-child(${photo})`);
         await evaluate(
           "document.querySelector('.exhibit-dialog[open] .gallery-selected').scrollIntoView({block:'center'})",
@@ -737,7 +740,7 @@ async function main() {
       await evaluate(
         "document.querySelectorAll('#classical-reader .event-details section').length",
       ),
-      classicalEvents.length * 2,
+      classicalEvents.reduce((total, event) => total + event.details.length, 0),
     );
     await waitFor(
       `document.querySelectorAll('#early-modern-reader details').length === ${earlyModernEvents.length}`,
@@ -746,7 +749,7 @@ async function main() {
       await evaluate(
         "document.querySelectorAll('#early-modern-reader .event-details section').length",
       ),
-      earlyModernEvents.length * 3,
+      earlyModernEvents.reduce((sum, event) => sum + event.details.length, 0),
     );
     assert.equal(
       await evaluate("document.querySelectorAll('#empires-reader .event-details section').length"),
@@ -760,6 +763,10 @@ async function main() {
     );
     await waitFor(
       `document.querySelectorAll("#colonial-reader details").length === ${colonialEvents.length}`,
+    );
+    assert.equal(
+      await evaluate('document.querySelectorAll("#colonial-reader .event-details section").length'),
+      colonialEvents.reduce((sum, event) => sum + event.details.length, 0),
     );
     await waitFor(
       `document.querySelectorAll("#independence-reader details").length === ${independenceEvents.length}`,
@@ -782,7 +789,7 @@ async function main() {
     console.log(
       process.env.BROWSER_MOTION_ONLY
         ? "PASS: motion and chapter transitions; forward/reverse crossfades; no hydration/runtime exceptions; all eight readers without JavaScript."
-        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 68 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
+        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 138 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {

@@ -1,4 +1,4 @@
-require("../scripts/register-typescript.cjs");
+﻿require("../scripts/register-typescript.cjs");
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
@@ -25,7 +25,7 @@ test("colonial chronology, citations, regional ranges and twentieth-century filt
   assert.ok(results.some((e) => e.id === "colonial-independence-1947"));
   assert.ok(!results.some((e) => e.id === "colonial-birsa"));
   for (const e of colonialEvents) {
-    assert.equal(e.details.length, 3);
+    assert.ok(e.details.length >= 4);
     assert.ok(e.sources.length);
     assert.ok(e.imageNeeds.length || colonialGalleries[e.id]?.length);
   }
@@ -44,7 +44,7 @@ test("colonial photographs have local JPEGs, dates and reuse credits", () => {
           .toString("hex"),
         "ffd8ff",
       );
-      assert.match(image.license, /Public Domain/);
+      assert.match(image.license, /Public Domain|CC BY|No restrictions/i);
       assert.ok(image.credit);
       assert.ok(image.sourceUrl);
     }

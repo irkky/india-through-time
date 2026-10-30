@@ -1,4 +1,5 @@
 import manifest from "../../../docs/classical-media-manifest.json";
+import researched from "../../../docs/classical-researched-media-manifest.json";
 import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
 
 function museumImage(id: number, alt: string, context: string): PrehistoryGalleryImage {
@@ -17,7 +18,7 @@ function museumImage(id: number, alt: string, context: string): PrehistoryGaller
   };
 }
 
-export const classicalGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> = {
+const originalGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> = {
   "chola-temples": [
     museumImage(
       39328,
@@ -33,3 +34,36 @@ export const classicalGalleries: Readonly<Record<string, readonly PrehistoryGall
     ),
   ],
 };
+
+const additions: Record<string, PrehistoryGalleryImage[]> = {};
+for (const item of researched) {
+  const image: PrehistoryGalleryImage = {
+    src: item.src,
+    title: item.title,
+    alt: item.alt,
+    caption: item.caption,
+    category: item.category as PrehistoryGalleryImage["category"],
+    credit: item.credit,
+    sourceUrl: item.sourceUrl,
+    license: item.license,
+    licenseUrl: item.licenseUrl,
+  };
+  for (const eventId of item.eventIds) (additions[eventId] ??= []).push(image);
+}
+
+// Lead with an architectural overview; keep details and plans available in the gallery.
+for (const [eventId, leadingFile] of [
+  ["ellora-caves", "ellora-exterior.jpg"],
+  ["chola-temples", "thanjavur-festival.jpg"],
+] as const) {
+  additions[eventId]?.sort(
+    (a, b) => Number(b.src.endsWith(leadingFile)) - Number(a.src.endsWith(leadingFile)),
+  );
+}
+
+export const classicalGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> =
+  Object.fromEntries(
+    Array.from(new Set([...Object.keys(originalGalleries), ...Object.keys(additions)])).map(
+      (id) => [id, [...(originalGalleries[id] ?? []), ...(additions[id] ?? [])]],
+    ),
+  );

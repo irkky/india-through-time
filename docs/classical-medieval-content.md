@@ -1,6 +1,6 @@
 # Classical & Medieval India
 
-This expandable chapter covers selected Indian histories from c. 200 BCE to 1500 CE. It preserves the 56 existing records and adds 22 India-focused entries. Standalone histories of other continents are excluded. Indo-Greek rulers, Kushan connections and travellers are included for their direct relationship to the subcontinent, whose historical geography is not limited to modern national borders.
+This expandable chapter covers selected Indian histories from c. 200 BCE to 1500 CE. Its 22 India-focused entries now contain **79 detailed reading sections, 25 local images across 19 galleries, nine external video guides and one museum audio/transcript link**. Indo-Greek rulers, Kushan connections and travellers are included for their direct relationship to the subcontinent, whose historical geography is not limited to modern national borders.
 
 ## Chronology and interpretation
 
@@ -12,15 +12,18 @@ Scroll distance gives readers time to examine content; it is not proportional to
 
 - Edit historical text, dates, people, regional labels and source keys in `src/data/timeline/classical/records.ts`.
 - Add references in `src/data/timeline/classical/sources.ts`; the event builder attaches them to evidence sections.
-- Place licensed photos in `public/assets/images/classical/` and register captions, alt text and credits in `src/data/scenes/classical-galleries.ts`. The two current photos have provenance in `docs/classical-media-manifest.json`.
-- The [inventory](classical-medieval-inventory.md) gives each exact image/map tag and requested subject. Adding a gallery automatically replaces that event's image request.
+- The original two Met photos remain in `public/assets/images/classical/`, with provenance in `docs/classical-media-manifest.json`. The 23 new files are in its `researched/` subfolder, registered in `docs/classical-researched-media-manifest.json` with captions, dates, credits, licences, download URLs and SHA-256 hashes.
+- `src/data/scenes/classical-galleries.ts` combines the original and researched images. Two-image scenes alternate evidence across the first two scroll stages; additional images remain accessible in the gallery. The final stage retains the interpretation diagram.
+- Add evidence notes, viewing guidance and specific remaining requests in `src/data/timeline/classical/evidence.ts`. The [inventory](classical-medieval-inventory.md) lists every current image/map tag. Adding a photograph does not automatically satisfy a request for a measured plan, inscription or catalogue record.
 - Add further regional research through the tagged gaps in `src/data/timeline/classical-medieval.ts`. Shunga, Satavahana, Harsha, Pala, Pratihara, Rashtrakuta, northeastern kingdoms, regional Sultanates and early Sikh histories still need separate sourced entries. Everyday life and regional literature also need deeper coverage.
 
-Every scene has three reading stages, evidence hotspots and a conceptual diagram. Diagrams are explicitly labelled; they are not measured plans, border maps or fabricated primary evidence. Museum images show a Chola Nataraja and a late-sixth/early-seventh-century Buddha probably from Bihar. Neither is presented as a ruler's portrait. The latter is a separate dated entry, not an earlier Gupta imperial artefact or an identified Nalanda find.
+Every scene has three reading stages, evidence hotspots and a conceptual diagram. The expanded galleries cover coins, sculpture, murals, temple architecture, stepwell engineering and archaeological remains. Captions distinguish a monument's chronology from the photograph's capture date, and identify later devotional representations. Aryabhata, Brahmagupta and Ibn Battuta retain specific manuscript/route placeholders; modern arithmetic examples are explicitly labelled as teaching notation.
+
+The eight UNESCO/NHK heritage video guides and the Met's Bihar Buddha X-ray video open on the publishers' sites. The Nataraja object page also supplies an audio guide and transcript. None of these recordings is downloaded, embedded or autoplayed. Their rights are separate from open-image licences. All source and viewing links are available in the evidence dialogs and server-rendered readers.
 
 ## Sources reviewed
 
-Reviewed 24 October 2026. Source links also appear with the relevant records in the website.
+Base research: 24 October 2026. Media and contextual expansion: **29 October 2026**. Source links also appear with the relevant records in the website. The [inventory](classical-medieval-inventory.md) documents rejected candidates, qualified attributions and remaining gaps; this chapter is not an exhaustive archive of Indian history.
 
 - [Buddhism on the Silk Roads: the Kushan Empire](https://idp.bl.uk/discover/learning/buddhism-on-the-silk-roads/articles/transmission-of-buddhism/the-kushan-empire/) — British Library, International Dunhuang Programme
 - [Kushan Dynasty: Dynastic History](https://www.iranicaonline.org/articles/kushan-dynasty-i-history/) — Encyclopaedia Iranica
