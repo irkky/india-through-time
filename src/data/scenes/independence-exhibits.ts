@@ -34,7 +34,9 @@ export const independenceExhibitPresentations: Readonly<Record<string, TimelineS
                 : entry.diagram === "oral"
                   ? "comparison"
                   : "artefact",
-            ...(gallery ? { gallery, stageImages: [null, 0, null] } : {}),
+            ...(gallery
+              ? { gallery, stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null] }
+              : {}),
             points: [
               { label: "What happened", field: "description", x: 25, y: 40 },
               { label: "Why it matters", field: "significance", x: 65, y: 50 },

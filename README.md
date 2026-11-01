@@ -25,7 +25,7 @@ History of India is an educational website built around one continuous timeline.
 through a cinematic opening, historical exhibits, images and source-backed explanations. Visitors
 can also jump between events, search the collection or read the evidence independently.
 
-The current collection contains **252 entries across eight populated chapters**, with **138 distinct
+The current collection contains **252 entries across eight populated chapters**, with **181 distinct
 gallery image files** and tagged spaces for missing images or research. Historical content,
 presentation and animation are maintained separately so the project can grow without placing
 historical facts inside UI or animation code.
@@ -273,8 +273,8 @@ src/data/
 │   ├── classical/                 # Records, evidence/video guides, event builder and sources
 │   ├── early-modern/              # Records, sources, visual evidence and film guides
 │   ├── colonial/                  # Records, event builder and sources
-│   ├── independence/              # Records with sources, plus event builder
-│   ├── post-independence/         # Records with sources, plus event builder
+│   ├── independence/              # Records, sources, supplemental evidence and event builder
+│   ├── post-independence/         # Records, sources, supplemental evidence and event builder
 │   └── world/                     # Empty scaffold; no world-history chapter
 ├── scenes/
 │   ├── scene-presentations.ts     # Shared presentation registry
@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **43 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **47 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -405,23 +405,23 @@ node scripts/fetch-colonial-media.cjs
 
 ## Documentation
 
-| Resource                                                                                                                    | Contents                                                                              |
-| --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| [Architecture](docs/architecture.md)                                                                                        | Domain boundaries, date model, scene contracts and original ingestion design.         |
-| [Project review](docs/project-review.md)                                                                                    | Earlier architectural review and roadmap; some proposed features are now implemented. |
-| [Prehistoric content](docs/prehistoric-content.md) · [Expansion notes](docs/prehistoric-expansion.md)                       | Chronology, regional additions, evidence and assets.                                  |
-| [Ancient India](docs/ancient-india-content.md) and [media inventory](docs/ancient-media-inventory.md)                       | Sources, images and tagged additions.                                                 |
-| [Second Urbanization & Empires](docs/second-urbanization-content.md) and [media inventory](docs/empires-media-inventory.md) | Coverage, image credits and remaining evidence.                                       |
-| [Classical & Medieval](docs/classical-medieval-content.md) · [Inventory](docs/classical-medieval-inventory.md)              | Research scope, entries and media needs.                                              |
-| [Early Modern](docs/early-modern-india-content.md) · [Inventory](docs/early-modern-inventory.md)                            | Regional chronology, sources and research requests.                                   |
-| [Colonial Era](docs/colonial-india-content.md) · [Inventory](docs/colonial-inventory.md)                                    | Colonial records and media briefs.                                                    |
-| [Independence Movement](docs/independence-movement-content.md) · [Inventory](docs/independence-inventory.md)                | Movement entries, evidence and image slots.                                           |
-| [Post-Independence](docs/post-independence-content.md) · [Inventory](docs/post-independence-inventory.md)                   | 55 entries, 165 evidence sections, three images and 52 image briefs through 2025.     |
+| Resource                                                                                                                    | Contents                                                                                     |
+| --------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [Architecture](docs/architecture.md)                                                                                        | Domain boundaries, date model, scene contracts and original ingestion design.                |
+| [Project review](docs/project-review.md)                                                                                    | Earlier architectural review and roadmap; some proposed features are now implemented.        |
+| [Prehistoric content](docs/prehistoric-content.md) · [Expansion notes](docs/prehistoric-expansion.md)                       | Chronology, regional additions, evidence and assets.                                         |
+| [Ancient India](docs/ancient-india-content.md) and [media inventory](docs/ancient-media-inventory.md)                       | Sources, images and tagged additions.                                                        |
+| [Second Urbanization & Empires](docs/second-urbanization-content.md) and [media inventory](docs/empires-media-inventory.md) | Coverage, image credits and remaining evidence.                                              |
+| [Classical & Medieval](docs/classical-medieval-content.md) · [Inventory](docs/classical-medieval-inventory.md)              | Research scope, entries and media needs.                                                     |
+| [Early Modern](docs/early-modern-india-content.md) · [Inventory](docs/early-modern-inventory.md)                            | Regional chronology, sources and research requests.                                          |
+| [Colonial Era](docs/colonial-india-content.md) · [Inventory](docs/colonial-inventory.md)                                    | Colonial records and media briefs.                                                           |
+| [Independence Movement](docs/independence-movement-content.md) · [Inventory](docs/independence-inventory.md)                | 29 entries, 130 evidence sections, 19 images, five film guides and precise acquisition tags. |
+| [Post-Independence](docs/post-independence-content.md) · [Inventory](docs/post-independence-inventory.md)                   | 55 entries, 244 evidence sections, 29 images and seven film guides through 2025.             |
 
 Media manifests cover [Classical original photographs](docs/classical-media-manifest.json)
 and [Classical researched images](docs/classical-researched-media-manifest.json),
 [Early Modern: original](docs/early-modern-media-manifest.json), [researched additions](docs/early-modern-researched-media-manifest.json), [Colonial: original](docs/colonial-media-manifest.json), [researched additions](docs/colonial-researched-media-manifest.json)
-and [Independence](docs/independence-media-manifest.json) images. Other provenance lives in gallery
+and [Independence](docs/independence-media-manifest.json) images. The expanded Independence collection is documented in its [researched manifest](docs/independence-researched-media-manifest.json) and [event inventory](docs/independence-inventory.md). The expanded post-independence media collection has a [provenance manifest](docs/post-independence-researched-media-manifest.json), including credits, licences, capture dates and file hashes. Other provenance lives in gallery
 definitions and chapter guides. Some architecture passages describe the original prototype; current
 code uses weighted positions and all eight chapters are populated.
 

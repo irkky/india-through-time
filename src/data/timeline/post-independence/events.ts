@@ -3,17 +3,44 @@ import type { HistoricalEvent } from "@/types/history";
 import { postIndependenceGalleries } from "@/data/scenes/post-independence-galleries";
 import { postIndependenceRecords } from "./records";
 import { postIndependenceSources } from "./records";
+import {
+  postIndependenceVisualNotes,
+  postIndependenceAdditionalSources,
+  postIndependenceVideoGuides,
+  postIndependenceAdditionalImageNeeds,
+  postIndependenceReadingNotes,
+} from "./evidence";
 
 const date = (year: number) => (year < 0 ? bce(-year) : ce(year));
+
 export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndependenceRecords]
   .sort((a, b) => a.start - b.start)
   .map((entry) => {
     const gallery = postIndependenceGalleries[entry.id] ?? [];
     const sources = entry.sources.map((id) => {
       const source = postIndependenceSources[id];
-      if (!source) throw new Error(`Missing post-independence source: ${id}`);
+      if (!source) throw new Error(`Missing postIndependence source: ${id}`);
       return source;
     });
+    const visualSources = gallery.map((image, index) => ({
+      id: `${entry.id}-object-${index}`,
+      title: `${image.title}: image record and provenance`,
+      url: image.sourceUrl,
+      publisher: image.credit,
+    }));
+    const extraSources = postIndependenceAdditionalSources[entry.id] ?? [];
+    const video = postIndependenceVideoGuides[entry.id];
+    const reading = postIndependenceReadingNotes[entry.id];
+    const videoSource = video
+      ? {
+          id: `${entry.id}-heritage-video`,
+          title: `Watch: ${video.title}`,
+          url: video.url,
+          publisher: video.publisher,
+        }
+      : undefined;
+    const visualNote = postIndependenceVisualNotes[entry.id];
+    if (!visualNote) throw new Error(`Missing postIndependence visual guidance: ${entry.id}`);
     return {
       id: entry.id,
       title: entry.title,
@@ -32,6 +59,14 @@ export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndepe
       people: entry.people,
       relatedEvents: entry.related,
       details: [
+        ...(reading
+          ? [
+              {
+                ...reading,
+                sourceIds: [...sources, ...extraSources].map((source) => source.id),
+              },
+            ]
+          : []),
         {
           title: "Background and conditions",
           text: entry.background,
@@ -47,18 +82,29 @@ export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndepe
           text: entry.evidence,
           sourceIds: sources.map((s) => s.id),
         },
+        {
+          title: "Explore the visual evidence",
+          text: visualNote,
+          sourceIds: [...sources, ...visualSources, ...extraSources].map((source) => source.id),
+        },
+        ...(video && videoSource
+          ? [
+              {
+                title: "Watch and compare the evidence",
+                text: `${video.focus} Open the film on the publisher's site using the link below. Recording rights remain with the credited producer.`,
+                sourceIds: [videoSource.id],
+              },
+            ]
+          : []),
       ],
       interpretationNotes: [
         { kind: "uncertainty", text: entry.limits, sourceIds: sources.map((s) => s.id) },
       ],
       sources: [
         ...sources,
-        ...gallery.map((image, index) => ({
-          id: `${entry.id}-object-${index}`,
-          title: image.title,
-          url: image.sourceUrl,
-          publisher: "Image collection catalogue",
-        })),
+        ...visualSources,
+        ...extraSources,
+        ...(videoSource ? [videoSource] : []),
       ],
       citations: sources.map((source) => ({
         sourceId: source.id,
@@ -66,14 +112,12 @@ export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndepe
           entry.locator ??
           "Historical overview and chronology; see the linked catalogue separately for pictured objects.",
       })),
-      imageNeeds: gallery.length
-        ? []
-        : [
-            {
-              tag: `IMAGE_PLACEHOLDER_${entry.id.replaceAll("-", "_").toUpperCase()}`,
-              instruction: entry.image,
-            },
-          ],
+      imageNeeds: [
+        {
+          tag: `ADD_${entry.id.replaceAll("-", "_").toUpperCase()}_EVIDENCE`,
+          instruction: postIndependenceAdditionalImageNeeds[entry.id] ?? entry.image,
+        },
+      ],
       contentNeeds: [
         ...(entry.research
           ? [
@@ -92,15 +136,31 @@ export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndepe
             ]
           : []),
       ],
-      media: gallery.map((image, index) => ({
-        id: `${entry.id}-image-${index}`,
-        kind: "image",
-        alt: image.alt,
-        caption: image.caption,
-        credit: image.credit,
-        license: image.license,
-        sourceUrl: image.sourceUrl,
-      })),
+      media: [
+        ...gallery.map((image, index) => ({
+          id: `${entry.id}-image-${index}`,
+          kind: image.category === "Illustration" ? ("illustration" as const) : ("image" as const),
+          alt: image.alt,
+          caption: image.caption,
+          credit: image.credit,
+          license: image.license,
+          sourceUrl: image.sourceUrl,
+        })),
+        ...(videoSource
+          ? [
+              {
+                id: `${entry.id}-video`,
+                kind: "video" as const,
+                alt: `Film guide: ${video!.title}`,
+                caption: video!.focus,
+                credit: video!.publisher,
+                license: "External viewing link only; rights retained by the credited producer",
+                sourceUrl: videoSource.url,
+                historicalContext: video!.focus,
+              },
+            ]
+          : []),
+      ],
       visualReference: { id: `exhibit-${entry.id}`, kind: "svg" },
     };
   });

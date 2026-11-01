@@ -29,7 +29,7 @@ test("post-independence chronology, evidence, filters and completion tags", () =
     postIndependenceEvents.filter((e) => e.dateStart.year >= 2001).length,
   );
   for (const e of postIndependenceEvents) {
-    assert.equal(e.details.length, 3);
+    assert.ok(e.details.length >= 4);
     assert.ok(e.sources.length && e.citations.length);
     assert.ok(e.imageNeeds.length || postIndependenceGalleries[e.id]?.length);
     assert.ok(e.contentNeeds[0].tag.startsWith("RESEARCH_PLACEHOLDER_"));
@@ -49,14 +49,14 @@ test("post-independence chronology, evidence, filters and completion tags", () =
   );
 });
 test("post-independence media has actual local images, provenance and temporal context", () => {
-  assert.equal(Object.keys(postIndependenceGalleries).length, 3);
+  assert.ok(Object.keys(postIndependenceGalleries).length > 3);
   for (const images of Object.values(postIndependenceGalleries))
     for (const image of images) {
       const magic = fs
         .readFileSync("public" + image.src)
         .subarray(0, 3)
         .toString("hex");
-      assert.ok(["ffd8ff", "89504e"].includes(magic));
+      assert.ok(["ffd8ff", "89504e", "524946"].includes(magic));
       assert.ok(image.sourceUrl && image.licenseUrl && image.credit && image.caption);
     }
   assert.match(

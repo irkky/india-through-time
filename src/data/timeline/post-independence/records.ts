@@ -1,7 +1,7 @@
 import type { EarlyModernRecord } from "../early-modern/records";
 import type { HistoricalSource } from "@/types/history";
 
-export const postIndependenceReviewedOn = "25 October 2026";
+export const postIndependenceReviewedOn = "1 November 2026";
 // Start years order scenes; precise dates and the meaning of ranges remain in the text.
 // Within a year, rows follow the known sequence, without inventing dates for broad topics.
 type Row = [

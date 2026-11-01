@@ -1,7 +1,6 @@
+import researchedMedia from "../../../docs/post-independence-researched-media-manifest.json";
 import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
-export const postIndependenceGalleries: Readonly<
-  Record<string, readonly PrehistoryGalleryImage[]>
-> = {
+const originalGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> = {
   "republic-tsunami": [
     {
       src: "/assets/images/post-independence/tsunami-2004.jpg",
@@ -47,3 +46,31 @@ export const postIndependenceGalleries: Readonly<
     },
   ],
 };
+
+const eventIds = new Set([
+  ...Object.keys(originalGalleries),
+  ...researchedMedia.flatMap((item) => item.eventIds),
+]);
+export const postIndependenceGalleries: Readonly<
+  Record<string, readonly PrehistoryGalleryImage[]>
+> = Object.fromEntries(
+  [...eventIds].map((id) => [
+    id,
+    [
+      ...(originalGalleries[id] ?? []),
+      ...researchedMedia
+        .filter((item) => item.eventIds.includes(id))
+        .map((item) => ({
+          src: item.src,
+          title: item.title,
+          alt: item.alt,
+          caption: item.caption,
+          category: item.category as PrehistoryGalleryImage["category"],
+          credit: item.credit,
+          sourceUrl: item.sourceUrl,
+          license: item.license,
+          licenseUrl: item.licenseUrl,
+        })),
+    ],
+  ]),
+);

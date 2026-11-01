@@ -204,6 +204,8 @@ async function main() {
         ...Object.entries(classicalGalleries).map(([id, images]) => [id, images.length]),
         ...Object.entries(earlyModernGalleries).map(([id, images]) => [id, images.length]),
         ...Object.entries(colonialGalleries).map(([id, images]) => [id, images.length]),
+        ...Object.entries(independenceGalleries).map(([id, images]) => [id, images.length]),
+        ...Object.entries(postIndependenceGalleries).map(([id, images]) => [id, images.length]),
       ]) {
         await navigate(eventId);
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
@@ -775,7 +777,7 @@ async function main() {
       await evaluate(
         'document.querySelectorAll("#independence-reader .event-details section").length',
       ),
-      independenceEvents.length * 3,
+      independenceEvents.reduce((sum, event) => sum + event.details.length, 0),
     );
     await waitFor(
       `document.querySelectorAll('#post-independence-reader details').length === ${postIndependenceEvents.length}`,
@@ -784,12 +786,12 @@ async function main() {
       await evaluate(
         "document.querySelectorAll('#post-independence-reader .event-details section').length",
       ),
-      postIndependenceEvents.length * 3,
+      postIndependenceEvents.reduce((sum, event) => sum + event.details.length, 0),
     );
     console.log(
       process.env.BROWSER_MOTION_ONLY
         ? "PASS: motion and chapter transitions; forward/reverse crossfades; no hydration/runtime exceptions; all eight readers without JavaScript."
-        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 138 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
+        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 181 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {

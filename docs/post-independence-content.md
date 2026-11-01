@@ -1,14 +1,8 @@
 # Post-Independence to 2025
 
-This chapter adds 55 selected historical entries across five phases, with 165 evidence sections,
-three locally stored, credited images and 52 specific image placeholders. It continues from the
-existing 1947 independence and Partition entry rather than duplicating it. The full site has
-252 entries across eight populated chapters. This is an expandable overview, not every event
-in independent India's history.
+Reviewed **1 November 2026**. This chapter contains **55 selected entries**, **244 evidence sections**, **30 illustrated galleries**, **29 distinct local images** (26 newly researched) and **seven external film guides**. The 25 entries without suitable local images retain specific acquisition requests, and every entry retains an additional evidence tag.
 
-Research reviewed: **25 October 2026**. The timeline ends in 2025 with the UNESCO inscription of the Maratha Military Landscapes.
-Future updates should check amended notifications and distinguish announcement, enactment,
-commencement and measured outcomes.
+It continues from the existing 1947 independence and Partition entry. The full site has 252 entries across eight populated chapters. The timeline ends in 2025 with the UNESCO inscription of the Maratha Military Landscapes; later source-review dates do not create later historical events. This is an expandable collection, not an exhaustive record of independent India.
 
 ## Coverage and chronology
 
@@ -28,7 +22,7 @@ belongs in the earlier chapter.
 
 ## Sources and interpretation
 
-Each entry links its source and three evidence panels. Sources include constitutional and
+Each entry links its sources, visual reading guidance and historical evidence sections. Sources include constitutional and
 judicial records, election statistics, RBI, ICAR, NDDB, ISRO, WHO, UNESCO, parliamentary
 statements, commission reports and NCERT. Official records establish dates and institutional
 actions but do not independently prove every claim about policy success. Judgment dates are
@@ -45,7 +39,8 @@ network requests or animation dependency were introduced.
 
 - `src/data/timeline/post-independence/records.ts`: dated narratives, source URLs, people,
   relationships and per-entry image/research briefs.
-- `src/data/timeline/post-independence/events.ts`: transforms records into the shared schema.
+- `src/data/timeline/post-independence/evidence.ts`: supplemental readings, film links, sources and precise acquisition briefs.
+- `src/data/timeline/post-independence/events.ts`: combines records, evidence and galleries in the shared schema.
 - `src/data/timeline/post-independence-india.ts`: five periods and broader research gaps.
 - `src/data/scenes/post-independence-galleries.ts`: image paths, captions, provenance and licences.
 - `src/data/scenes/post-independence-exhibits.ts`: palettes, stage imagery and transitions.
@@ -54,11 +49,42 @@ network requests or animation dependency were introduced.
 
 To fill a slot, put the image in the asset folder and register it under the matching event ID
 in the galleries file. Include alt text, capture date, photographer, collection, source and
-reuse licence. The shared builder automatically replaces that entry's image placeholder.
+reuse licence. The gallery becomes available automatically. Keep an additional evidence tag until the exact requested document or object has been supplied; a contextual portrait does not fulfil a document request.
 For factual additions, update the record and supporting source together. New entries also
 need a unique ID and a phase covering their start year; update regression counts deliberately.
 
-## Image provenance
+## Expanded media collection
+
+The [researched-media manifest](post-independence-researched-media-manifest.json) records each new file's original source page, download URL, credit, licence, capture-date qualification and SHA-256 checksum. The [entry inventory](post-independence-inventory.md) lists all media and remaining tags in timeline order.
+
+The collection includes Gandhi's funeral, the first Republic Day, Delhi polling in 1952, Bhakra Dam, a later Ray portrait, Goa remembrance, Sarabhai's satellite-television agreement, Anand dairy infrastructure, the 1971 surrender and a museum document copy, Supreme Court context, the 1977 transition, Bhopal remembrance, the 1991 Budget interview, a Gram Sabha, Kargil and Mumbai memorials, polio immunisation, actual Mars Orbiter observations, demonetisation, lockdown, vaccination, the farmers' protest, the G20 summit, election equipment in 2024 and Pragyan on the lunar surface.
+
+One Supreme Court photograph supplies clearly labelled institutional context for four judgments. It is never described as a photograph of those benches or decisions. The Satyajit Ray image is a later painting. The Bhopal memorial's original exposure date is unresolved; the 2014 catalogue file date is not asserted as its capture date. The Sarabhai image is a crop supplied by its source. Source framing, marks and inscriptions are retained without additional image editing.
+
+### External films
+
+| Entry           | Publisher               | What the viewer should distinguish                               |
+| --------------- | ----------------------- | ---------------------------------------------------------------- |
+| Gandhi, 1948    | British Pathe           | Edited funeral newsreel; not a recording of the assassination    |
+| Doordarshan     | Prasar Bharati Archives | Retrospective history spanning several decades                   |
+| Operation Flood | NDDB                    | Later institutional overview; not entirely 1970 footage          |
+| Cricket, 1983   | ICC                     | Short archive clip in an ICC retrospective                       |
+| Chandrayaan-3   | ISRO                    | Separately labelled camera sequences and later experiments       |
+| G20, 2023       | United Nations in India | Institutional summit highlights and declaration context          |
+| SpaDeX, 2025    | ISRO                    | January docking presentation, distinct from later demonstrations |
+
+Films open on their publishers' pages through the evidence view. No third-party player loads automatically and no video file is redistributed. The ICC YouTube candidate returned an access error, so the guide links to the ICC article with its own short archive clip. Publisher metadata and descriptions were checked; full external playback is not guaranteed or browser-tested.
+
+### Deliberate exclusions and research limits
+
+- First-election poster metadata did not sufficiently resolve the photographed location. The securely identified Delhi polling photograph was retained.
+- A 1991 photograph's trade-union description was broader than its visible trade-meeting banner, so it was excluded rather than used to infer labour participation.
+- Hyderabad surrender candidates had inconsistent dates and publication provenance. War photographs with conflicting 1965/1971 labels and generic January 1962 dates were also excluded.
+- A modern Pune protest using the name Chipko was not substituted for the Himalayan movement. A college-building comparison was not used as an Aryabhata spacecraft photograph.
+- A Bangladesh polling inspection returned by an India-election search was unrelated to the Indian 2024 election. A recent crop-fire satellite image was not used to illustrate the introduction of Green Revolution crop varieties.
+- Film stills, archive previews, modern Constitution displays and newspaper images do not become freely reusable simply because they can be viewed online. Specific document/image briefs remain for these gaps.
+
+### Original images retained
 
 - [NASA's Chandrayaan-3 observation](https://www.nasa.gov/image-article/nasas-lro-observes-chandrayaan-3-landing-site/):
   NASA Goddard/Arizona State University, 27 August 2023; NASA educational/informational usage guidelines.

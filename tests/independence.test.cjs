@@ -22,7 +22,7 @@ test("independence evidence, chronology, filters and shared milestones", () => {
   assert.equal(matches.length, 29);
   assert.ok(filterHistory(matches, { ...emptyHistoryFilters, query: "Ambedkar" }).length >= 2);
   for (const event of independenceEvents) {
-    assert.equal(event.details.length, 3);
+    assert.ok(event.details.length >= 4);
     assert.notEqual(event.details[0].text, event.details[1].text);
     assert.ok(event.sources.length && event.citations.length);
     assert.ok(event.imageNeeds.length || independenceGalleries[event.id]?.length);
@@ -40,15 +40,13 @@ test("independence evidence, chronology, filters and shared milestones", () => {
 test("independence photographs retain local files, provenance and temporal context", () => {
   for (const gallery of Object.values(independenceGalleries))
     for (const image of gallery) {
-      assert.equal(
-        fs
-          .readFileSync("public" + image.src)
-          .subarray(0, 3)
-          .toString("hex"),
-        "ffd8ff",
+      const bytes = fs.readFileSync("public" + image.src);
+      assert.ok(
+        bytes.subarray(0, 3).toString("hex") === "ffd8ff" ||
+          bytes.subarray(0, 8).toString("hex") === "89504e470d0a1a0a",
       );
       assert.ok(image.sourceUrl && image.licenseUrl && image.credit);
-      assert.match(image.license, /Public Domain/);
+      assert.match(image.license, /Public Domain|CC BY|GODL/i);
     }
   assert.match(
     independenceGalleries["freedom-khudai-khidmatgar"][0].caption,
