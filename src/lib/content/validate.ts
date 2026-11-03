@@ -41,6 +41,39 @@ export function validateHistory(eras: readonly HistoricalEra[]): readonly Conten
       if (!period.title.trim()) report(path, "Title is required.");
       for (const record of [period, ...period.events]) {
         const recordPath = `${path}/${record.id}`;
+        localIds(record.videos ?? [], `${recordPath}/videos`);
+        for (const video of record.videos ?? []) {
+          if (
+            !video.title.trim() ||
+            !video.publisher.trim() ||
+            !video.description.trim() ||
+            !video.context.trim()
+          )
+            report(
+              recordPath,
+              `Video needs title, publisher, description and context: ${video.id}`,
+            );
+          for (const link of [video.watchUrl, video.catalogueUrl].filter(Boolean)) {
+            try {
+              if (new URL(link!).protocol !== "https:") throw new Error("Invalid protocol");
+            } catch {
+              report(recordPath, `Video needs a valid HTTPS source: ${video.id}`);
+            }
+          }
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(video.verifiedAt))
+            report(recordPath, `Video needs a verification date: ${video.id}`);
+          if (
+            video.mode === "youtube" &&
+            (!/^[A-Za-z0-9_-]{11}$/.test(video.videoId) ||
+              video.watchUrl !== `https://www.youtube.com/watch?v=${video.videoId}`)
+          )
+            report(recordPath, `Invalid YouTube video reference: ${video.id}`);
+          if (
+            video.durationSeconds !== undefined &&
+            (!Number.isInteger(video.durationSeconds) || video.durationSeconds <= 0)
+          )
+            report(recordPath, `Video duration must be positive seconds: ${video.id}`);
+        }
         try {
           if (record.dateStart) toTimelineOrdinal(record.dateStart);
           if (record.dateEnd) toTimelineOrdinal(record.dateEnd);

@@ -6,6 +6,7 @@ import { PrehistoryDiagram } from "./prehistory-diagram";
 import { PrehistoryGallery } from "./prehistory-gallery";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
 import { EventDetails, ImageNeeds } from "@/components/historical-events/event-details";
+import { HistoricalVideos } from "@/components/historical-events/historical-videos";
 
 export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEvent }) {
   const [selected, setSelected] = useState(0);
@@ -91,9 +92,11 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
             </div>
           </div>
           <button type="button" className="gallery-jump" onClick={() => setOpen(true)}>
-            {visual.gallery?.length
-              ? `Explore ${visual.gallery.length} ${visual.gallery.length === 1 ? "image" : "images"} & full evidence`
-              : "Read full evidence & image requirements"}
+            {record.videos?.length
+              ? "Explore videos, images & evidence"
+              : visual.gallery?.length
+                ? `Explore ${visual.gallery.length} ${visual.gallery.length === 1 ? "image" : "images"} & full evidence`
+                : "Read full evidence & image requirements"}
           </button>
         </div>
         <figure className="exhibit-figure">
@@ -159,6 +162,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
                 {record.dateScope}
               </p>
             )}
+            {!!record.videos?.length && <HistoricalVideos videos={record.videos} />}
             {visual.points.map((item) => (
               <section className="story-full-note" key={item.field}>
                 <h3>{item.label}</h3>

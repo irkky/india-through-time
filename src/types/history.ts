@@ -30,6 +30,21 @@ export interface ArchaeologicalSite {
 
 export type HistoricalMediaKind = "image" | "video" | "audio" | "illustration" | "map";
 
+export type HistoricalVideo = {
+  readonly id: string;
+  readonly title: string;
+  readonly publisher: string;
+  readonly watchUrl: string;
+  readonly catalogueUrl?: string;
+  readonly description: string;
+  readonly context: string;
+  readonly durationSeconds?: number;
+  readonly verifiedAt: string;
+} & (
+  | { readonly mode: "youtube"; readonly videoId: string }
+  | { readonly mode: "external"; readonly videoId?: never }
+);
+
 export interface HistoricalMediaReference {
   readonly id: string;
   readonly kind: HistoricalMediaKind;
@@ -89,6 +104,7 @@ export type HistoricalFactAnnotation =
   HistoricalChronologyFactAnnotation | HistoricalDistributionFactAnnotation;
 
 export interface HistoricalEvent {
+  readonly videos?: readonly HistoricalVideo[];
   /** Explains whether dates represent an occupation, object, or broad teaching range. */
   readonly dateScope?: string;
   readonly contentNeeds?: readonly { readonly tag: string; readonly instruction: string }[];
@@ -124,6 +140,7 @@ export interface HistoricalEvent {
 }
 
 export interface HistoricalPeriod {
+  readonly videos?: readonly HistoricalVideo[];
   readonly id: string;
   readonly title: string;
   /** Undated context belongs outside the chronological event list. */

@@ -1,0 +1,312 @@
+// Optional production-browser regression. Requires Node 22+ and installed Chrome/Chromium.
+const { spawn } = require("node:child_process");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const assert = require("node:assert/strict");
+const { setTimeout: delay } = require("node:timers/promises");
+async function main() {
+  const base = process.argv[2] || "http://localhost:3000";
+  assert.equal((await fetch(base)).status, 200, "Start the production server first.");
+  const chrome =
+    process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
+  assert.ok(fs.existsSync(chrome), "Set CHROME_PATH to an installed Chrome/Chromium executable.");
+  assert.ok(globalThis.WebSocket, "Browser checks require Node 22 or newer.");
+  const profile = fs.mkdtempSync(path.join(os.tmpdir(), "prehistory-browser-"));
+  const browser = spawn(
+    chrome,
+    [
+      "--headless",
+      "--disable-gpu",
+      "--no-first-run",
+      "--remote-debugging-port=0",
+      `--user-data-dir=${profile}`,
+    ],
+    { windowsHide: true, stdio: "ignore" },
+  );
+  let launchError;
+  browser.on("error", (error) => {
+    launchError = error;
+  });
+  let socket;
+  let send;
+  const artifactDir = path.resolve(".browser-artifacts");
+  fs.mkdirSync(artifactDir, { recursive: true });
+  try {
+    const portFile = path.join(profile, "DevToolsActivePort");
+    let port;
+    for (let tries = 0; !port; tries++) {
+      if (launchError) throw launchError;
+      if (tries > 100) throw Error("Chrome debugging endpoint did not start.");
+      try {
+        const candidate = fs.readFileSync(portFile, "utf8").split("\n")[0].trim();
+        if (/^\d+$/.test(candidate)) port = candidate;
+      } catch (error) {
+        if (!["ENOENT", "EBUSY"].includes(error.code)) throw error;
+      }
+      if (port) break;
+      await delay(100);
+    }
+    const page = await (
+      await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, {
+        method: "PUT",
+      })
+    ).json();
+    socket = new WebSocket(page.webSocketDebuggerUrl);
+    await new Promise((resolve, reject) => {
+      socket.addEventListener("open", resolve, { once: true });
+      socket.addEventListener("error", reject, { once: true });
+    });
+    let id = 0;
+    const pending = new Map();
+    const errors = [];
+    socket.addEventListener("message", ({ data }) => {
+      const message = JSON.parse(data);
+      if (message.method === "Runtime.exceptionThrown")
+        errors.push(
+          message.params.exceptionDetails.exception?.description ??
+            message.params.exceptionDetails.text,
+        );
+      if (
+        message.method === "Runtime.consoleAPICalled" &&
+        ["error", "warning", "warn"].includes(message.params.type)
+      ) {
+        const description = message.params.args
+          .map((arg) => arg.description ?? arg.value ?? "")
+          .join(" ");
+        if (/hydrat|server rendered HTML|didn't match|GSAP target .*not found/i.test(description))
+          errors.push(description);
+      }
+      if (message.id) {
+        pending.get(message.id)?.(message);
+        pending.delete(message.id);
+      }
+    });
+    send = (method, params = {}) =>
+      new Promise((resolve, reject) => {
+        const requestId = ++id;
+        const timeout = setTimeout(() => {
+          pending.delete(requestId);
+          reject(Error(`CDP timeout: ${method} ${params.expression ?? ""}`));
+        }, 10000);
+        pending.set(requestId, (message) => {
+          clearTimeout(timeout);
+          if (message.error) reject(Error(message.error.message));
+          else resolve(message.result);
+        });
+        socket.send(JSON.stringify({ id: requestId, method, params }));
+      });
+    const evaluate = async (expression) => {
+      const result = await send("Runtime.evaluate", {
+        expression,
+        returnByValue: true,
+        awaitPromise: true,
+      });
+      if (result.exceptionDetails) throw Error(result.exceptionDetails.text);
+      return result.result.value;
+    };
+    const waitFor = async (expression) => {
+      for (let attempt = 0; attempt < 100; attempt++) {
+        if (await evaluate(expression)) return;
+        await delay(80);
+      }
+      throw Error(`Browser condition failed: ${expression}`);
+    };
+    const click = async (selector) =>
+      evaluate(
+        `(()=>{const target=document.querySelector(${JSON.stringify(selector)});target.focus({preventScroll:true});target.click();})()`,
+      );
+    const active = `document.querySelector('.visual-scene[aria-hidden="false"]')`;
+    const navigate = async (eventId) => {
+      await evaluate(
+        `(()=>{const select=document.querySelectorAll('.journey-select')[1];select.value=${JSON.stringify(eventId)};select.dispatchEvent(new Event('change',{bubbles:true}));})()`,
+      );
+      await waitFor(`${active}?.dataset.timelinePointId === ${JSON.stringify(eventId)}`);
+    };
+    const screenshot = async (name) => {
+      const result = await send("Page.captureScreenshot", { format: "png" });
+      fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
+    };
+
+    await send("Runtime.enable");
+    await send("Network.enable");
+    let remoteRequests = [];
+    socket.addEventListener("message", ({ data }) => {
+      const message = JSON.parse(data);
+      if (
+        message.method === "Network.requestWillBeSent" &&
+        /youtube|ytimg/.test(message.params.request.url)
+      )
+        remoteRequests.push(message.params.request.url);
+    });
+    await send("Network.setBlockedURLs", {
+      urls: ["*youtube-nocookie.com/*", "*youtube.com/*", "*ytimg.com/*"],
+    });
+    await send("Emulation.setEmulatedMedia", {
+      features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+    });
+    for (const width of process.env.VIDEOS_PROVIDER_ONLY ? [] : [1440, 768, 390, 320]) {
+      await send("Emulation.setDeviceMetricsOverride", {
+        width,
+        height: 900,
+        deviceScaleFactor: 1,
+        mobile: width < 600,
+      });
+      remoteRequests = [];
+      await send("Page.navigate", { url: base });
+      await waitFor(
+        "document.querySelectorAll('#prehistory-reader .history-video-card').length === 9",
+      );
+      assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
+      assert.equal(remoteRequests.length, 0, "No video requests before viewer interaction");
+      await waitFor("document.querySelector('.visual-scene[data-scene-state=active]') !== null");
+      await click(".journey-start-button");
+      await waitFor(
+        "document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'",
+      );
+      const cards = await evaluate(
+        "Array.from(document.querySelectorAll('#prehistory-reader .history-video-card')).map(c=>c.dataset.videoId)",
+      );
+      for (const videoId of cards) {
+        const card = `#prehistory-reader [data-video-id="${videoId}"]`;
+        assert.ok(
+          await evaluate(
+            `document.querySelector(${JSON.stringify(card)}).querySelector('a').href.startsWith('https://')`,
+          ),
+        );
+        if (videoId === "video-bhimbetka-nptel") {
+          assert.equal(
+            await evaluate(
+              `document.querySelector(${JSON.stringify(card)}).querySelector('button')`,
+            ),
+            null,
+          );
+          continue;
+        }
+        await evaluate(
+          `document.querySelector(${JSON.stringify(card)}).scrollIntoView({block:'center'})`,
+        );
+        await click(`${card} button`);
+        await waitFor(
+          `document.querySelector(${JSON.stringify(card)}).querySelector('iframe') !== null`,
+        );
+        assert.equal(
+          await evaluate("document.querySelectorAll('iframe').length"),
+          1,
+          "Only one player can remain loaded",
+        );
+        assert.ok(
+          await evaluate(
+            `(()=>{const f=document.querySelector(${JSON.stringify(card)}).querySelector('iframe');const r=f.getBoundingClientRect();return r.width>=200 && r.height>=200 && r.left>=0 && r.right<=innerWidth+1 && f.referrerPolicy==='strict-origin-when-cross-origin' && !f.src.includes('autoplay=1')})()`,
+          ),
+          `Player fits at ${width}`,
+        );
+      }
+      // Dialog mount/unmount must stop its player, including Escape dismissal.
+      await navigate("lower-palaeolithic-scaffold");
+      await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+      await waitFor(
+        "document.querySelector('.exhibit-dialog[open] .history-video-toggle') !== null",
+      );
+      await click(".exhibit-dialog[open] .history-video-toggle");
+      await waitFor("document.querySelector('.exhibit-dialog[open] iframe') !== null");
+      assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 1);
+      await click(".exhibit-dialog[open] .history-video-toggle");
+      assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
+      await evaluate(
+        "document.querySelector('.exhibit-dialog[open] .history-videos').scrollIntoView({block:'start'})",
+      );
+      await screenshot(`videos-dialog-${width}`);
+      await click(".exhibit-dialog[open] .history-video-toggle");
+      await send("Input.dispatchKeyEvent", {
+        type: "keyDown",
+        key: "Escape",
+        code: "Escape",
+        windowsVirtualKeyCode: 27,
+      });
+      await send("Input.dispatchKeyEvent", {
+        type: "keyUp",
+        key: "Escape",
+        code: "Escape",
+        windowsVirtualKeyCode: 27,
+      });
+      await waitFor("!document.querySelector('.exhibit-dialog[open]')");
+      assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
+      console.log(
+        `PASS video cards, click-to-load, source fallbacks, single player and dialog cleanup at ${width}px`,
+      );
+    }
+    // Live provider smoke check; full playback remains subject to provider restrictions.
+    await send("Network.setBlockedURLs", { urls: [] });
+    await send("Emulation.setDeviceMetricsOverride", {
+      width: 1440,
+      height: 900,
+      deviceScaleFactor: 1,
+      mobile: false,
+    });
+    await send("Page.navigate", { url: base });
+    await waitFor("document.querySelector('.visual-scene[data-scene-state=active]') !== null");
+    await click(".journey-start-button");
+    await navigate("lower-palaeolithic-scaffold");
+    await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+    await click(".exhibit-dialog[open] .history-video-toggle");
+    await evaluate(
+      "document.querySelector('.exhibit-dialog[open] iframe').scrollIntoView({block:'center'})",
+    );
+    await delay(6000);
+    await screenshot("videos-live-provider");
+    const centre = await evaluate(
+      "(()=>{const r=document.querySelector('.exhibit-dialog[open] iframe').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2}})()",
+    );
+    await send("Input.dispatchMouseEvent", {
+      type: "mousePressed",
+      button: "left",
+      clickCount: 1,
+      ...centre,
+    });
+    await send("Input.dispatchMouseEvent", {
+      type: "mouseReleased",
+      button: "left",
+      clickCount: 1,
+      ...centre,
+    });
+    await delay(8000);
+    await screenshot("videos-live-playing");
+    await click(".exhibit-dialog[open] .history-dialog-header button");
+    await send("Emulation.setScriptExecutionDisabled", { value: true });
+    await send("Page.navigate", { url: base });
+    await waitFor(
+      "document.querySelectorAll('#prehistory-reader .history-video-card').length === 9",
+    );
+    assert.equal(
+      await evaluate(
+        "document.querySelectorAll('#prehistory-reader .history-video-links a').length",
+      ),
+      12,
+    );
+    assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
+    assert.deepEqual(errors, []);
+    console.log(
+      process.env.VIDEOS_PROVIDER_ONLY
+        ? "Provider smoke and no-JavaScript checks completed; inspect playback screenshot."
+        : "PASS: no eager provider requests, external-only NPTEL link, no-JavaScript source links, no hydration/runtime exceptions. Inspect live playback screenshot.",
+    );
+  } finally {
+    if (send && socket?.readyState === WebSocket.OPEN) await send("Browser.close").catch(() => {});
+    socket?.close();
+    browser.kill();
+    // Only delete the unique profile created by this invocation, inside the OS temp directory.
+    const resolved = path.resolve(profile);
+    if (
+      path.dirname(resolved) === path.resolve(os.tmpdir()) &&
+      path.basename(resolved).startsWith("prehistory-browser-")
+    ) {
+      await delay(500);
+      fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+    }
+  }
+}
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

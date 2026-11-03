@@ -1032,3 +1032,102 @@
   margin-top: 0.4rem;
   opacity: 0.8;
 }
+
+/* No remote thumbnails or players are requested until a viewer loads a lecture. */
+.history-videos {
+  margin: 1.75rem 0;
+  color: #202b2a;
+}
+.history-videos > h3 {
+  font-size: 1.5rem;
+  margin: 0.5rem 0;
+}
+.history-videos-intro,
+.history-video-card p {
+  line-height: 1.65;
+}
+.history-videos-intro {
+  max-width: 65ch;
+  color: #52605b;
+}
+.history-video-card {
+  margin-top: 1rem;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  border: 1px solid #b8b7a6;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #f9f5ea, #e7ede5);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.history-video-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.75rem;
+  color: #52605b;
+}
+.history-video-meta span:first-child {
+  color: #883e27;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.history-video-card h4 {
+  font-size: 1.2rem;
+  line-height: 1.4;
+  margin: 0.75rem 0;
+}
+.history-video-card p {
+  margin-top: 0.6rem;
+}
+.history-video-context {
+  border-left: 2px solid #a77c45;
+  padding-left: 0.8rem;
+  font-size: 0.87rem;
+}
+.history-video-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid #294943;
+  border-radius: 999px;
+  background: #203d38;
+  color: #fff7e6;
+  cursor: pointer;
+}
+.history-video-toggle:hover {
+  background: #31594f;
+}
+.history-video-toggle:focus-visible,
+.history-video-links a:focus-visible {
+  outline: 3px solid #a86716;
+  outline-offset: 4px;
+}
+.history-video-frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
+  border: 0;
+  margin-top: 1rem;
+  background: #142522;
+  border-radius: 0.5rem;
+}
+.history-video-help {
+  font-size: 0.8rem;
+  color: #52605b;
+}
+.history-video-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+.history-video-links a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  color: #29564b;
+}

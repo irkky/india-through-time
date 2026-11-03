@@ -3,6 +3,7 @@ import type { HistoricalEra, HistoricalEvent, HistoricalPeriod } from "@/types/h
 import { regionalExpansion, regionalContext } from "./prehistory/regional-expansion";
 import { prehistorySources as sources } from "./prehistory/sources";
 import { enrichPrehistoryEvent } from "./prehistory/evidence";
+import { prehistoryVideos } from "./prehistory/videos";
 import {
   middlePalaeolithicEvents,
   upperPalaeolithicEvents,
@@ -221,12 +222,13 @@ export const prehistoricIndiaEra = {
     ] satisfies HistoricalPeriod[]
   ).map((period: HistoricalPeriod) => ({
     ...period,
+    videos: prehistoryVideos[period.id],
     context: [...(period.context ?? []), ...(regionalContext[period.id] ?? [])],
     events: [
       ...period.events,
       ...regionalExpansion
         .filter((entry) => entry.periodId === period.id)
         .map(({ event }) => withExhibit(event)),
-    ].map(enrichPrehistoryEvent),
+    ].map((event) => ({ ...enrichPrehistoryEvent(event), videos: prehistoryVideos[period.id] })),
   })),
 } as const satisfies HistoricalEra;

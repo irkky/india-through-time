@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **47 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **49 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -463,3 +463,7 @@ URL, assets and timeline after publishing; a local build does not verify a deplo
 The configuration does **not** enable `output: "export"`. Prerendered pages inside `.next/` are not
 a ready-to-upload GitHub Pages site. Static-only hosting needs a separate export and asset-path
 review. No deployment workflow is included.
+
+### Prehistoric video guides
+
+All eight prehistoric reading sections include selected video guides. Eight YouTube lectures with embedding enabled load only after a click; the NPTEL Bhimbetka course opens externally. Videos are also available inside the prehistoric timeline evidence dialogs. See the [selection and playback guide](docs/prehistory-videos.md) for sources, chronology qualifications and verification.

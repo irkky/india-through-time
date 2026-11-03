@@ -3,6 +3,7 @@ import { compareHistoricalDates, formatHistoricalDate } from "@/lib/historical-d
 import { prehistoryGaps } from "@/data/timeline/prehistory/gaps";
 import { ContentNeeds } from "./content-needs";
 import { EventDetails, ImageNeeds } from "./event-details";
+import { HistoricalVideos } from "./historical-videos";
 
 /** Server-rendered evidence remains readable without the scroll animation or JavaScript. */
 export function PrehistoryReader({
@@ -73,6 +74,7 @@ export function PrehistoryReader({
           >
             <h3 className="text-2xl font-semibold">{period.title}</h3>
             {period.introduction && <p className="mt-3 leading-7">{period.introduction}</p>}
+            {!!period.videos?.length && <HistoricalVideos videos={period.videos} />}
             {period.context?.map((context) => (
               <div key={context.title} className="my-5 rounded-lg bg-white/50 p-5">
                 <h4 className="font-semibold">{context.title}</h4>

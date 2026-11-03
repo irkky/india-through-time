@@ -106,6 +106,14 @@ methodology and comparable baselines. Oral histories require consent and clear t
 
 ## Verification
 
+Verified on 1 November 2026: `npm run check` passed all 47 tests, lint, TypeScript,
+formatting and content validation; the production build passed. Chrome checks passed
+at 1440px, 768px and 390px for all 252 exhibits and 181 distinct gallery images,
+including forward/reverse transitions, keyboard focus, reduced motion and all eight
+readers without JavaScript. No hydration or runtime exceptions were detected.
+Four existing Lower Palaeolithic media-credit warnings remain outside this chapter.
+External film playback was not included in the browser regression.
+
 Run `npm run check`, `npm run build`, then start the production server and run
 `npm run test:browser -- http://localhost:3121` (use the actual server port).
 The optional browser script checks all 252 scenes at desktop/tablet/mobile widths, new-century

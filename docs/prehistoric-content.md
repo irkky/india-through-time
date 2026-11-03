@@ -203,3 +203,7 @@ full-image links, lazy loading and an unavailable-image fallback. Images use con
 preserve the complete frame. Existing source images are unchanged.
 For Dhaba or Jwalapuram, create separate gallery arrays and attach them to their own exhibit entries
 in `src/data/scenes/prehistory-exhibits.ts`; do not reuse the Attirampakkam photographs as their evidence.
+
+## Video guides
+
+The eight prehistoric reading sections now include nine curated viewing recommendations: eight on-demand YouTube players and an external NPTEL Bhimbetka course guide. The seven populated periods also show their guides inside timeline evidence dialogs. See [Prehistoric video guides](prehistory-videos.md) for the selection, chronology qualifications, source manifest and playback checks.
