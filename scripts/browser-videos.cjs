@@ -8,10 +8,15 @@ const { setTimeout: delay } = require("node:timers/promises");
 async function main() {
   const base = process.argv[2] || "http://localhost:3000";
   const ancient = process.env.VIDEOS_CHAPTER === "ancient";
-  const readerId = ancient ? "ancient-reader" : "prehistory-reader";
-  const expectedCards = ancient ? 11 : 9;
-  const expectedLinks = ancient ? 13 : 12;
-  const sampleEvent = ancient ? "indus-valley-civilization" : "lower-palaeolithic-scaffold";
+  const empires = process.env.VIDEOS_CHAPTER === "empires";
+  const readerId = empires ? "empires-reader" : ancient ? "ancient-reader" : "prehistory-reader";
+  const expectedCards = empires ? 15 : ancient ? 11 : 9;
+  const expectedLinks = empires ? 17 : ancient ? 13 : 12;
+  const sampleEvent = empires
+    ? "mauryan-empire"
+    : ancient
+      ? "indus-valley-civilization"
+      : "lower-palaeolithic-scaffold";
   assert.equal((await fetch(base)).status, 200, "Start the production server first.");
   const chrome =
     process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -131,7 +136,7 @@ async function main() {
     const screenshot = async (name) => {
       const result = await send("Page.captureScreenshot", { format: "png" });
       fs.writeFileSync(
-        path.join(artifactDir, `${ancient ? "ancient-" : ""}${name}.png`),
+        path.join(artifactDir, `${empires ? "empires-" : ancient ? "ancient-" : ""}${name}.png`),
         Buffer.from(result.data, "base64"),
       );
     };
@@ -173,10 +178,10 @@ async function main() {
         "document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'",
       );
       const cards = await evaluate(
-        `Array.from(document.querySelectorAll('#${readerId} .history-video-card')).map(c=>c.dataset.videoId)`,
+        `Array.from(document.querySelectorAll('#${readerId} .history-video-card')).map((c,i)=>{c.dataset.videoCheckIndex=String(i);return c.dataset.videoId})`,
       );
-      for (const videoId of cards) {
-        const card = `#${readerId} [data-video-id="${videoId}"]`;
+      for (const [index, videoId] of cards.entries()) {
+        const card = `#${readerId} [data-video-check-index="${index}"]`;
         assert.ok(
           await evaluate(
             `document.querySelector(${JSON.stringify(card)}).querySelector('a').href.startsWith('https://')`,
@@ -308,7 +313,17 @@ async function main() {
       path.basename(resolved).startsWith("prehistory-browser-")
     ) {
       await delay(500);
-      fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+      try {
+        await fs.promises.rm(resolved, {
+          recursive: true,
+          force: true,
+          maxRetries: 5,
+          retryDelay: 200,
+        });
+      } catch (error) {
+        if (error.code !== "EBUSY") throw error;
+        console.warn(`Chrome still holds its temporary profile; cleanup deferred: ${resolved}`);
+      }
     }
   }
 }

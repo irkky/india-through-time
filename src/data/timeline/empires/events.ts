@@ -1,3 +1,4 @@
+import { empireEventVideos } from "./videos";
 import { bce } from "@/lib/historical-date";
 import type { HistoricalEvent } from "@/types/history";
 import type { PrehistoryDiagram } from "@/types/prehistory-exhibit";
@@ -387,6 +388,7 @@ export const empireEntries: readonly Entry[] = [
 export const empireEvents: readonly HistoricalEvent[] = empireEntries.map((entry) =>
   enrichEmpireEvent({
     id: entry.id,
+    videos: empireEventVideos[entry.id],
     title: entry.title,
     dateStart: bce(entry.start),
     ...(entry.end ? { dateEnd: bce(entry.end) } : {}),

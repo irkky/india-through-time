@@ -1,4 +1,5 @@
 import type { HistoricalEra } from "@/types/history";
+import { empirePeriodVideos } from "./empires/videos";
 import { empireEventsForPeriod } from "./empires/events";
 
 export const secondUrbanizationEra: HistoricalEra = {
@@ -13,6 +14,7 @@ export const secondUrbanizationEra: HistoricalEra = {
       introduction:
         "Urban growth, competing states and ascetic traditions overlapped. These thematic records are ordered by their approximate starting dates, not presented as a simple chain of causes.",
       events: empireEventsForPeriod("landscape-of-states"),
+      videos: empirePeriodVideos["landscape-of-states"],
     },
     {
       id: "an-empire-emerges",
@@ -20,6 +22,7 @@ export const secondUrbanizationEra: HistoricalEra = {
       introduction:
         "Follow Mauryan political expansion and material evidence. Broad object dates can extend beyond a dynasty's conventional endpoints.",
       events: empireEventsForPeriod("an-empire-emerges"),
+      videos: empirePeriodVideos["an-empire-emerges"],
     },
     {
       id: "ashokan-evidence",
@@ -27,6 +30,7 @@ export const secondUrbanizationEra: HistoricalEra = {
       introduction:
         "Read inscriptions as situated royal statements, compare them with surviving monuments, and distinguish original phases from later additions.",
       events: empireEventsForPeriod("ashokan-evidence"),
+      videos: empirePeriodVideos["ashokan-evidence"],
     },
     {
       id: "after-mauryas",
@@ -34,6 +38,7 @@ export const secondUrbanizationEra: HistoricalEra = {
       introduction:
         "Dynastic change did not bring all settlements, exchange or religious communities to an end.",
       events: empireEventsForPeriod("after-mauryas"),
+      videos: empirePeriodVideos["after-mauryas"],
     },
   ],
 };

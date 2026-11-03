@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **50 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **51 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -471,3 +471,9 @@ All eight prehistoric reading sections include selected video guides. Eight YouT
 ### Ancient India video guides
 
 Ancient India & Early Transitions includes eleven selected videos across all four reading sections, with topic-specific guides in all fifteen timeline records. Players load on demand and retain direct source links. See the [video selection guide](docs/ancient-videos.md) and [source manifest](docs/ancient-video-manifest.json).
+
+### Second Urbanization & Empires video guides
+
+Fourteen selected lectures and site films cover all four periods and seventeen records,
+with on-demand players, publisher links and chronological context. See the
+[video guide](docs/empires-videos.md) and [source manifest](docs/empires-video-manifest.json).
