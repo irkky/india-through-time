@@ -1,3 +1,4 @@
+import { earlyModernEventVideos } from "./videos";
 import { bce, ce } from "@/lib/historical-date";
 import type { HistoricalEvent } from "@/types/history";
 import { earlyModernGalleries } from "@/data/scenes/early-modern-galleries";
@@ -37,6 +38,7 @@ export const earlyModernEvents: readonly HistoricalEvent[] = [...earlyModernReco
     if (!visualNote) throw new Error(`Missing early modern visual guidance: ${entry.id}`);
     return {
       id: entry.id,
+      videos: earlyModernEventVideos[entry.id],
       title: entry.title,
       dateStart: date(entry.start),
       ...(entry.end !== undefined ? { dateEnd: date(entry.end) } : {}),
@@ -77,7 +79,7 @@ export const earlyModernEvents: readonly HistoricalEvent[] = [...earlyModernReco
           ? [
               {
                 title: "Watch the site: a guided comparison",
-                text: `${video.focus} Open the film on the publisher's site using the link below. Recording rights remain with the credited producer.`,
+                text: `${video.focus} Use the video guide to play the selected upload or open the publisher reference below. Recording rights remain with the credited producer.`,
                 sourceIds: [videoSource.id],
               },
             ]

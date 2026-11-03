@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **51 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **53 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -477,3 +477,17 @@ Ancient India & Early Transitions includes eleven selected videos across all fou
 Fourteen selected lectures and site films cover all four periods and seventeen records,
 with on-demand players, publisher links and chronological context. See the
 [video guide](docs/empires-videos.md) and [source manifest](docs/empires-video-manifest.json).
+
+### Classical & Medieval video guides
+
+Twenty-five selected videos accompany all four periods and twenty-two records: twenty-four
+click-to-load players and one external 360-degree tour. University lectures complement
+site films and the Met's exact-object X-ray clip. See the [video guide](docs/classical-videos.md)
+and [source manifest](docs/classical-video-manifest.json) for scope, sources and playback checks.
+
+### Early Modern India video guides
+
+Thirty-two selected publisher videos accompany five periods and fifty-four entries, with
+click-to-load players, direct watch links and explicit scope notes. See the
+[video guide](docs/early-modern-videos.md), [source manifest](docs/early-modern-video-manifest.json)
+and tagged suggestions for more focused future videos.

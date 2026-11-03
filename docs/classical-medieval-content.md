@@ -1,6 +1,6 @@
 # Classical & Medieval India
 
-This expandable chapter covers selected Indian histories from c. 200 BCE to 1500 CE. Its 22 India-focused entries now contain **79 detailed reading sections, 25 local images across 19 galleries, nine external video guides and one museum audio/transcript link**. Indo-Greek rulers, Kushan connections and travellers are included for their direct relationship to the subcontinent, whose historical geography is not limited to modern national borders.
+This expandable chapter covers selected Indian histories from c. 200 BCE to 1500 CE. Its 22 India-focused entries now contain **79 detailed reading sections, 25 local images across 19 galleries, 25 selected videos (24 on-demand players and one external tour), nine retained publisher references and one museum audio/transcript link**. Indo-Greek rulers, Kushan connections and travellers are included for their direct relationship to the subcontinent, whose historical geography is not limited to modern national borders.
 
 ## Chronology and interpretation
 
@@ -19,7 +19,7 @@ Scroll distance gives readers time to examine content; it is not proportional to
 
 Every scene has three reading stages, evidence hotspots and a conceptual diagram. The expanded galleries cover coins, sculpture, murals, temple architecture, stepwell engineering and archaeological remains. Captions distinguish a monument's chronology from the photograph's capture date, and identify later devotional representations. Aryabhata, Brahmagupta and Ibn Battuta retain specific manuscript/route placeholders; modern arithmetic examples are explicitly labelled as teaching notation.
 
-The eight UNESCO/NHK heritage video guides and the Met's Bihar Buddha X-ray video open on the publishers' sites. The Nataraja object page also supplies an audio guide and transcript. None of these recordings is downloaded, embedded or autoplayed. Their rights are separate from open-image licences. All source and viewing links are available in the evidence dialogs and server-rendered readers.
+The [video guide](classical-videos.md) documents 24 click-to-load publisher players and one external 360-degree tour. Original UNESCO and museum reference links remain available, including the Nataraja audio guide and transcript. No recording is downloaded or autoplayed. Video and audio rights are separate from open-image licences. Source links remain available in evidence dialogs and server-rendered readers.
 
 ## Sources reviewed
 

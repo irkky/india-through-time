@@ -1,3 +1,4 @@
+import { classicalEventVideos } from "./videos";
 import { bce, ce } from "@/lib/historical-date";
 import type { HistoricalEvent, HistoricalSource } from "@/types/history";
 import { classicalGalleries } from "@/data/scenes/classical-galleries";
@@ -40,6 +41,7 @@ export const classicalEvents: readonly HistoricalEvent[] = classicalRecords.map(
   ];
   return {
     id: entry.id,
+    videos: classicalEventVideos[entry.id],
     title: entry.title,
     dateStart: date(entry.start),
     ...(entry.end !== undefined ? { dateEnd: date(entry.end) } : {}),
@@ -85,7 +87,7 @@ export const classicalEvents: readonly HistoricalEvent[] = classicalRecords.map(
         ? [
             {
               title: "Watch the site: a guided comparison",
-              text: `${video.focus} Open the video on the publisher's site using the link below. Film and recording rights remain with the credited publisher.`,
+              text: `${video.focus} Use the video guide to play the selected upload or open the publisher reference below. Film and recording rights remain with the credited publisher.`,
               sourceIds: [videoSource.id],
             },
           ]

@@ -42,7 +42,7 @@ The 28 additional local JPEGs include Hampi's Krishna temple and tank, the Vitta
 
 The [researched-media manifest](early-modern-researched-media-manifest.json) records each file's original source, photographer or artist, reuse licence, capture or object date, event assignment and integrity hash. Commons provides the image record; historical interpretation also uses museum catalogues, UNESCO, ASI and institutional publications. Alt text describes the actual downloaded image. Publisher-supplied image derivatives are retained without further cropping or image generation.
 
-Four guided film links lead to UNESCO's pages for [Goa](https://whc.unesco.org/en/list/234/video/), [Humayun's Tomb](https://whc.unesco.org/en/list/232/video/), [Fatehpur Sikri](https://whc.unesco.org/en/list/255/video/) and the [Taj Mahal](https://whc.unesco.org/en/list/252/video/). These are external viewing links, not downloaded video assets or autoplay embeds. Rights remain with the credited producers. Each has a short viewing prompt and is available through the source panel and chapter reader.
+Four guided film links lead to UNESCO's pages for [Goa](https://whc.unesco.org/en/list/234/video/), [Humayun's Tomb](https://whc.unesco.org/en/list/232/video/), [Fatehpur Sikri](https://whc.unesco.org/en/list/255/video/) and the [Taj Mahal](https://whc.unesco.org/en/list/252/video/). These original reference links remain alongside the new [video guides](early-modern-videos.md): 32 selected publisher videos with on-demand players and direct watch links. Videos are not downloaded and do not autoplay. Rights remain with the credited producers. Each has a short viewing prompt and is available through the source panel and chapter reader.
 
 ### Dating and relevance decisions
 

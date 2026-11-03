@@ -172,7 +172,7 @@ Supply the exact object or site requested, its catalogue or archive identifier, 
   - A later monument of Portuguese Goa, built long after the conquest of 1510. This church illustrates the colonial religious landscape, not the landing, conquest or the first printing press. Modern photograph: 2024-08-11 10:34:36. Reproduced without further cropping.
   - Credit: iMahesh / Wikimedia Commons. [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0).
 
-**[Watch the film](https://whc.unesco.org/en/list/234/video/)** — Compare the later churches with the conquest date of 1510. Watch for the scale and ornament of religious buildings; this is modern heritage footage, not a reconstruction of the conquest. External viewing only; no video file is redistributed.
+**[Watch the film](https://whc.unesco.org/en/list/234/video/)** — Compare the later churches with the conquest date of 1510. Watch for the scale and ornament of religious buildings; this is modern heritage footage, not a reconstruction of the conquest. An on-demand publisher player is now available in the video guide; this reference link remains available. No video file is redistributed.
 
 ### Still to add
 
@@ -387,7 +387,7 @@ Supply the exact object or site requested, its catalogue or archive identifier, 
   - The mausoleum commemorates Humayun after his death; the surviving garden and masonry have undergone conservation. Compare the elevated tomb with its garden setting, rather than treating this as an image of his 1555 restoration. Modern photograph: 2021-08-05 17:15:57. Reproduced without further cropping.
   - Credit: Fazal Ahmad / Wikimedia Commons. [CC BY 2.0](https://creativecommons.org/licenses/by/2.0).
 
-**[Watch the film](https://whc.unesco.org/en/list/232/video/)** — Follow the approach through the garden towards the raised mausoleum. Compare the filmed setting with the photograph and distinguish the tomb's construction from Humayun's lifetime. External viewing only; no video file is redistributed.
+**[Watch the film](https://whc.unesco.org/en/list/232/video/)** — Follow the approach through the garden towards the raised mausoleum. Compare the filmed setting with the photograph and distinguish the tomb's construction from Humayun's lifetime. An on-demand publisher player is now available in the video guide; this reference link remains available. No video file is redistributed.
 
 ### Still to add
 
@@ -454,7 +454,7 @@ Supply the exact object or site requested, its catalogue or archive identifier, 
   - A surviving pavilion in Akbar's planned capital. Its open columned storeys show court architecture; they do not identify the location or participants of a particular religious debate. Modern photograph: 2009-12-04. Reproduced without further cropping.
   - Credit: Diego Delso / Wikimedia Commons. [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0).
 
-**[Watch the film](https://whc.unesco.org/en/list/255/video/)** — Compare public courts, residential pavilions and religious spaces. The modern film helps explain spatial relationships without proving the location of every historical episode. External viewing only; no video file is redistributed.
+**[Watch the film](https://whc.unesco.org/en/list/255/video/)** — Compare public courts, residential pavilions and religious spaces. The modern film helps explain spatial relationships without proving the location of every historical episode. An on-demand publisher player is now available in the video guide; this reference link remains available. No video file is redistributed.
 
 ### Still to add
 
@@ -748,7 +748,7 @@ Supply the exact object or site requested, its catalogue or archive identifier, 
   - The central mausoleum and its minarets belong to Shah Jahan's funerary complex for Mumtaz Mahal. The photograph does not show the entire riverfront, mosque, guest house or construction sequence. Modern photograph: 6 March 2004 (according to Exif data). Reproduced without further cropping.
   - Credit: Dhirad, picture edited by J. A. Knudsen / Wikimedia Commons. [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/).
 
-**[Watch the film](https://whc.unesco.org/en/list/252/video/)** — Move from the central mausoleum to the wider garden and associated buildings. Compare the film with the still image; the two views do not replace a measured site plan. External viewing only; no video file is redistributed.
+**[Watch the film](https://whc.unesco.org/en/list/252/video/)** — Move from the central mausoleum to the wider garden and associated buildings. Compare the film with the still image; the two views do not replace a measured site plan. An on-demand publisher player is now available in the video guide; this reference link remains available. No video file is redistributed.
 
 ### Still to add
 

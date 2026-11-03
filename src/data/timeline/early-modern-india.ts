@@ -2,6 +2,7 @@ import type { HistoricalEra } from "@/types/history";
 import { earlyModernEvents } from "./early-modern/events";
 import { toTimelineOrdinal, ce } from "@/lib/historical-date";
 
+import { earlyModernPeriodVideos } from "./early-modern/videos";
 const phases = [
   {
     id: "early-modern-encounters",
@@ -54,6 +55,7 @@ export const earlyModernIndiaEra: HistoricalEra = {
     id: phase.id,
     title: phase.title,
     introduction: phase.introduction,
+    videos: earlyModernPeriodVideos[phase.id],
     // Entry dates determine placement; long-lived topics legitimately cross these boundaries.
     events: earlyModernEvents.filter((event) => {
       const start = toTimelineOrdinal(event.dateStart);

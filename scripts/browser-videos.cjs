@@ -7,16 +7,52 @@ const assert = require("node:assert/strict");
 const { setTimeout: delay } = require("node:timers/promises");
 async function main() {
   const base = process.argv[2] || "http://localhost:3000";
-  const ancient = process.env.VIDEOS_CHAPTER === "ancient";
-  const empires = process.env.VIDEOS_CHAPTER === "empires";
-  const readerId = empires ? "empires-reader" : ancient ? "ancient-reader" : "prehistory-reader";
-  const expectedCards = empires ? 15 : ancient ? 11 : 9;
-  const expectedLinks = empires ? 17 : ancient ? 13 : 12;
-  const sampleEvent = empires
-    ? "mauryan-empire"
-    : ancient
-      ? "indus-valley-civilization"
-      : "lower-palaeolithic-scaffold";
+  const chapters = {
+    prehistory: {
+      readerId: "prehistory-reader",
+      cards: 9,
+      links: 12,
+      sample: "lower-palaeolithic-scaffold",
+      prefix: "",
+    },
+    ancient: {
+      readerId: "ancient-reader",
+      cards: 11,
+      links: 13,
+      sample: "indus-valley-civilization",
+      prefix: "ancient-",
+    },
+    empires: {
+      readerId: "empires-reader",
+      cards: 15,
+      links: 17,
+      sample: "mauryan-empire",
+      prefix: "empires-",
+    },
+    classical: {
+      readerId: "classical-reader",
+      cards: 25,
+      links: 33,
+      sample: "gupta-world",
+      prefix: "classical-",
+    },
+  };
+  chapters["early-modern"] = {
+    readerId: "early-modern-reader",
+    cards: 42,
+    links: 47,
+    sample: "akbar-religious-dialogue",
+    prefix: "early-modern-",
+  };
+  const chapter = chapters[process.env.VIDEOS_CHAPTER || "prehistory"];
+  assert.ok(chapter, "Unknown VIDEOS_CHAPTER");
+  const {
+    readerId,
+    cards: expectedCards,
+    links: expectedLinks,
+    sample: sampleEvent,
+    prefix,
+  } = chapter;
   assert.equal((await fetch(base)).status, 200, "Start the production server first.");
   const chrome =
     process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -136,7 +172,7 @@ async function main() {
     const screenshot = async (name) => {
       const result = await send("Page.captureScreenshot", { format: "png" });
       fs.writeFileSync(
-        path.join(artifactDir, `${empires ? "empires-" : ancient ? "ancient-" : ""}${name}.png`),
+        path.join(artifactDir, `${prefix}${name}.png`),
         Buffer.from(result.data, "base64"),
       );
     };
@@ -187,7 +223,7 @@ async function main() {
             `document.querySelector(${JSON.stringify(card)}).querySelector('a').href.startsWith('https://')`,
           ),
         );
-        if (videoId === "video-bhimbetka-nptel") {
+        if (["video-bhimbetka-nptel", "classical-video-rani"].includes(videoId)) {
           assert.equal(
             await evaluate(
               `document.querySelector(${JSON.stringify(card)}).querySelector('button')`,

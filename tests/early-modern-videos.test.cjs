@@ -1,0 +1,71 @@
+require("../scripts/register-typescript.cjs");
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
+const { earlyModernIndiaEra } = require("../src/data/timeline/early-modern-india.ts");
+const { earlyModernEventVideos } = require("../src/data/timeline/early-modern/videos.ts");
+const { indianHistoryTimeline } = require("../src/data/timeline/indian-history.ts");
+const { validateHistory } = require("../src/lib/content/validate.ts");
+const manifest = require("../docs/early-modern-video-manifest.json");
+
+test("early modern video guides cover every section and map focused lectures to the correct records", () => {
+  const periods = earlyModernIndiaEra.periods;
+  const events = periods.flatMap((p) => p.events);
+  assert.equal(periods.length, 5);
+  assert.equal(events.length, 54);
+  assert.equal(manifest.length, 32);
+  assert.deepEqual(Object.keys(earlyModernEventVideos).sort(), events.map((e) => e.id).sort());
+  for (const period of periods) {
+    assert.ok(period.videos.length);
+    for (const event of period.events) {
+      assert.ok(event.videos.length);
+      for (const video of event.videos) assert.ok(period.videos.some((v) => v.id === video.id));
+    }
+  }
+  for (const item of manifest) {
+    const video = periods.flatMap((p) => p.videos).find((v) => v.id === item.id);
+    assert.ok(video);
+    assert.equal(video.mode, "youtube");
+    assert.equal(video.title, item.title);
+    assert.equal(video.durationSeconds, item.durationSeconds);
+    assert.equal(video.watchUrl, `https://www.youtube.com/watch?v=${item.videoId}`);
+    assert.match(item.embedEvidence, /playableInEmbed=true/);
+    assert.deepEqual(
+      item.eventIds.slice().sort(),
+      events
+        .filter((e) => e.videos.some((v) => v.id === item.id))
+        .map((e) => e.id)
+        .sort(),
+    );
+  }
+  for (const [key, eventId] of [
+    ["royal-women", "nur-jahan"],
+    ["saraighat", "saraighat-1671"],
+    ["colachel", "colachel-1741"],
+    ["observatory", "jaipur-observatory"],
+    ["kalamkari", "kalamkari-cover"],
+    ["humayun-tomb", "humayun-garden-tomb"],
+  ])
+    assert.deepEqual(manifest.find((v) => v.id === `early-modern-video-${key}`).eventIds, [
+      eventId,
+    ]);
+  assert.match(
+    manifest.find((v) => v.id === "early-modern-video-agriculture").context,
+    /not a specialised study/,
+  );
+  assert.match(
+    manifest.find((v) => v.id === "early-modern-video-colachel").description,
+    /Tamil-language/,
+  );
+  assert.match(
+    manifest.find((v) => v.id === "early-modern-video-goa").context,
+    /1556 printing press/,
+  );
+  assert.match(
+    manifest.find((v) => v.id === "early-modern-video-textile-coat").context,
+    /not an example of the kalamkari/,
+  );
+  assert.equal(
+    validateHistory(indianHistoryTimeline).filter((i) => i.severity === "error").length,
+    0,
+  );
+});

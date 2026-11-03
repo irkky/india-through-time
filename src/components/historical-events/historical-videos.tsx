@@ -79,9 +79,7 @@ export function HistoricalVideos({ videos }: { readonly videos?: readonly Histor
               </>
             )}
             {video.mode === "external" && (
-              <p className="history-video-help">
-                Watch this lecture on the publisher&apos;s course page.
-              </p>
+              <p className="history-video-help">Watch this video on the publisher&apos;s site.</p>
             )}
             <div className="history-video-links">
               <a href={video.watchUrl} target="_blank" rel="noopener noreferrer">

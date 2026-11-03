@@ -1,6 +1,7 @@
 import type { HistoricalEra } from "@/types/history";
 import { toTimelineOrdinal, bce, ce } from "@/lib/historical-date";
 import { classicalEvents } from "./classical/events";
+import { classicalPeriodVideos } from "./classical/videos";
 const phases = [
   {
     id: "classical-regional-roots",
@@ -44,6 +45,7 @@ export const classicalMedievalEra: HistoricalEra = {
     id: phase.id,
     title: phase.title,
     introduction: phase.introduction,
+    videos: classicalPeriodVideos[phase.id],
     events: classicalEvents.filter((event) => {
       const start = toTimelineOrdinal(event.dateStart);
       return start >= toTimelineOrdinal(phase.start) && start <= toTimelineOrdinal(phase.end);
