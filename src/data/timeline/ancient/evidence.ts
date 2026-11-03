@@ -130,7 +130,7 @@ export function enrichAncientEvent(event: HistoricalEvent): HistoricalEvent {
       ? [
           {
             title: "Watch and listen: a living tradition",
-            text: "Open UNESCO's film for a modern presentation of Vedic chanting, or the IGNCA portal for the identified Maharashtra tradition of the Shakala Samhita. These external resources document living transmission; they are not sound recordings from ancient India. Playback and availability are managed by the source websites.",
+            text: "Use the video guide to play UNESCO's film about the living tradition of Vedic chanting, or open its source directly. The IGNCA portal also documents the identified Maharashtra tradition of the Shakala Samhita. These resources concern modern transmission; they are not sound recordings from ancient India. Playback and availability remain managed by the publishers.",
             sourceIds: ["vedic-film", "vedic-recitation"],
           },
         ]

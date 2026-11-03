@@ -2,6 +2,7 @@ import { bce } from "@/lib/historical-date";
 import type { HistoricalEvent, HistoricalSource } from "@/types/history";
 import { ancientSources as s } from "./sources";
 import { enrichAncientEvent } from "./evidence";
+import { ancientEventVideos } from "./videos";
 
 type RecordInput = {
   id: string;
@@ -19,6 +20,7 @@ type RecordInput = {
 };
 const record = (r: RecordInput): HistoricalEvent =>
   enrichAncientEvent({
+    videos: ancientEventVideos[r.id],
     id: r.id,
     title: r.title,
     dateStart: bce(r.start),

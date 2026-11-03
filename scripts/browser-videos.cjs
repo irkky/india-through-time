@@ -7,6 +7,11 @@ const assert = require("node:assert/strict");
 const { setTimeout: delay } = require("node:timers/promises");
 async function main() {
   const base = process.argv[2] || "http://localhost:3000";
+  const ancient = process.env.VIDEOS_CHAPTER === "ancient";
+  const readerId = ancient ? "ancient-reader" : "prehistory-reader";
+  const expectedCards = ancient ? 11 : 9;
+  const expectedLinks = ancient ? 13 : 12;
+  const sampleEvent = ancient ? "indus-valley-civilization" : "lower-palaeolithic-scaffold";
   assert.equal((await fetch(base)).status, 200, "Start the production server first.");
   const chrome =
     process.env.CHROME_PATH || "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -125,7 +130,10 @@ async function main() {
     };
     const screenshot = async (name) => {
       const result = await send("Page.captureScreenshot", { format: "png" });
-      fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
+      fs.writeFileSync(
+        path.join(artifactDir, `${ancient ? "ancient-" : ""}${name}.png`),
+        Buffer.from(result.data, "base64"),
+      );
     };
 
     await send("Runtime.enable");
@@ -155,7 +163,7 @@ async function main() {
       remoteRequests = [];
       await send("Page.navigate", { url: base });
       await waitFor(
-        "document.querySelectorAll('#prehistory-reader .history-video-card').length === 9",
+        `document.querySelectorAll('#${readerId} .history-video-card').length === ${expectedCards}`,
       );
       assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
       assert.equal(remoteRequests.length, 0, "No video requests before viewer interaction");
@@ -165,10 +173,10 @@ async function main() {
         "document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'",
       );
       const cards = await evaluate(
-        "Array.from(document.querySelectorAll('#prehistory-reader .history-video-card')).map(c=>c.dataset.videoId)",
+        `Array.from(document.querySelectorAll('#${readerId} .history-video-card')).map(c=>c.dataset.videoId)`,
       );
       for (const videoId of cards) {
-        const card = `#prehistory-reader [data-video-id="${videoId}"]`;
+        const card = `#${readerId} [data-video-id="${videoId}"]`;
         assert.ok(
           await evaluate(
             `document.querySelector(${JSON.stringify(card)}).querySelector('a').href.startsWith('https://')`,
@@ -203,7 +211,7 @@ async function main() {
         );
       }
       // Dialog mount/unmount must stop its player, including Escape dismissal.
-      await navigate("lower-palaeolithic-scaffold");
+      await navigate(sampleEvent);
       await click('.visual-scene[aria-hidden="false"] .gallery-jump');
       await waitFor(
         "document.querySelector('.exhibit-dialog[open] .history-video-toggle') !== null",
@@ -247,7 +255,7 @@ async function main() {
     await send("Page.navigate", { url: base });
     await waitFor("document.querySelector('.visual-scene[data-scene-state=active]') !== null");
     await click(".journey-start-button");
-    await navigate("lower-palaeolithic-scaffold");
+    await navigate(sampleEvent);
     await click('.visual-scene[aria-hidden="false"] .gallery-jump');
     await click(".exhibit-dialog[open] .history-video-toggle");
     await evaluate(
@@ -276,20 +284,18 @@ async function main() {
     await send("Emulation.setScriptExecutionDisabled", { value: true });
     await send("Page.navigate", { url: base });
     await waitFor(
-      "document.querySelectorAll('#prehistory-reader .history-video-card').length === 9",
+      `document.querySelectorAll('#${readerId} .history-video-card').length === ${expectedCards}`,
     );
     assert.equal(
-      await evaluate(
-        "document.querySelectorAll('#prehistory-reader .history-video-links a').length",
-      ),
-      12,
+      await evaluate(`document.querySelectorAll('#${readerId} .history-video-links a').length`),
+      expectedLinks,
     );
     assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
     assert.deepEqual(errors, []);
     console.log(
       process.env.VIDEOS_PROVIDER_ONLY
         ? "Provider smoke and no-JavaScript checks completed; inspect playback screenshot."
-        : "PASS: no eager provider requests, external-only NPTEL link, no-JavaScript source links, no hydration/runtime exceptions. Inspect live playback screenshot.",
+        : "PASS: no eager provider requests, publisher fallback links, no-JavaScript source links, no hydration/runtime exceptions. Inspect live playback screenshot.",
     );
   } finally {
     if (send && socket?.readyState === WebSocket.OPEN) await send("Browser.close").catch(() => {});

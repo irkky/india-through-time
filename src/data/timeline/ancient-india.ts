@@ -1,6 +1,7 @@
 import type { HistoricalEra } from "@/types/history";
 import { cityEvents, transitionEvents, vedicEvents, ironAgeEvents } from "./ancient/events";
 import { ancientSources as s } from "./ancient/sources";
+import { ancientPeriodVideos } from "./ancient/videos";
 
 export const ancientIndiaEra: HistoricalEra = {
   id: "ancient-india-early-transitions",
@@ -10,6 +11,7 @@ export const ancientIndiaEra: HistoricalEra = {
   periods: [
     {
       id: "cities-of-the-indus",
+      videos: ancientPeriodVideos["cities-of-the-indus"],
       title: "Cities of the Indus",
       introduction:
         "Earlier village and Early Harappan records remain in Prehistoric India. This chapter follows the urban networks they helped create. Several thematic records share the same phase dates: they are different views of a contemporary world, not consecutive inventions.",
@@ -38,6 +40,7 @@ export const ancientIndiaEra: HistoricalEra = {
     },
     {
       id: "regional-transformations",
+      videos: ancientPeriodVideos["regional-transformations"],
       title: "Regional transformations",
       introduction:
         "Urban contraction, continued settlement and new technologies had different regional histories. Environmental evidence is one part of this account, not a single explanation for every change.",
@@ -45,6 +48,7 @@ export const ancientIndiaEra: HistoricalEra = {
     },
     {
       id: "vedic-oral-worlds",
+      videos: ancientPeriodVideos["vedic-oral-worlds"],
       title: "Vedic oral worlds",
       introduction:
         "Textual traditions and archaeological cultures provide different kinds of evidence. These broad composition ranges overlap with material traditions in the neighbouring sections.",
@@ -59,6 +63,7 @@ export const ancientIndiaEra: HistoricalEra = {
     },
     {
       id: "iron-age-regional-worlds",
+      videos: ancientPeriodVideos["iron-age-regional-worlds"],
       title: "Iron Age regional worlds",
       introduction:
         "There was no single moment when the whole subcontinent became an Iron Age society. Settlement sequences and burial practices require regional chronologies.",

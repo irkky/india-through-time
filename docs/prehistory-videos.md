@@ -71,3 +71,13 @@ and [player errors](https://developers.google.com/youtube/iframe_api_reference#o
   deferred requests, one-player behaviour, closure, external fallback and no-JavaScript links.
   It blocks provider requests for deterministic UI checks, then saves a separate live-provider
   screenshot. It does not establish complete playback of every lecture.
+
+Verified on 3 November 2026: all 49 tests, lint, TypeScript, formatting, content validation
+and the production build passed. Video UI checks passed at 1440, 768, 390 and 320px,
+including blocked-provider fallback links, no eager provider requests, one loaded player,
+dialog cleanup and source links without JavaScript. A separate live-provider check loaded
+the CEC Palaeolithic player and started its opening sequence inside the page. The other
+seven videos' embedding permissions were checked through publisher metadata; full playback
+of every lecture was not tested. Scroll/year progression, forward/reverse chapter transitions
+and all eight static readers passed with no hydration/runtime exceptions. Four existing
+Lower Palaeolithic image-credit warnings remain.

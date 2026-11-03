@@ -108,5 +108,6 @@ records coverage, remaining needs, external video/audio resources and reuse rule
 Edit `src/data/scenes/ancient-galleries.ts` for images and attribution, and
 `src/data/timeline/ancient/evidence.ts` for evidence notes and further-reading links.
 The machine-readable [manifest](ancient-media-manifest.json) stores download URLs
-and SHA-256 checksums for the 12 new files. No external recording autoplays or loads
-inside the timeline; visitors choose whether to open its publisher website.
+and SHA-256 checksums for the 12 new files. Videos never autoplay or load before selection. The [video guide](ancient-videos.md)
+documents eleven on-demand publisher players across all four periods and fifteen records,
+with direct source links when playback is unavailable.

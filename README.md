@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **49 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **50 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -467,3 +467,7 @@ review. No deployment workflow is included.
 ### Prehistoric video guides
 
 All eight prehistoric reading sections include selected video guides. Eight YouTube lectures with embedding enabled load only after a click; the NPTEL Bhimbetka course opens externally. Videos are also available inside the prehistoric timeline evidence dialogs. See the [selection and playback guide](docs/prehistory-videos.md) for sources, chronology qualifications and verification.
+
+### Ancient India video guides
+
+Ancient India & Early Transitions includes eleven selected videos across all four reading sections, with topic-specific guides in all fifteen timeline records. Players load on demand and retain direct source links. See the [video selection guide](docs/ancient-videos.md) and [source manifest](docs/ancient-video-manifest.json).
