@@ -2,6 +2,8 @@ import type { HistoricalEra } from "@/types/history";
 import { postIndependenceEvents } from "./post-independence/events";
 import { postIndependenceReviewedOn } from "./post-independence/records";
 
+import { postIndependencePeriodVideos } from "./post-independence/videos";
+
 const phases = [
   ["republic", "Making the republic", 1948, 1961],
   ["development", "Development, conflict and constitutional tests", 1962, 1977],
@@ -17,6 +19,7 @@ export const postIndependenceIndiaEra: HistoricalEra = {
   subtitle: "Democracy, development, everyday lives and a changing republic",
   periods: phases.map(([id, title, start, end]) => ({
     id: `republic-phase-${id}`,
+    videos: postIndependencePeriodVideos[`republic-phase-${id}`],
     title: `${title} · ${start}–${end}`,
     introduction: `A sourced, expandable history of independent India. The 1947 independence and Partition entry remains in the preceding chapter. Years order the journey; precise dates and overlapping windows are explained in each record. Research reviewed ${postIndependenceReviewedOn}. Contemporary entries distinguish announcements, implementation and completed outcomes.`,
     events: postIndependenceEvents.filter(

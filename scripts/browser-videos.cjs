@@ -51,6 +51,20 @@ async function main() {
     sample: "colonial-rebellion-1857",
     prefix: "colonial-",
   };
+  chapters.independence = {
+    readerId: "independence-reader",
+    cards: 29,
+    links: 32,
+    sample: "freedom-home-rule",
+    prefix: "independence-",
+  };
+  chapters.republic = {
+    readerId: "post-independence-reader",
+    cards: 57,
+    links: 61,
+    sample: "republic-first-election",
+    prefix: "republic-",
+  };
   const chapter = chapters[process.env.VIDEOS_CHAPTER || "prehistory"];
   assert.ok(chapter, "Unknown VIDEOS_CHAPTER");
   const {
@@ -230,7 +244,11 @@ async function main() {
             `document.querySelector(${JSON.stringify(card)}).querySelector('a').href.startsWith('https://')`,
           ),
         );
-        if (["video-bhimbetka-nptel", "classical-video-rani"].includes(videoId)) {
+        if (
+          ["video-bhimbetka-nptel", "classical-video-rani", "republic-video-cricket-1983"].includes(
+            videoId,
+          )
+        ) {
           assert.equal(
             await evaluate(
               `document.querySelector(${JSON.stringify(card)}).querySelector('button')`,

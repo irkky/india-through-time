@@ -11,6 +11,8 @@ import {
   independenceReadingNotes,
 } from "./evidence";
 
+import { independenceEventVideos } from "./videos";
+
 const date = (year: number) => (year < 0 ? bce(-year) : ce(year));
 
 // Same-year entries remain year-granular; order known episodes within that year.
@@ -59,6 +61,7 @@ export const independenceEvents: readonly HistoricalEvent[] = [...independenceRe
     if (!visualNote) throw new Error(`Missing independence visual guidance: ${entry.id}`);
     return {
       id: entry.id,
+      videos: independenceEventVideos[entry.id],
       title: entry.title,
       dateStart: date(entry.start),
       ...(entry.end !== undefined ? { dateEnd: date(entry.end) } : {}),
@@ -107,7 +110,7 @@ export const independenceEvents: readonly HistoricalEvent[] = [...independenceRe
           ? [
               {
                 title: "Watch and compare the evidence",
-                text: `${video.focus} Open the film on the publisher's site using the link below. Recording rights remain with the credited producer.`,
+                text: `${video.focus} Use the video guide for on-page viewing where available, or open this publisher reference below. Recording rights remain with the credited producer.`,
                 sourceIds: [videoSource.id],
               },
             ]

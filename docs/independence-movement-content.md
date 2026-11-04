@@ -57,3 +57,12 @@ Historical records remain in `src/data/timeline/independence/records.ts`; supple
 The 30 October 2026 implementation passed lint, TypeScript, formatting, all 45 tests, content validation and the production build. Chrome regression passed all 252 exhibits at 1440, 768 and 390 pixels, including the expanded galleries, evidence tags, filters, keyboard focus, forward/reverse transitions, reduced motion and all eight static readers without JavaScript. No hydration or runtime exceptions were reported. Representative desktop, tablet and phone screenshots were also inspected.
 
 Four pre-existing Lower Palaeolithic media attribution warnings remain outside this chapter. External film publisher metadata and catalogue pages were checked; full external video playback was not tested. The optional browser script is a development check, not code run during normal visits.
+
+## Video guide update ? 4 November 2026
+
+The chapter now includes 28 selected publisher videos mapped to all four periods and 29 records.
+On-page players load only on request and retain direct watch links. The earlier five archive
+references remain available; the IWM newsreel continues as a publisher link. Earlier references
+to external-only viewing describe the previous implementation. See the
+[video guide](independence-videos.md) and [verification manifest](independence-video-manifest.json)
+for placements, languages, historical qualifications and remaining research needs.

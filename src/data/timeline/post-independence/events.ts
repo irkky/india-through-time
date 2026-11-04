@@ -11,6 +11,8 @@ import {
   postIndependenceReadingNotes,
 } from "./evidence";
 
+import { postIndependenceEventVideos } from "./videos";
+
 const date = (year: number) => (year < 0 ? bce(-year) : ce(year));
 
 export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndependenceRecords]
@@ -43,6 +45,7 @@ export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndepe
     if (!visualNote) throw new Error(`Missing postIndependence visual guidance: ${entry.id}`);
     return {
       id: entry.id,
+      videos: postIndependenceEventVideos[entry.id],
       title: entry.title,
       dateStart: date(entry.start),
       ...(entry.end !== undefined ? { dateEnd: date(entry.end) } : {}),
@@ -91,7 +94,7 @@ export const postIndependenceEvents: readonly HistoricalEvent[] = [...postIndepe
           ? [
               {
                 title: "Watch and compare the evidence",
-                text: `${video.focus} Open the film on the publisher's site using the link below. Recording rights remain with the credited producer.`,
+                text: `${video.focus} Use the video guide for on-page viewing where available, or open this publisher reference below. Recording rights remain with the credited producer.`,
                 sourceIds: [videoSource.id],
               },
             ]

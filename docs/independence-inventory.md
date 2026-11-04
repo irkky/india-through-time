@@ -705,3 +705,12 @@ Supply the exact object or site requested, its catalogue or archive identifier, 
 **Reading guidance:** Read the 13 December 1946 debate as the introduction of a proposal. Adoption in January 1947 and the Constitution's later commencement are separate milestones. A photograph of another Assembly sitting cannot identify this specific speech.
 
 **Sources:** [Constituent Assembly Debates, 13 December 1946](https://www.constitutionofindia.net/debates/13-dec-1946/) · [Watch: The Making of India's Constitution (2021)](https://www.constitutionofindia.net/video/the-making-of-indias-constitution/)
+
+## Video guide update ? 4 November 2026
+
+The chapter now includes 28 selected publisher videos mapped to all four periods and 29 records.
+On-page players load only on request and retain direct watch links. The earlier five archive
+references remain available; the IWM newsreel continues as a publisher link. Earlier references
+to external-only viewing describe the previous implementation. See the
+[video guide](independence-videos.md) and [verification manifest](independence-video-manifest.json)
+for placements, languages, historical qualifications and remaining research needs.

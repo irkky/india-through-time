@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **54 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **56 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -498,3 +498,19 @@ Thirty-four selected publisher videos accompany five periods and thirty-six reco
 with click-to-load players, direct watch links and historical scope notes. See the
 [video guide](docs/colonial-videos.md) and [source manifest](docs/colonial-video-manifest.json),
 including tagged suggestions for more focused regional videos.
+
+### Independence Movement video guides
+
+The four Independence Movement periods and all 29 records now have selected video guides:
+28 original publisher recordings, with click-to-load players, direct watch links and visible
+notes separating archival footage, animation and later interpretation. See the
+[video guide](docs/independence-videos.md) and [source manifest](docs/independence-video-manifest.json)
+for placement, languages, remaining gaps and checks. The existing scroll chronology is preserved.
+
+### Post-Independence to 2025 video guides
+
+All five periods and 55 records now include selected video guides: 56 click-to-load YouTube
+recordings and one ICC publisher-only card. Source links, durations and historical-context notes
+accompany the players; the timeline still ends in 2025. See the
+[video guide](docs/post-independence-videos.md) and
+[source manifest](docs/post-independence-video-manifest.json) for placement and verification.

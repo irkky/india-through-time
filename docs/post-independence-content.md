@@ -120,3 +120,12 @@ The optional browser script checks all 252 scenes at desktop/tablet/mobile width
 filtering, images, source panels, forward/reverse chapter transitions, reduced motion and
 all eight readers without JavaScript. It creates local screenshots in `.browser-artifacts`;
 it does not run during ordinary website use.
+
+## Video guide update — 4 November 2026
+
+The five periods and 55 records now have 57 selected viewing guides: 56 embeddable YouTube
+recordings plus an ICC publisher-only card. Every player retains a direct watch link. The seven
+earlier archive references remain available; previous external-only notes describe the earlier
+implementation. See the [video guide](post-independence-videos.md) and
+[source manifest](post-independence-video-manifest.json) for placements, source limitations and checks.
+The chronological cutoff remains 2025.

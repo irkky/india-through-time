@@ -1,5 +1,7 @@
 import type { HistoricalEra } from "@/types/history";
 import { independenceEvents } from "./independence/events";
+import { independencePeriodVideos } from "./independence/videos";
+
 const phases = [
   ["networks", "Networks and early satyagrahas", 1913, 1919],
   ["equality", "Local struggles and equal citizenship", 1920, 1928],
@@ -13,6 +15,7 @@ export const independenceIndiaEra: HistoricalEra = {
   subtitle: "Organisations, regional struggles and competing visions of freedom",
   periods: phases.map(([id, title, start, end]) => ({
     id: `independence-${id}`,
+    videos: independencePeriodVideos[`independence-${id}`],
     title: `${title} · ${start}–${end}`,
     introduction:
       "These thematic phases overlap Colonial India. Congress's founding, Swadeshi, Non-cooperation, the Salt March, Quit India and independence retain their existing Colonial Era records; related-event links connect the two chapters without duplicating dated scenes.",

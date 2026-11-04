@@ -1307,3 +1307,12 @@ Supply the exact object or site requested, its catalogue or archive identifier, 
 **Reading guidance:** The existing Raigad photograph was taken in 2018 and predates the 2025 inscription. UNESCO lists a serial property of twelve components. One fort image represents one component, not every site or the seventeenth-century military landscape as it originally appeared.
 
 **Sources:** [UNESCO World Heritage Centre: Maratha Military Landscapes](https://whc.unesco.org/en/list/1739/) · [Raigad Fort during commemorations, 6 June 2018: image record and provenance](https://commons.wikimedia.org/wiki/File:Raighad_Fort_by_21st.jpg)
+
+## Video guide update — 4 November 2026
+
+The five periods and 55 records now have 57 selected viewing guides: 56 embeddable YouTube
+recordings plus an ICC publisher-only card. Every player retains a direct watch link. The seven
+earlier archive references remain available; previous external-only notes describe the earlier
+implementation. See the [video guide](post-independence-videos.md) and
+[source manifest](post-independence-video-manifest.json) for placements, source limitations and checks.
+The chronological cutoff remains 2025.
