@@ -353,7 +353,7 @@ npm run check
 npm run build
 ```
 
-The current suite contains **53 tests** covering validation, date boundaries, chronology, weighted
+The current suite contains **54 tests** covering validation, date boundaries, chronology, weighted
 navigation, filters, citations, relationships and local media. Content validation currently reports
 **four existing Lower Palaeolithic media-credit warnings**; successful validation is not a blanket
 rights clearance for every image.
@@ -491,3 +491,10 @@ Thirty-two selected publisher videos accompany five periods and fifty-four entri
 click-to-load players, direct watch links and explicit scope notes. See the
 [video guide](docs/early-modern-videos.md), [source manifest](docs/early-modern-video-manifest.json)
 and tagged suggestions for more focused future videos.
+
+### Colonial Era & British Rule video guides
+
+Thirty-four selected publisher videos accompany five periods and thirty-six records,
+with click-to-load players, direct watch links and historical scope notes. See the
+[video guide](docs/colonial-videos.md) and [source manifest](docs/colonial-video-manifest.json),
+including tagged suggestions for more focused regional videos.

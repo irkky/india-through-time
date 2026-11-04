@@ -1,5 +1,6 @@
 import type { HistoricalEra } from "@/types/history";
 import { colonialEvents } from "./colonial/events";
+import { colonialPeriodVideos } from "./colonial/videos";
 const phases = [
   ["company", "Company power and revenue", 1765, 1818],
   ["conquest", "Conquest, education and social reform", 1819, 1856],
@@ -14,6 +15,7 @@ export const colonialIndiaEra: HistoricalEra = {
   subtitle: "Company expansion, Indian lives and resistance, Crown rule and independence",
   periods: phases.map(([id, title, start, end]) => ({
     id: `colonial-${id}`,
+    videos: colonialPeriodVideos[`colonial-${id}`],
     title: `${title} · ${start}–${end}`,
     introduction:
       "Dates group entries for navigation; regional experiences overlap. Company rule, Crown rule and indirect rule through princely states were different arrangements. Read the evidence and its limitations alongside each event.",

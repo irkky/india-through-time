@@ -1,0 +1,566 @@
+import type { HistoricalVideo } from "@/types/history";
+
+/** Publisher videos accompany the dated evidence; broader contexts are labelled. */
+export const colonialVideoLibrary = {
+  "company-context": {
+    id: "colonial-video-company-context",
+    title: "18th Century - Part I (History of India : 1750s - 1857)",
+    publisher: "CEC",
+    watchUrl: "https://www.youtube.com/watch?v=WroucvLpRiw",
+    description:
+      "A CEC introduction to eighteenth-century India, setting the scene for Company power and revenue.",
+    context:
+      "This is period background, not a dedicated investigation of the 1770 Bengal famine. Keep that catastrophe separate from the 1943 famine and use the record’s sources for causes and estimates.",
+    durationSeconds: 1590,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "WroucvLpRiw",
+  },
+  regulating: {
+    id: "colonial-video-regulating",
+    title: "HoL-L20-The Regulating act of 1773 #swayamprabha #ch06sp",
+    publisher: "CH 06: CEC-UGC 06: Law and Legal Studies",
+    watchUrl: "https://www.youtube.com/watch?v=mMU8uJ677Pg",
+    description: "A legal-history lecture specifically on the Regulating Act of 1773.",
+    context:
+      "Distinguish the statute’s provisions from how oversight worked in practice. Later constitutional developments do not belong to 1773.",
+    durationSeconds: 1777,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "mMU8uJ677Pg",
+  },
+  pitt: {
+    id: "colonial-video-pitt",
+    title: "Regulating and Pitts India Act #CH25SP #swayamprabha",
+    publisher: "CH 25: IIT KANPUR 02: Humanities & Social Sciences",
+    watchUrl: "https://www.youtube.com/watch?v=1rHSF-bDWDY",
+    description: "A longer Modern India lecture comparing the Regulating Act and Pitt’s India Act.",
+    context:
+      "The Acts belong to different dates. Parliamentary control of the Company was not yet the Crown government established in 1858.",
+    durationSeconds: 3557,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "1rHSF-bDWDY",
+  },
+  settlement: {
+    id: "colonial-video-settlement",
+    title: "Land Revenue Settlements in British India: The Permanent Settlement of 1793",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=zHe1xxi-olI",
+    description: "A focused lecture on the Permanent Settlement of 1793 and colonial land revenue.",
+    context:
+      "This arrangement was not applied uniformly throughout India. Compare the stated revenue framework with local tenancy, collection and indebtedness.",
+    durationSeconds: 1740,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "zHe1xxi-olI",
+  },
+  mysore: {
+    id: "colonial-video-mysore",
+    title: "The Foundation of The British Empire: The Company and The State of Mysore",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=2L9UafMjJrg",
+    description:
+      "A university-channel lecture on the Company and Mysore, accompanying the 1799 record.",
+    context:
+      "A wider political and military overview, not a reconstruction of every episode at Srirangapatna or a catalogue of the pictured object.",
+    durationSeconds: 1740,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "2L9UafMjJrg",
+  },
+  marathas: {
+    id: "colonial-video-marathas",
+    title: "The Foundation of The British Empire: Marathas",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=vJf6cH32qJg",
+    description:
+      "A lecture on Company expansion and the Marathas, providing context for the 1818 transition.",
+    context:
+      "The wars and treaties had distinct chronologies. The end of Peshwa rule did not erase all Maratha states or institutions.",
+    durationSeconds: 1680,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "vJf6cH32qJg",
+  },
+  resistance: {
+    id: "colonial-video-resistance",
+    title: "Trends in Anti-Colonial Resistance in India in 19th Century",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=0Ybcr0CQl2A",
+    description:
+      "A lecture surveying nineteenth-century anti-colonial resistance, accompanying the Paika record.",
+    context:
+      "A comparative overview, not a dedicated Paika documentary. Regional leadership, grievances and dates should be read from the specific record rather than generalised from other uprisings.",
+    durationSeconds: 1800,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "0Ybcr0CQl2A",
+  },
+  reform: {
+    id: "colonial-video-reform",
+    title: "Social Reform Movement in 19th Century India",
+    publisher: "Vidya-mitra",
+    watchUrl: "https://www.youtube.com/watch?v=CcBIQEBODJI",
+    description:
+      "A sociology lecture on nineteenth-century social reform, accompanying sati prohibition and widow remarriage.",
+    context:
+      "Legal change, reform campaigns and social practice were different processes. Neither an Act nor one reformer represents every community’s experience.",
+    durationSeconds: 1340,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "CcBIQEBODJI",
+  },
+  education: {
+    id: "colonial-video-education",
+    title: "EDUCATION DURING COLONIAL PERIOD IN INDIA",
+    publisher: "CH 04: CEC-UGC 04: Education & Home Science",
+    watchUrl: "https://www.youtube.com/watch?v=6x-ydAEPFRw",
+    description:
+      "A CEC education lecture on colonial education policy, accompanying the 1835 decision and Wood’s Despatch.",
+    context:
+      "The two policy moments are separate. Official plans do not by themselves establish who could attend schools or how local education changed.",
+    durationSeconds: 1829,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "6x-ydAEPFRw",
+  },
+  phule: {
+    id: "colonial-video-phule",
+    title: "Bharat Ek Khoj | Episode-45 | Mahatma Phule",
+    publisher: "Prasar Bharati Archives",
+    watchUrl: "https://www.youtube.com/watch?v=tAWOpkC3nhs",
+    description:
+      "Bharat Ek Khoj’s full Mahatma Phule episode, including Savitribai and educational reform.",
+    context:
+      "A scripted historical dramatisation with actors, not contemporary footage or a verbatim record of dialogue. Use the chapter’s sources for school dates, attribution and disputed claims.",
+    durationSeconds: 3169,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "tAWOpkC3nhs",
+  },
+  punjab: {
+    id: "colonial-video-punjab",
+    title: "The Foundation of The British Empire: Punjab",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=5psZbEfhTHc",
+    description: "A university-channel lecture on the Company’s expansion into Punjab.",
+    context:
+      "Separate the Anglo-Sikh wars, treaties and 1849 annexation. The lecture supplies context for the record rather than a precise campaign map.",
+    durationSeconds: 1800,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "5psZbEfhTHc",
+  },
+  railways: {
+    id: "colonial-video-railways",
+    title: "INDIAN RAILWAYS",
+    publisher: "CH 04: CEC-UGC 04: Education & Home Science",
+    watchUrl: "https://www.youtube.com/watch?v=FBY_xBQwQxg",
+    description:
+      "A short educational programme introducing Indian railways, as a visual companion to the first passenger-rail record.",
+    context:
+      "A general railway programme, not a verified reconstruction of the 1853 Bombay-Thane journey. Later and modern trains must not be presented as the original service.",
+    durationSeconds: 722,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "FBY_xBQwQxg",
+  },
+  adivasi: {
+    id: "colonial-video-adivasi",
+    title: "Changing Economy and Society of The Tribal World",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=2uVH7jBtu0Y",
+    description:
+      "A lecture on changing economies and societies of Adivasi communities under colonial conditions.",
+    context:
+      "A broad framework, not a dedicated Santhal Hul documentary. Communities had distinct histories; the publisher’s umbrella title should not imply a single society.",
+    durationSeconds: 1740,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "2uVH7jBtu0Y",
+  },
+  awadh: {
+    id: "colonial-video-awadh",
+    title: "The Foundation of The British Empire: Awadh",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=Q1dWVXfXnAM",
+    description:
+      "A focused lecture on the Company and Awadh, accompanying annexation and the grievances preceding rebellion.",
+    context:
+      "Distinguish prior intervention from formal annexation in 1856 and from the subsequent rebellion.",
+    durationSeconds: 1751,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "Q1dWVXfXnAM",
+  },
+  rebellion: {
+    id: "colonial-video-rebellion",
+    title: "The 1857 Movement : Origin and Nature",
+    publisher: "CEC",
+    watchUrl: "https://www.youtube.com/watch?v=a8GxzOdLbhw",
+    description: "An extended CEC lecture on the origins and character of the 1857 movement.",
+    context:
+      "Interpretations and participation varied by region. Avoid turning one label or one uprising into a uniform account of every group in India.",
+    durationSeconds: 3567,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "a8GxzOdLbhw",
+  },
+  crown: {
+    id: "colonial-video-crown",
+    title: "HoL-L23-The Government of India Act 1858#swayamprabha #ch06sp",
+    publisher: "CH 06: CEC-UGC 06: Law and Legal Studies",
+    watchUrl: "https://www.youtube.com/watch?v=b2V4-WvdVa8",
+    description:
+      "A legal-history lecture on the Government of India Act 1858 and the transfer to Crown government.",
+    context:
+      "The legal transfer did not immediately transform every local institution or end indirect rule through princely states.",
+    durationSeconds: 1783,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "b2V4-WvdVa8",
+  },
+  peasants: {
+    id: "colonial-video-peasants",
+    title: "The Peasant and the Raj I",
+    publisher: "Vidya-mitra",
+    watchUrl: "https://www.youtube.com/watch?v=0ea147aSNrY",
+    description:
+      "A lecture on agrarian relations under the Raj, accompanying indigo resistance and the Deccan riots.",
+    context:
+      "This is shared agrarian background, not proof that these two movements had identical causes. Keep crop contracts, debt, local actors and dates separate.",
+    durationSeconds: 1155,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "0ea147aSNrY",
+  },
+  photography: {
+    id: "colonial-video-photography",
+    title: "Samuel Bourne: The man who captured the Himalayas",
+    publisher: "Sarmaya Arts Foundation",
+    watchUrl: "https://www.youtube.com/watch?v=KyToU6cXciI",
+    description:
+      "Sarmaya Arts Foundation introduces Samuel Bourne’s Himalayan photography and nineteenth-century practice.",
+    context:
+      "A short museum interpretation, not an account of every photograph in the gallery. Read framing, intended audiences and image provenance critically.",
+    durationSeconds: 224,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "KyToU6cXciI",
+  },
+  terminus: {
+    id: "colonial-video-terminus",
+    title: "Chhatrapati Shivaji Terminus (formerly Victoria Terminus) (UNESCO/NHK)",
+    publisher: "UNESCO",
+    watchUrl: "https://www.youtube.com/watch?v=iyrcJ5cxFQs",
+    description:
+      "A short UNESCO/NHK film on Bombay’s Chhatrapati Shivaji Terminus and its architecture.",
+    context:
+      "The monumental terminus is later than the 1853 first passenger service. Distinguish the building’s construction, Indian craft contributions and later conservation.",
+    durationSeconds: 139,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "iyrcJ5cxFQs",
+    catalogueUrl: "https://whc.unesco.org/en/list/945/",
+  },
+  congress: {
+    id: "colonial-video-congress",
+    title: "Political Ideology and Organisation: Formation of The Indian National Congress",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=iIeZCchPS7Y",
+    description:
+      "A focused lecture on the formation and political organisation of the Indian National Congress.",
+    context:
+      "The early organisation and later mass movements were different phases. Congress was one part of a diverse political landscape.",
+    durationSeconds: 1800,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "iIeZCchPS7Y",
+  },
+  birsa: {
+    id: "colonial-video-birsa",
+    title: "Birsa Munda | Biography | Indian tribal freedom fighter",
+    publisher: "Prasar Bharati Archives",
+    watchUrl: "https://www.youtube.com/watch?v=g7AYKrSEvPA",
+    description: "A Prasar Bharati Archives biographical programme on Birsa Munda and resistance.",
+    context:
+      "This is a modern commemorative account. Its online description incorrectly says early nineteenth century; the timeline retains the late-nineteenth-century context and the record’s cited dates.",
+    durationSeconds: 1416,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "g7AYKrSEvPA",
+  },
+  swadeshi: {
+    id: "colonial-video-swadeshi",
+    title: "The Swadeshi Movement: Its Origins and Meanings",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=pgLgFKxfiSY",
+    description:
+      "A university-channel lecture on the origins and meanings of the Swadeshi movement.",
+    context:
+      "The 1905 partition of Bengal is distinct from Partition in 1947. Participation, boycott and consequences varied across communities.",
+    durationSeconds: 1679,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "pgLgFKxfiSY",
+  },
+  "world-war": {
+    id: "colonial-video-world-war",
+    title: "India, Empire and the First World War | Santanu Das and Navtej Sarna | David Olusoga",
+    publisher: "Jaipur Literature Festival",
+    watchUrl: "https://www.youtube.com/watch?v=w5ZYr4uhr70",
+    description:
+      "Santanu Das and Navtej Sarna discuss Indian experiences of the First World War with David Olusoga.",
+    context:
+      "A modern scholarly conversation using varied sources, not eyewitness footage of the speakers. Combatants, labourers and civilians had different experiences across the empire.",
+    durationSeconds: 2708,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "w5ZYr4uhr70",
+  },
+  rowlatt: {
+    id: "colonial-video-rowlatt",
+    title: "One Hundred Years Since the Rowlatt Satyagraha: How Gandhi became an All-India Leader",
+    publisher: "Bangalore International Centre",
+    watchUrl: "https://www.youtube.com/watch?v=qEHLkKDNQcw",
+    description:
+      "Ramachandra Guha’s extended Bangalore International Centre talk on the Rowlatt Satyagraha and Gandhi’s emergence as a national leader.",
+    context:
+      "A historian’s interpretation delivered in 2019, not a recording from 1919. The law, protests and subsequent violence have related but distinct chronologies.",
+    durationSeconds: 5513,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "qEHLkKDNQcw",
+  },
+  jallianwala: {
+    id: "colonial-video-jallianwala",
+    title: "Jallianwala Bagh - Part I",
+    publisher: "CEC",
+    watchUrl: "https://www.youtube.com/watch?v=HJtS9hbIshw",
+    description:
+      "The first CEC lecture on Jallianwala Bagh, accompanying the Amritsar massacre record.",
+    context:
+      "Keep documented actions and differing casualty estimates distinct. The lecture and any modern memorial views are not contemporary recordings of the massacre.",
+    durationSeconds: 1490,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "HJtS9hbIshw",
+  },
+  "act-1919": {
+    id: "colonial-video-act-1919",
+    title:
+      "HoL-l26-Government of India Act, 1919 and Dyarchy: Relevance and Impact on India#swayamprabha#ch06sp",
+    publisher: "CH 06: CEC-UGC 06: Law and Legal Studies",
+    watchUrl: "https://www.youtube.com/watch?v=co1WsRkOsAA",
+    description: "A legal lecture on the Government of India Act 1919, dyarchy and its effects.",
+    context:
+      "Formal provisions and their implementation differ. Restricted participation under colonial government was not universal representative democracy.",
+    durationSeconds: 1843,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "co1WsRkOsAA",
+  },
+  noncooperation: {
+    id: "colonial-video-noncooperation",
+    title: "Phases of The Non-Cooperation Movement",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=1ADdq1gh4Xs",
+    description: "A focused lecture on the phases of the Non-Cooperation movement.",
+    context:
+      "Participation and withdrawal varied across regions and institutions. The lecture’s later phases should not all be placed in the starting year.",
+    durationSeconds: 1800,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "1ADdq1gh4Xs",
+  },
+  "civil-disobedience": {
+    id: "colonial-video-civil-disobedience",
+    title: "Congress and The Civil Disobedience Movement",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=bD3-OuNNyEk",
+    description:
+      "A lecture on Congress and Civil Disobedience, providing the wider setting for the salt protest.",
+    context:
+      "This extends beyond the Dandi march. Keep the march, regional salt actions, negotiations and later campaigns on their separate dates.",
+    durationSeconds: 1679,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "bD3-OuNNyEk",
+  },
+  "act-1935": {
+    id: "colonial-video-act-1935",
+    title:
+      "HoL-L29-The Government of India Act 1935 with Special reference to Provincial Autonomy#swayamprabha",
+    publisher: "CH 06: CEC-UGC 06: Law and Legal Studies",
+    watchUrl: "https://www.youtube.com/watch?v=oH-JFgyK4Pw",
+    description:
+      "A legal-history lecture on the Government of India Act 1935 and provincial autonomy.",
+    context:
+      "Distinguish enacted provisions, the federation that did not come into operation as planned, and the provincial arrangements that were implemented.",
+    durationSeconds: 1789,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "oH-JFgyK4Pw",
+  },
+  "quit-india": {
+    id: "colonial-video-quit-india",
+    title: "Quit India Movement: India's Revolution",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=pE_tIQlS9m8",
+    description: "A university-channel lecture on Quit India and its political significance.",
+    context:
+      "Leadership arrests, local action and repression varied. A single narrative cannot represent every regional experience of the movement.",
+    durationSeconds: 1620,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "pE_tIQlS9m8",
+  },
+  "famine-1943": {
+    id: "colonial-video-famine-1943",
+    title: "The Bengal Famine – Famine in Bengal: Colonialism and Causality",
+    publisher: "Holodomor Research and Education Consortium",
+    watchUrl: "https://www.youtube.com/watch?v=Umo_uFM5i1o",
+    description:
+      "Historian Janam Mukherjee presents a substantial conference discussion of colonialism and causality in the Bengal famine.",
+    context:
+      "A scholarly interpretation of wartime Bengal, with discussant contributions, not a film about the 1770 famine. Compare causal arguments and estimates with the record’s independent sources.",
+    durationSeconds: 4238,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "Umo_uFM5i1o",
+    catalogueUrl:
+      "https://holodomor.ca/communism-and-hunger-the-ukrainian-chinese-kazakh-and-soviet-famines-in-comparative-perspective/",
+  },
+  missions: {
+    id: "colonial-video-missions",
+    title: "From Cripps Mission to Cabinet Mission",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=AqVh0i8aEwo",
+    description: "A lecture following negotiations from the Cripps Mission to the Cabinet Mission.",
+    context:
+      "The 1942 and 1946 proposals were different. Proposed plans, negotiations and the eventual settlement should not be treated as one accepted agreement.",
+    durationSeconds: 1740,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "AqVh0i8aEwo",
+  },
+  "independence-act": {
+    id: "colonial-video-independence-act",
+    title: "HoL-L31-The Indian Independence Act, 1947. #ch06 #swayamprabha",
+    publisher: "CH 06: CEC-UGC 06: Law and Legal Studies",
+    watchUrl: "https://www.youtube.com/watch?v=I_g8L5e29KU",
+    description:
+      "A legal-history lecture on the Indian Independence Act 1947, accompanying the end of British rule.",
+    context:
+      "A constitutional account is only one perspective. Pair it with the migration lecture and the record’s evidence on violence, displacement and regional experience.",
+    durationSeconds: 1776,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "I_g8L5e29KU",
+  },
+  partition: {
+    id: "colonial-video-partition",
+    title: "The Partition: Migration and Settlement",
+    publisher: "CH 02: CEC-UGC 02: History, Culture & Philosophy",
+    watchUrl: "https://www.youtube.com/watch?v=IZ8WeRrglng",
+    description:
+      "A lecture on Partition, migration and settlement, complementing the legal transfer of power.",
+    context:
+      "Settlement continued after 1947. Later experiences provide context without extending this chapter’s final date or implying one identical story for every migrant.",
+    durationSeconds: 1740,
+    verifiedAt: "2026-11-04",
+    mode: "youtube",
+    videoId: "IZ8WeRrglng",
+  },
+} satisfies Readonly<Record<string, HistoricalVideo>>;
+
+export const colonialPeriodVideos: Readonly<Record<string, readonly HistoricalVideo[]>> = {
+  "colonial-company": [
+    colonialVideoLibrary["company-context"],
+    colonialVideoLibrary["regulating"],
+    colonialVideoLibrary["pitt"],
+    colonialVideoLibrary["settlement"],
+    colonialVideoLibrary["mysore"],
+    colonialVideoLibrary["resistance"],
+    colonialVideoLibrary["marathas"],
+  ],
+  "colonial-conquest": [
+    colonialVideoLibrary["reform"],
+    colonialVideoLibrary["education"],
+    colonialVideoLibrary["phule"],
+    colonialVideoLibrary["punjab"],
+    colonialVideoLibrary["railways"],
+    colonialVideoLibrary["adivasi"],
+    colonialVideoLibrary["awadh"],
+  ],
+  "colonial-crown": [
+    colonialVideoLibrary["rebellion"],
+    colonialVideoLibrary["crown"],
+    colonialVideoLibrary["peasants"],
+    colonialVideoLibrary["photography"],
+    colonialVideoLibrary["terminus"],
+  ],
+  "colonial-politics": [
+    colonialVideoLibrary["congress"],
+    colonialVideoLibrary["birsa"],
+    colonialVideoLibrary["adivasi"],
+    colonialVideoLibrary["swadeshi"],
+    colonialVideoLibrary["world-war"],
+  ],
+  "colonial-transfer": [
+    colonialVideoLibrary["rowlatt"],
+    colonialVideoLibrary["jallianwala"],
+    colonialVideoLibrary["act-1919"],
+    colonialVideoLibrary["noncooperation"],
+    colonialVideoLibrary["civil-disobedience"],
+    colonialVideoLibrary["act-1935"],
+    colonialVideoLibrary["quit-india"],
+    colonialVideoLibrary["famine-1943"],
+    colonialVideoLibrary["missions"],
+    colonialVideoLibrary["independence-act"],
+    colonialVideoLibrary["partition"],
+  ],
+};
+
+export const colonialEventVideos: Readonly<Record<string, readonly HistoricalVideo[]>> = {
+  "colonial-bengal-famine": [colonialVideoLibrary["company-context"]],
+  "colonial-regulating-act": [colonialVideoLibrary["regulating"]],
+  "colonial-pitt-act": [colonialVideoLibrary["pitt"]],
+  "colonial-permanent-settlement": [colonialVideoLibrary["settlement"]],
+  "colonial-mysore-1799": [colonialVideoLibrary["mysore"]],
+  "colonial-paika-1817": [colonialVideoLibrary["resistance"]],
+  "colonial-maratha-1818": [colonialVideoLibrary["marathas"]],
+  "colonial-sati-1829": [colonialVideoLibrary["reform"]],
+  "colonial-education-1835": [colonialVideoLibrary["education"]],
+  "colonial-girls-education": [colonialVideoLibrary["phule"], colonialVideoLibrary["education"]],
+  "colonial-punjab-1849": [colonialVideoLibrary["punjab"]],
+  "colonial-railway-1853": [colonialVideoLibrary["railways"]],
+  "colonial-wood-despatch": [colonialVideoLibrary["education"]],
+  "colonial-santhal-hul": [colonialVideoLibrary["adivasi"]],
+  "colonial-widow-remarriage": [colonialVideoLibrary["reform"]],
+  "colonial-awadh-1856": [colonialVideoLibrary["awadh"]],
+  "colonial-rebellion-1857": [colonialVideoLibrary["rebellion"]],
+  "colonial-crown-1858": [colonialVideoLibrary["crown"]],
+  "colonial-indigo-1859": [colonialVideoLibrary["peasants"]],
+  "colonial-bourne-photography": [colonialVideoLibrary["photography"]],
+  "colonial-deccan-riots": [colonialVideoLibrary["peasants"]],
+  "colonial-terminus": [colonialVideoLibrary["terminus"]],
+  "colonial-congress-1885": [colonialVideoLibrary["congress"]],
+  "colonial-birsa": [colonialVideoLibrary["birsa"], colonialVideoLibrary["adivasi"]],
+  "colonial-bengal-partition": [colonialVideoLibrary["swadeshi"]],
+  "colonial-world-war-one": [colonialVideoLibrary["world-war"]],
+  "colonial-rowlatt": [colonialVideoLibrary["rowlatt"]],
+  "colonial-jallianwala": [colonialVideoLibrary["jallianwala"]],
+  "colonial-act-1919": [colonialVideoLibrary["act-1919"]],
+  "colonial-noncooperation": [colonialVideoLibrary["noncooperation"]],
+  "colonial-salt-1930": [colonialVideoLibrary["civil-disobedience"]],
+  "colonial-act-1935": [colonialVideoLibrary["act-1935"]],
+  "colonial-quit-india": [colonialVideoLibrary["quit-india"]],
+  "colonial-bengal-famine-1943": [colonialVideoLibrary["famine-1943"]],
+  "colonial-transfer-1946": [colonialVideoLibrary["missions"]],
+  "colonial-independence-1947": [
+    colonialVideoLibrary["independence-act"],
+    colonialVideoLibrary["partition"],
+  ],
+};

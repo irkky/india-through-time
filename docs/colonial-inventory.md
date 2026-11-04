@@ -2,6 +2,8 @@
 
 Reviewed **29 October 2026**. **36 entries**, **154 evidence sections**, **17 illustrated galleries**, **21 distinct local images** (19 newly researched and two existing Met images), and **six external film guides**. The 19 entries without suitable images retain specific acquisition requests; all 36 entries retain an additional evidence tag.
 
+Video update, 4 November 2026: **34 selected on-demand publisher videos** now accompany all five periods and 36 entries. The six earlier archive/heritage references remain available. See the [video guide](colonial-videos.md) for sources, scope notes and remaining focused-video requests.
+
 See the [authoring guide](colonial-india-content.md), [new media manifest](colonial-researched-media-manifest.json) and [original Met manifest](colonial-media-manifest.json). Download URLs, credits, licences, capture dates and SHA-256 hashes are recorded in the new manifest.
 
 ## How to complete a tag

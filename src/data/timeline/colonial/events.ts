@@ -1,3 +1,4 @@
+import { colonialEventVideos } from "./videos";
 import { bce, ce } from "@/lib/historical-date";
 import type { HistoricalEvent } from "@/types/history";
 import { colonialGalleries } from "@/data/scenes/colonial-galleries";
@@ -39,6 +40,7 @@ export const colonialEvents: readonly HistoricalEvent[] = [...colonialRecords]
     if (!visualNote) throw new Error(`Missing colonial visual guidance: ${entry.id}`);
     return {
       id: entry.id,
+      videos: colonialEventVideos[entry.id],
       title: entry.title,
       dateStart: date(entry.start),
       ...(entry.end !== undefined ? { dateEnd: date(entry.end) } : {}),
@@ -87,7 +89,7 @@ export const colonialEvents: readonly HistoricalEvent[] = [...colonialRecords]
           ? [
               {
                 title: "Watch and compare the evidence",
-                text: `${video.focus} Open the film on the publisher's site using the link below. Recording rights remain with the credited producer.`,
+                text: `${video.focus} Use the video guide for on-page viewing, or open this additional publisher reference below. Recording rights remain with the credited producer.`,
                 sourceIds: [videoSource.id],
               },
             ]

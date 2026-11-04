@@ -921,6 +921,8 @@
 }
 .content-need-tag {
   display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   font: 600 10px/1.5 monospace;
   letter-spacing: 0.04em;
   padding: 4px 8px;

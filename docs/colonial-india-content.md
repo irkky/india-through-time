@@ -2,6 +2,8 @@
 
 The chapter contains **36 chronological entries**, **154 evidence sections**, **17 illustrated galleries**, **21 distinct local images** and **six external film guides**. Reviewed 29 October 2026. It connects the 1765 Diwani entry in Early Modern India to independence and Partition in 1947; the wider timeline still ends in 2025.
 
+Video update, 4 November 2026: **34 selected on-demand publisher videos** now accompany all five periods and 36 entries. The six earlier archive/heritage references remain available. See the [video guide](colonial-videos.md) for sources, scope notes and remaining focused-video requests.
+
 ## Explore the collection
 
 Nineteen new images supplement the two existing Met photographs. They include Bhide Wada, Ram Mohan Roy, railway construction, Santhal press imagery, Lucknow after the rebellion, the Crown proclamation, indigo production, Bourne and Tripe photographs, the first Congress, a Bengal gazetteer map, an Indian soldier in France, salt protest imagery, Quit India remembrance and the Independence Act.

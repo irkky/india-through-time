@@ -44,6 +44,13 @@ async function main() {
     sample: "akbar-religious-dialogue",
     prefix: "early-modern-",
   };
+  chapters.colonial = {
+    readerId: "colonial-reader",
+    cards: 35,
+    links: 37,
+    sample: "colonial-rebellion-1857",
+    prefix: "colonial-",
+  };
   const chapter = chapters[process.env.VIDEOS_CHAPTER || "prehistory"];
   assert.ok(chapter, "Unknown VIDEOS_CHAPTER");
   const {
@@ -264,6 +271,12 @@ async function main() {
       assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
       await evaluate(
         "document.querySelector('.exhibit-dialog[open] .history-videos').scrollIntoView({block:'start'})",
+      );
+      assert.ok(
+        await evaluate(
+          "(()=>{const d=document.querySelector('.exhibit-dialog[open]');return d.scrollWidth<=d.clientWidth+1})()",
+        ),
+        `Evidence dialog fits at ${width}`,
       );
       await screenshot(`videos-dialog-${width}`);
       await click(".exhibit-dialog[open] .history-video-toggle");
