@@ -175,12 +175,14 @@ The optional browser check exercises all 57 reader cards at four widths, deferre
 one active player, source links and dialog cleanup. Its live sample is the ECI first-election
 film; it does not watch every recording in full.
 
-## Verification results ? 4 November 2026
+## Verification results - 4 November 2026
 
 - `npm run check` passed: lint, TypeScript, formatting, all 56 tests and content validation. Four existing Lower Palaeolithic image-credit warnings remain unrelated to this chapter.
 - `npm run build` passed; the page remains statically prerendered.
 - Browser checks passed for all 57 reader cards at 1440, 768, 390 and 320 pixels, including the external ICC card, deferred loading, source links, one active player, dialog cleanup and no-JavaScript access. No hydration or runtime exceptions were observed.
 - The narrow evidence-dialog screenshot was inspected and fits without horizontal overflow.
-- ECI?s first-election film was sampled in the embedded player and its opening playback was visually confirmed. Other selections were checked using publisher metadata and embedding responses, not played in full.
+- ECI's first-election film was sampled in the embedded player and its opening playback was visually confirmed. Other selections were checked using publisher metadata and embedding responses, not played in full.
 
-Verification was local. These changes have not been deployed to Vercel.
+Final log review on 5 November 2026 also confirmed that the production motion test passed: forward/reverse crossfades, changing year counters, chapter boundaries and all eight readers without JavaScript, with no hydration/runtime exceptions.
+
+Verification was local. Deployment has not been checked as part of this task.
