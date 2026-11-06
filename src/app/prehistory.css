@@ -1,3 +1,9 @@
+/* Long source URLs and content placeholder tags must not widen the mobile viewport.
+   This is inherited by all eight readers, including expanded evidence panels. */
+.history-reader {
+  overflow-wrap: anywhere;
+}
+
 .prehistory-exhibit {
   position: absolute;
   inset: 92px 0 174px;

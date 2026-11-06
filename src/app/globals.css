@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  /* Match the immersive timeline so mobile viewport gaps never flash cream. */
-  --background: #101917;
-  --foreground: #f5f1e8;
+  --background: #f5f1e8;
+  --foreground: #1d211c;
   --muted: #62675f;
   --accent: #9f3a25;
 }

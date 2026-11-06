@@ -23,7 +23,7 @@ export function PrehistoryReader({
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className="bg-[#f2ecdf] px-6 py-20 text-[#20251f] sm:px-10"
+      className="history-reader bg-[#f2ecdf] px-6 py-20 text-[#20251f] sm:px-10"
     >
       <div className="mx-auto max-w-4xl">
         <p className="text-sm font-semibold uppercase tracking-widest text-[#8f3e28]">

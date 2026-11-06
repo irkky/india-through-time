@@ -151,6 +151,17 @@ async function main() {
       fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
     };
     await send("Runtime.enable");
+    if (process.env.BROWSER_VIEWPORT_ONLY) {
+      await require("./mobile-viewport-check.cjs")({
+        base,
+        send,
+        evaluate,
+        waitFor,
+        screenshot,
+        errors,
+      });
+      return;
+    }
     await send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
     });
