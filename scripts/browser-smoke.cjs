@@ -151,6 +151,20 @@ async function main() {
       fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
     };
     await send("Runtime.enable");
+    if (process.env.BROWSER_EXHIBIT_MEDIA_ONLY) {
+      await require("./exhibit-media-check.cjs")({
+        base,
+        send,
+        evaluate,
+        waitFor,
+        click,
+        navigate,
+        active,
+        screenshot,
+        errors,
+      });
+      return;
+    }
     if (process.env.BROWSER_VIEWPORT_ONLY) {
       await require("./mobile-viewport-check.cjs")({
         base,

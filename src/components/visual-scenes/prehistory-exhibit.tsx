@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import type { HistoricalVideo } from "@/types/history";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { PrehistoryDiagram } from "./prehistory-diagram";
 import { PrehistoryGallery } from "./prehistory-gallery";
@@ -10,9 +11,58 @@ import { HistoricalVideos } from "@/components/historical-events/historical-vide
 
 const storyStageLabels = ["What happened", "Why it matters", "Evidence & limits"] as const;
 
+function InlineHistoricalVideo({ video }: { readonly video: HistoricalVideo }) {
+  const instance = useId();
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const stopOthers = (event: Event) => {
+      if ((event as CustomEvent<string>).detail !== instance) setPlaying(false);
+    };
+    window.addEventListener("history-video-start", stopOthers);
+    return () => window.removeEventListener("history-video-start", stopOthers);
+  }, [instance]);
+
+  const loadPlayer = () => {
+    window.dispatchEvent(new CustomEvent("history-video-start", { detail: instance }));
+    setPlaying(true);
+  };
+
+  return (
+    <div className="inline-exhibit-video">
+      {video.mode === "youtube" && playing ? (
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${video.videoId}?playsinline=1&rel=0`}
+          title={video.title}
+          allow="encrypted-media; fullscreen; picture-in-picture"
+          referrerPolicy="strict-origin-when-cross-origin"
+          loading="lazy"
+          allowFullScreen
+        />
+      ) : (
+        <div className="inline-video-prompt">
+          <span aria-hidden="true">▶</span>
+          <strong>{video.title}</strong>
+          <small>{video.publisher}</small>
+          {video.mode === "youtube" && (
+            <button type="button" aria-label={`Load video: ${video.title}`} onClick={loadPlayer}>
+              Load video
+            </button>
+          )}
+        </div>
+      )}
+      <a href={video.watchUrl} target="_blank" rel="noopener noreferrer">
+        {video.mode === "youtube" ? "Watch on YouTube ↗" : "Open video source ↗"}
+      </a>
+    </div>
+  );
+}
+
 export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEvent }) {
   const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
+  const [imageChoice, setImageChoice] = useState<number | "video" | null>(null);
+  const [lastImage, setLastImage] = useState(0);
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -48,9 +98,22 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
       : visual.diagram === "core"
         ? 2
         : 1;
-  const photo = imageIndex == null ? undefined : visual.gallery?.[imageIndex];
-  const showPhoto = photo && selected < 2;
-  const showImageSpace = !showPhoto && selected === 1 && !!record.imageNeeds?.length;
+  const canBrowse = visual.browseImages && !!visual.gallery?.length;
+  const inlineVideo = canBrowse ? record.videos?.[0] : undefined;
+  const defaultChoice = selected === 2 && inlineVideo ? "video" : imageIndex;
+  const displayedChoice = canBrowse && imageChoice !== null ? imageChoice : defaultChoice;
+  const showVideo = displayedChoice === "video" && !!inlineVideo;
+  const photo = typeof displayedChoice === "number" ? visual.gallery?.[displayedChoice] : undefined;
+  const showPhoto = photo && (selected < 2 || (canBrowse && typeof imageChoice === "number"));
+  const browseImage = (direction: number) => {
+    const count = visual.gallery?.length ?? 0;
+    if (!count) return;
+    const current = showPhoto && typeof displayedChoice === "number" ? displayedChoice : lastImage;
+    const next = (current + direction + count) % count;
+    setLastImage(next);
+    setImageChoice(next);
+  };
+  const showImageSpace = !canBrowse && !showPhoto && selected === 1 && !!record.imageNeeds?.length;
   const layout =
     visual.layout ??
     (visual.gallery
@@ -63,7 +126,12 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
           ? "settlement"
           : "comparison");
   return (
-    <div className="prehistory-exhibit story-exhibit" data-layout={layout} ref={rootRef}>
+    <div
+      className="prehistory-exhibit story-exhibit"
+      data-layout={layout}
+      data-media-browser={canBrowse || undefined}
+      ref={rootRef}
+    >
       <div className="prehistory-exhibit-inner">
         <div className="prehistory-exhibit-copy story-copy">
           <p className="exhibit-kicker">{event.periodTitle}</p>
@@ -104,35 +172,88 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
         <figure className="exhibit-figure">
           <div className="exhibit-figure-header story-copy">
             <span>
-              {showPhoto ? photo.category : showImageSpace ? "Image to add" : "Teaching diagram"}
+              {showPhoto
+                ? photo.category
+                : showVideo
+                  ? "Video guide"
+                  : showImageSpace
+                    ? "Image to add"
+                    : "Teaching diagram"}
             </span>
             <span>{storyStageLabels[selected]}</span>
           </div>
-          <div className="exhibit-drawing" key={selected}>
+          <div className="exhibit-drawing" id={`${panelId}-visual`} key={selected}>
             {showPhoto ? (
               // Keep archaeological scales and labels intact.
               // eslint-disable-next-line @next/next/no-img-element
               <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+            ) : showVideo ? (
+              <InlineHistoricalVideo video={inlineVideo} />
             ) : showImageSpace ? (
               <ImageNeeds event={record} compact />
             ) : (
               <PrehistoryDiagram kind={visual.diagram} title={visual.title} />
             )}
           </div>
+          {canBrowse && (
+            <div className="exhibit-media-controls" role="group" aria-label="Browse exhibit images">
+              <button
+                type="button"
+                aria-label="Previous image"
+                aria-controls={`${panelId}-visual`}
+                onClick={() => browseImage(-1)}
+              >
+                ←
+              </button>
+              <span role="status" aria-live="polite">
+                {showPhoto && typeof displayedChoice === "number"
+                  ? `${displayedChoice + 1} / ${visual.gallery!.length}`
+                  : showVideo
+                    ? "Video"
+                    : "Diagram"}
+              </span>
+              <button
+                type="button"
+                aria-label="Next image"
+                aria-controls={`${panelId}-visual`}
+                onClick={() => browseImage(1)}
+              >
+                →
+              </button>
+              <button
+                type="button"
+                aria-controls={`${panelId}-visual`}
+                onClick={() => {
+                  if (showPhoto) {
+                    setLastImage(displayedChoice as number);
+                    setImageChoice("video");
+                  } else {
+                    setImageChoice(lastImage);
+                  }
+                }}
+              >
+                {showPhoto ? "Watch video" : "View images"}
+              </button>
+            </div>
+          )}
           <figcaption className="story-copy">
             <strong>
               {showPhoto
                 ? photo.title
-                : showImageSpace
-                  ? "A place for the original evidence"
-                  : visual.title}
+                : showVideo
+                  ? inlineVideo.title
+                  : showImageSpace
+                    ? "A place for the original evidence"
+                    : visual.title}
             </strong>
             <span>
               {showPhoto
                 ? photo.caption
-                : showImageSpace
-                  ? "Open full evidence for the image specification and historical sources."
-                  : visual.caption}
+                : showVideo
+                  ? inlineVideo.context
+                  : showImageSpace
+                    ? "Open full evidence for the image specification and historical sources."
+                    : visual.caption}
             </span>
           </figcaption>
         </figure>

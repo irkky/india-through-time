@@ -36,6 +36,7 @@ export interface PrehistoryGalleryImage {
 }
 
 export interface PrehistoryExhibit {
+  readonly browseImages?: boolean;
   readonly layout?: "artefact" | "photograph" | "strata" | "settlement" | "comparison";
   readonly stageImages?: readonly (number | null)[];
   readonly gallery?: readonly PrehistoryGalleryImage[];

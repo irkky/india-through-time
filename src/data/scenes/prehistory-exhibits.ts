@@ -18,6 +18,7 @@ const exhibit = (
     { label: "Context", x: 70, y: 65, field: "significance" },
     { label: "Dating & limits", x: 72, y: 25, field: "interpretation" },
   ],
+  browseImages: gallery === lowerPalaeolithicGallery || gallery === middlePalaeolithicGallery,
 });
 
 /** Original explanatory artwork, not excavation plans or replicas of individual finds. */
