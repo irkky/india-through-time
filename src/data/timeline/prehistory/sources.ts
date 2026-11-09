@@ -100,6 +100,14 @@ export const prehistorySources = {
     publisher: "IGNOU / eGyanKosh",
     url: "https://egyankosh.ac.in/bitstream/123456789/41359/1/MAN-002B6E.pdf",
   },
+  bagorIar: {
+    id: "iar-1967-68-bagor",
+    title: "Excavation at Bagor, District Bhilwara",
+    author: "V. N. Misra, Vijay Kumar and excavation team",
+    publisher: "Indian Archaeology 1967–68 — A Review; digital text via Pramāṇa",
+    publicationYear: 1970,
+    url: "https://indike.org/pramana/inp.archaeology.iar.1967-68.c4.s12.t3",
+  },
   rice: {
     id: "bates-2022",
     title: "The Fits and Starts of Indian Rice Domestication",
@@ -129,6 +137,12 @@ export const prehistorySources = {
     publisher: "India's submission to UNESCO Tentative Lists",
     publicationYear: 2014,
     url: "https://whc.unesco.org/en/tentativelists/5917/",
+  },
+  burzahomReport: {
+    id: "asi-burzahom-excavation-report",
+    title: "Excavations at Burzahom",
+    publisher: "Archaeological Survey of India",
+    url: "https://asi.nic.in/pdf/Burzahom-Excavation-Report-compressed.pdf",
   },
   ashmounds: {
     id: "boivin-2004",

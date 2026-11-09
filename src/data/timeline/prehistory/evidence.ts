@@ -4,8 +4,8 @@ import { prehistoryGalleries } from "@/data/scenes/prehistory-galleries";
 /** Editorial reading aids and precise requests for evidence still missing from the collection. */
 export const prehistoryEvidence: Readonly<Record<string, readonly [string, string]>> = {
   "lower-palaeolithic-scaffold": [
-    "The Attirampakkam date anchors a particular archaeological sequence. Handaxes and cleavers describe a technology; their shape alone cannot identify the species of their makers or establish the first human arrival in India.",
-    "Supply original source pages, photographer, specimen locality, scale and reuse permission for the four existing Lower Palaeolithic images. Add a licensed Attirampakkam excavation section tied to the dated Acheulian deposits.",
+    "The Attirampakkam date anchors a particular archaeological sequence. The two credited collection photographs identify tools with Attirampakkam but do not document their specimen numbers, excavation layers or individual ages. Handaxes and cleavers describe a technology; their shape alone cannot identify the species of their makers or establish the first human arrival in India.",
+    "Supply original source pages, photographer, specimen locality, scale and reuse permission for the four earlier Lower Palaeolithic images. Still add a licensed Attirampakkam excavation-section photograph or measured profile tied specifically to the dated Acheulian deposits; the two museum or collection photographs do not complete this request.",
   ],
   "attirampakkam-middle-palaeolithic": [
     "The dated interval describes technological change within the Attirampakkam sequence. Prepared cores record decisions about removing flakes; they are not evidence that every South Asian community changed tools at the same time.",
@@ -40,7 +40,7 @@ export const prehistoryEvidence: Readonly<Record<string, readonly [string, strin
     "Add licensed photographs or report figures from Jwalapuram Locality 9: shelter entrance, stratigraphy, and catalogued beads or microliths. Record which layer each object belongs to.",
   ],
   "mesolithic-regional-overview": [
-    "Regional overview dates are a teaching range, not a date for every shelter painting. Bhimbetka preserves art from multiple periods; an individual photographed panel needs its own attribution and dating argument.",
+    "Regional overview dates are a teaching range, not a date for every shelter painting. The gallery now separates a specifically identified modern view of Rock Shelter 8 from a photographed painted surface. Neither photograph dates the art; Bhimbetka preserves activity and painting across multiple periods.",
     "Add a permitted Bhimbetka shelter plan or panel catalogue identifying the exact shelter and proposed painting phase. A modern photograph alone cannot establish a Mesolithic date.",
   ],
   "lahuradewa-rice-use": [
@@ -68,7 +68,7 @@ export const prehistoryEvidence: Readonly<Record<string, readonly [string, strin
     "Request permission for the Ravi-phase pottery fragments shown at https://www.harappa.com/slide/ravi-phase-pottery-fragments or supply an equivalent licensed HARP catalogue photograph with phase and object details.",
   ],
   "burzahom-neolithic": [
-    "Burzahom's pits, structures and later remains must be read by phase. A photograph of standing megaliths is not automatically evidence for the earliest Neolithic occupation or for the function of a particular pit.",
+    "Burzahom's pits, structures, pottery and later remains must be read by phase. The gallery's museum vessel is attributed to Burzahom around 2700 BCE, but it does not illustrate pit architecture or date every Neolithic occupation at the site.",
     "Add an authorised Burzahom Neolithic pit section or measured plan, with excavation phase and scale. Label any modern site photograph separately from later megalithic features.",
   ],
   "southern-neolithic-ashmounds": [

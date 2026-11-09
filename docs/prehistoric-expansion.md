@@ -1,6 +1,6 @@
 ﻿# Prehistoric chapter expansion: 19 October 2026
 
-**Visual research update (27 October 2026):** see the [current media inventory](prehistory-media-inventory.md) for twelve newly sourced files, licences, optional viewing and exact remaining image requests. The chronology remains unchanged.
+**Visual research update (9 November 2026):** see the [current media inventory](prehistory-media-inventory.md) for fourteen researched files, licences, optional viewing and exact remaining image requests. The chronology remains unchanged.
 
 The chapter now contains 24 dated records. This is a sourced regional overview, not an exhaustive catalogue. Site phases, regional teaching frameworks and uncertain interpretations are distinguished in each evidence note. The earlier 15-record table in prehistoric-content.md describes the initial pass.
 
@@ -47,7 +47,7 @@ Normal-motion scrolling eases the scene playhead over 0.22 seconds; SVG exhibits
 
 ## Staged scrolling and evidence viewers
 
-The 24 prehistoric exhibits now use three stages: Locate, Examine and Interpret.
+The 24 prehistoric exhibits now use three stages: What happened, Why it matters and Evidence & limits.
 Scrolling advances the stages in either direction; the three buttons also let readers
 choose a stage directly. Reduced-motion mode keeps stage selection manual.
 Lower and Middle Palaeolithic scenes introduce supplied images before their teaching

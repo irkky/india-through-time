@@ -51,6 +51,18 @@ const publications = {
     "CC BY-SA 4.0",
     "https://creativecommons.org/licenses/by-sa/4.0/",
   ],
+  bhimbetkaShelter: [
+    "Bernard Gagnon, photographed 4 December 2013 / Wikimedia Commons",
+    "https://commons.wikimedia.org/wiki/File:Rock_Shelter_8,_Bhimbetka_01.jpg",
+    "CC BY-SA 3.0",
+    "https://creativecommons.org/licenses/by-sa/3.0/",
+  ],
+  burzahomVessel: [
+    "Ismoon, photographed 18 January 2012 at the National Museum, New Delhi / Wikimedia Commons",
+    "https://commons.wikimedia.org/wiki/File:Horned_figure_on_pottery._Pr%C3%A9-Indus_civilization._Kashmir.jpg",
+    "CC0 1.0",
+    "https://creativecommons.org/publicdomain/zero/1.0/",
+  ],
 } as const;
 
 function plate(
@@ -185,6 +197,24 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
       "Faded red and dark painted forms on a weathered sandstone shelter wall.",
       "Modern photograph taken in 2022. Bhimbetka's paintings span multiple periods; no exact date is established here for this panel. It illustrates rock-art context, not a securely dated Mesolithic scene.",
       "Site photograph",
+    ),
+    plate(
+      "bhimbetka-shelter-8.jpg",
+      "bhimbetkaShelter",
+      "Bhimbetka · Rock Shelter 8",
+      "A tall sandstone outcrop with the opening and painted interior of Rock Shelter 8 visible.",
+      "Modern photograph of specifically identified Rock Shelter 8. It supplies architectural context for one shelter, but does not date its paintings or represent every Bhimbetka occupation phase.",
+      "Site photograph",
+    ),
+  ],
+  "burzahom-neolithic": [
+    plate(
+      "burzahom-horned-vessel.jpg",
+      "burzahomVessel",
+      "Burzahom · vessel with horned motifs",
+      "A restored round vessel painted with large curved horn-like forms, displayed at the National Museum, New Delhi.",
+      "The museum photograph identifies the vessel with Burzahom and about 2700 BCE. It illustrates ceramic material from the site's long sequence; it is not evidence for the construction or use of a pit dwelling, and the catalogue attribution should be checked before drawing wider conclusions from the motif.",
+      "Artefact",
     ),
   ],
 };

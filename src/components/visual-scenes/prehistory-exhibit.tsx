@@ -8,6 +8,8 @@ import { ContentNeeds } from "@/components/historical-events/content-needs";
 import { EventDetails, ImageNeeds } from "@/components/historical-events/event-details";
 import { HistoricalVideos } from "@/components/historical-events/historical-videos";
 
+const storyStageLabels = ["What happened", "Why it matters", "Evidence & limits"] as const;
+
 export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEvent }) {
   const [selected, setSelected] = useState(0);
   const [open, setOpen] = useState(false);
@@ -74,13 +76,13 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
                 key={item.field}
                 type="button"
                 className="exhibit-point"
-                aria-label={`${index + 1}. ${item.label}`}
+                aria-label={`${index + 1}. ${storyStageLabels[index]}`}
                 aria-pressed={selected === index}
                 aria-controls={panelId}
                 onClick={() => setSelected(index)}
               >
                 <span>0{index + 1}</span>
-                {["Locate", "Examine", "Interpret"][index]}
+                {storyStageLabels[index]}
               </button>
             ))}
           </div>
@@ -104,7 +106,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
             <span>
               {showPhoto ? photo.category : showImageSpace ? "Image to add" : "Teaching diagram"}
             </span>
-            <span>{["Location", "Material evidence", "Interpretation"][selected]}</span>
+            <span>{storyStageLabels[selected]}</span>
           </div>
           <div className="exhibit-drawing" key={selected}>
             {showPhoto ? (

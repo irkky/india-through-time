@@ -144,14 +144,33 @@ export const mesolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Bagor, beside the Kothari River in Rajasthan, preserves a settlement with abundant microliths, animal remains and burials. Its earliest phase illustrates a local community rather than a uniform way of life across the subcontinent.",
+    significance:
+      "Excavated floors, tool concentrations, animal remains and a burial connect stone technology with repeated activity at a particular settlement.",
     categories: ["settlement", "stone-tools", "burial"],
     regions: ["Rajasthan, India"],
     archaeologicalSites: [{ id: "bagor", name: "Bagor" }],
     people: [],
     relatedEvents: [],
-    sources: [sources.bagor],
+    sources: [sources.bagor, sources.bagorIar],
     citations: [
       { sourceId: sources.bagor.id, locator: "Bagor: Cultural Sequence, Phase I, printed p. 23" },
+      {
+        sourceId: sources.bagorIar.id,
+        locator: "Excavation summary, paragraphs 1–10",
+        note: "Cutting, deposits, floors, tool types, burial and faunal observations",
+      },
+    ],
+    details: [
+      {
+        title: "Excavated deposits",
+        text: "The 1967–68 preliminary report describes a 20 × 4 metre cutting divided into five trenches. Microliths occurred throughout the deposit, with their greatest concentration between about 60 centimetres and 1.12 metres below the surface; pottery was concentrated higher in the sequence.",
+        sourceIds: [sources.bagorIar.id],
+      },
+      {
+        title: "Floors, tools and burial",
+        text: "Trench V contained eight successive stone-and-pebble floors, abundant animal remains, hammerstones and mullers. The report also records an extended burial associated with fragmentary pottery and microliths. These observations come from a preliminary excavation report and should retain their trench context.",
+        sourceIds: [sources.bagorIar.id],
+      },
     ],
     interpretationNotes: [
       {
@@ -225,13 +244,34 @@ export const neolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "At Burzahom in Kashmir, excavations reveal pit dwellings, later surface structures, and stone and bone tools. The site's changing architecture offers a regional view of Neolithic life.",
+    significance:
+      "Successive changes from subterranean pits to altered pits and ground-level structures show why Burzahom must be read phase by phase rather than as one timeless pit-dwelling village.",
     categories: ["settlement", "architecture", "tools"],
     regions: ["Kashmir, India"],
     archaeologicalSites: [{ id: "burzahom", name: "Burzahom" }],
     people: [],
     relatedEvents: [],
-    sources: [sources.burzahom],
-    citations: [{ sourceId: sources.burzahom.id, locator: "Description and cultural sequence" }],
+    sources: [sources.burzahom, sources.burzahomReport],
+    citations: [
+      { sourceId: sources.burzahom.id, locator: "Description and cultural sequence" },
+      {
+        sourceId: sources.burzahomReport.id,
+        locator: "Chapter 3.2, especially pp. 43–44",
+        note: "Dwelling pits, post-holes, hearths, storage features and architectural change",
+      },
+    ],
+    details: [
+      {
+        title: "Pit architecture",
+        text: "The ASI report describes early pits with narrow mouths, wider flat floors and mud-plastered walls. Post-holes around their mouths support an interpretation of perishable roofing; steps descended only part of the way into deeper pits, so ladders are inferred rather than directly preserved.",
+        sourceIds: [sources.burzahomReport.id],
+      },
+      {
+        title: "A changing settlement",
+        text: "In the following ceramic phase, some earlier pits were widened and reused. Later floors, post-hole groups, clay or stone-lined hearths, storage places, querns and mullers document changes in architecture and food-processing activity within the site's sequence.",
+        sourceIds: [sources.burzahomReport.id],
+      },
+    ],
     interpretationNotes: [
       {
         kind: "uncertainty",

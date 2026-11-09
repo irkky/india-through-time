@@ -5,14 +5,19 @@ const fs = require("node:fs");
 const crypto = require("node:crypto");
 const { prehistoricIndiaEra } = require("../src/data/timeline/prehistoric-india.ts");
 const { prehistoryGalleries } = require("../src/data/scenes/prehistory-galleries.ts");
+const { lowerPalaeolithicGallery } = require("../src/data/scenes/palaeolithic-gallery.ts");
 const { prehistoryExhibits } = require("../src/data/scenes/prehistory-exhibits.ts");
 const manifest = require("../docs/prehistory-media-manifest.json");
 
 test("prehistoric media stays attached to documented sites with intact local originals", () => {
   const events = prehistoricIndiaEra.periods.flatMap((period) => period.events);
   assert.equal(events.length, 24);
-  assert.equal(manifest.length, 12);
-  assert.equal(Object.keys(prehistoryGalleries).length, 11);
+  assert.equal(manifest.length, 16);
+  assert.equal(Object.keys(prehistoryGalleries).length, 12);
+  const galleries = {
+    ...prehistoryGalleries,
+    "lower-palaeolithic-scaffold": lowerPalaeolithicGallery,
+  };
   for (const item of manifest) {
     const bytes = fs.readFileSync(`public${item.src}`);
     assert.equal(crypto.createHash("sha256").update(bytes).digest("hex"), item.sha256);
@@ -29,7 +34,7 @@ test("prehistoric media stays attached to documented sites with intact local ori
       assert.ok(item[key], `${item.src}: missing ${key}`);
     assert.deepEqual(
       item.eventIds.sort(),
-      Object.entries(prehistoryGalleries)
+      Object.entries(galleries)
         .filter(([, images]) => images.some((image) => image.src === item.src))
         .map(([id]) => id)
         .sort(),
@@ -43,7 +48,15 @@ test("prehistoric media stays attached to documented sites with intact local ori
   }
   assert.match(prehistoryGalleries["mehrgarh-aceramic-cemetery"][0].license, /BY-NC-ND/);
   assert.match(prehistoryGalleries["mesolithic-regional-overview"][0].caption, /no exact date/);
+  assert.equal(prehistoryGalleries["mesolithic-regional-overview"].length, 2);
+  assert.match(prehistoryGalleries["mesolithic-regional-overview"][1].title, /Rock Shelter 8/);
+  assert.match(prehistoryGalleries["burzahom-neolithic"][0].license, /CC0/);
   assert.match(prehistoryGalleries["dhaba-microliths"][0].caption, /not a single dated assemblage/);
+  assert.equal(lowerPalaeolithicGallery.length, 6);
+  assert.match(lowerPalaeolithicGallery[4].license, /CC BY 4\.0/);
+  assert.match(lowerPalaeolithicGallery[5].license, /CC BY-SA 4\.0/);
+  assert.match(lowerPalaeolithicGallery[4].caption, /not assigned.*1\.51-million-year/i);
+  assert.match(lowerPalaeolithicGallery[5].caption, /not evidence.*1\.51-million-year/i);
 });
 
 test("all prehistoric records expose sourced evidence notes and actionable image requests", () => {

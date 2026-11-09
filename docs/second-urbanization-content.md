@@ -17,7 +17,7 @@ around 185 BCE. It is an expandable overview, not an exhaustive account of every
 
 ## Read, scroll and explore
 
-Scroll advances three reversible stages: **Locate → Examine → Interpret**. The buttons also
+Scroll advances three reversible stages: **What happened → Why it matters → Evidence & limits**. The buttons also
 work independently. Full evidence, sources, photographs and tagged additions open in the
 existing accessible dialog. Reduced-motion readers retain the same content and controls.
 The complete server-rendered reader at `#empires-reader` works without JavaScript.

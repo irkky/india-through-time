@@ -100,7 +100,7 @@ and was not added as a source.
 - New assets: `public/assets/images/empires/researched/`.
 - Integrity, JPEG completeness and source-assignment tests: `tests/empires-media.test.cjs`.
 
-Two-image scenes show the first image in Locate, the second in Examine, and the explanatory
-diagram in Interpret. Single-image scenes retain diagram/image/diagram. Gallery buttons remain
+Two-image scenes show the first image in What happened, the second in Why it matters, and the explanatory
+diagram in Evidence & limits. Single-image scenes retain diagram/image/diagram. Gallery buttons remain
 independent of scroll, full-image links permit close study, and the reading view preserves
 notes and sources without JavaScript. Modern photograph dates do not create new timeline events.

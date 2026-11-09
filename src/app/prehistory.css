@@ -728,12 +728,16 @@
 .story-steps .exhibit-point {
   position: static;
   transform: none;
+  flex: 1 1 0;
   width: auto;
-  height: 42px;
+  min-width: 0;
+  min-height: 42px;
+  height: auto;
   border-radius: 8px;
   box-shadow: none;
   padding: 0 10px;
   font-size: 11px;
+  line-height: 1.2;
 }
 .story-steps .exhibit-point span {
   margin-right: 6px;
@@ -914,9 +918,13 @@
     margin-top: 6px;
   }
   .story-steps .exhibit-point {
-    height: 32px;
+    min-height: 34px;
     padding: 0 5px;
     font-size: 9px;
+  }
+
+  .story-steps .exhibit-point span {
+    display: none;
   }
 }
 

@@ -38,6 +38,31 @@ export const lowerPalaeolithicGallery: readonly PrehistoryGalleryImage[] = [
     caption:
       "Atmospheric artwork, not an evidence-based reconstruction of Attirampakkam. The figure, animals and scenery do not establish the identity of the toolmakers or their environment.",
   },
+  {
+    src: `${lower}/attirampakkam-museum-tools.jpg`,
+    title: "Attirampakkam — Palaeolithic Stone Tools",
+    category: "Artefact",
+    alt: "Stone tools arranged in a museum case around a label reading Palaeolithic Stone Tools, Athirampakkam",
+    caption:
+      "Photographed at Salem Government Museum in 2026. The display label identifies these objects with Attirampakkam, but the photograph does not provide specimen numbers, excavation layers or individual dates. They are therefore not assigned to the approximately 1.51-million-year dated deposit.",
+    credit: "Yercaud-elango / Wikimedia Commons",
+    license: "CC BY 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    sourceUrl:
+      "https://commons.wikimedia.org/wiki/File:Pleolithic_Stone_Tools-1-Govt.museum-salem-India.jpg",
+  },
+  {
+    src: `${lower}/attirampakkam-stone-tools.jpg`,
+    title: "Attirampakkam — Stone-Tool Collection",
+    category: "Artefact",
+    alt: "Eleven light-coloured stone tools arranged in two rows against a dark background",
+    caption:
+      "The Commons record identifies this collection with Attirampakkam. The precise findspots, archaeological layers and ages of the individual tools are not documented there, so this photograph is not evidence that they came from the approximately 1.51-million-year dated deposit.",
+    credit: "Ophelia S / Wikimedia Commons",
+    license: "CC BY-SA 4.0",
+    licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Attirampakkam_stone_tools.jpg",
+  },
 ];
 
 export const middlePalaeolithicGallery: readonly PrehistoryGalleryImage[] = [

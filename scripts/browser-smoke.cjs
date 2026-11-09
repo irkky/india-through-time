@@ -165,7 +165,11 @@ async function main() {
     await send("Emulation.setEmulatedMedia", {
       features: [{ name: "prefers-reduced-motion", value: "reduce" }],
     });
-    for (const width of process.env.BROWSER_MOTION_ONLY ? [] : [1440, 768, 390]) {
+    const requestedWidths = process.env.INDIAN_HISTORY_BROWSER_WIDTHS?.split(",")
+      .map(Number)
+      .filter((width) => Number.isInteger(width) && width > 0);
+    const viewportWidths = requestedWidths?.length ? requestedWidths : [1440, 768, 390];
+    for (const width of process.env.BROWSER_MOTION_ONLY ? [] : viewportWidths) {
       await send("Emulation.setDeviceMetricsOverride", {
         width,
         height: 900,
@@ -188,6 +192,12 @@ async function main() {
       for (const eventId of ids) {
         await navigate(eventId);
         assert.equal(await evaluate(`${active}.querySelectorAll('.exhibit-point').length`), 3);
+        assert.deepEqual(
+          await evaluate(
+            `Array.from(${active}.querySelectorAll('.exhibit-point')).map(button=>button.textContent.trim().replace(/^0\\d/, '').trim())`,
+          ),
+          ["What happened", "Why it matters", "Evidence & limits"],
+        );
         assert.equal(
           await evaluate(
             `(()=>{const e=${active}.querySelector('.story-exhibit');return e.scrollHeight<=e.clientHeight+2})()`,
@@ -207,7 +217,7 @@ async function main() {
       await waitFor(`${active}.querySelector('.exhibit-insight p').textContent.includes('1.51')`);
       await screenshot(`lower-palaeolithic-${width}`);
       for (const [eventId, count] of [
-        ["lower-palaeolithic-scaffold", 4],
+        ["lower-palaeolithic-scaffold", 6],
         ["attirampakkam-middle-palaeolithic", 6],
         ...Object.entries(prehistoryGalleries).map(([id, images]) => [id, images.length]),
         ...Object.entries(ancientGalleries).map(([id, images]) => [id, images.length]),
@@ -330,6 +340,9 @@ async function main() {
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
         await waitFor("!!document.querySelector('.exhibit-dialog[open] .content-need-tag')");
         if (["indus-seals-writing", "rakhigarhi-cemetery"].includes(eventId)) {
+          await evaluate(
+            "document.querySelector('.exhibit-dialog[open] .gallery-image-surface').scrollIntoView({block:'center',inline:'nearest'})",
+          );
           await waitFor(
             `(()=>{const img=document.querySelector('.exhibit-dialog[open] .gallery-image-surface img');return img?.complete && img.naturalWidth>0})()`,
           );
@@ -802,7 +815,7 @@ async function main() {
     console.log(
       process.env.BROWSER_MOTION_ONLY
         ? "PASS: motion and chapter transitions; forward/reverse crossfades; no hydration/runtime exceptions; all eight readers without JavaScript."
-        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 181 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
+        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 185 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {
