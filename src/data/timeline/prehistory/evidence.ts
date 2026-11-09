@@ -1,8 +1,12 @@
 import type { HistoricalEvent, HistoricalSource } from "@/types/history";
 import { prehistoryGalleries } from "@/data/scenes/prehistory-galleries";
+import {
+  lowerPalaeolithicGallery,
+  middlePalaeolithicGallery,
+} from "@/data/scenes/palaeolithic-gallery";
 
 /** Editorial reading aids and precise requests for evidence still missing from the collection. */
-export const prehistoryEvidence: Readonly<Record<string, readonly [string, string]>> = {
+export const prehistoryEvidence: Readonly<Record<string, readonly [string, string?]>> = {
   "lower-palaeolithic-scaffold": [
     "The Attirampakkam date anchors a particular archaeological sequence. The two credited collection photographs identify tools with Attirampakkam but do not document their specimen numbers, excavation layers or individual ages. Handaxes and cleavers describe a technology; their shape alone cannot identify the species of their makers or establish the first human arrival in India.",
     "Supply original source pages, photographer, specimen locality, scale and reuse permission for the four earlier Lower Palaeolithic images. Still add a licensed Attirampakkam excavation-section photograph or measured profile tied specifically to the dated Acheulian deposits; the two museum or collection photographs do not complete this request.",
@@ -33,7 +37,6 @@ export const prehistoryEvidence: Readonly<Record<string, readonly [string, strin
   ],
   "mehtakheri-microblades": [
     "The excavation photograph supplies the sedimentary context missing from an isolated tool drawing. Luminescence estimates concern sediment burial; surface finds and excavated pieces must retain their different provenances.",
-    "Optional addition: a permitted photograph of an excavated microblade core with specimen number and scale, cross-referenced to its layer in the excavation report.",
   ],
   "jwalapuram-rockshelter": [
     "Locality 9 is a rockshelter sequence with its own chronology. Its tools and ornaments should not be merged with the separate Jwalapuram ash-section evidence merely because both share a place name.",
@@ -44,36 +47,34 @@ export const prehistoryEvidence: Readonly<Record<string, readonly [string, strin
     "Add a permitted Bhimbetka shelter plan or panel catalogue identifying the exact shelter and proposed painting phase. A modern photograph alone cannot establish a Mesolithic date.",
   ],
   "lahuradewa-rice-use": [
-    "Rice use, cultivation and domestication are different claims. A location map helps compare sites, but the stronger botanical claims depend on identified remains, their archaeological context and the dating evidence.",
-    "Add a licensed Lahuradewa grain or spikelet-base micrograph with scale, identification, sampled context and dating method. The regional map does not replace this botanical evidence.",
+    "Rice use, cultivation and domestication are different claims. The gallery now separates Period IA plant remains from the wider Period IB crop assemblage. The published plates identify specimens and include millimetre scales, but their archaeological contexts and dating evidence still need to be read with the excavation report.",
+    "Confirm reuse permission for the two Lahuradewa archaeobotanical plates. If replacing them, add a licensed grain or spikelet-base micrograph with scale, identification, sampled context and dating method.",
   ],
   "mehrgarh-aceramic-cemetery": [
     "The 2025 study models a sampled cemetery sequence. The plan shows where the sampled graves lie; the probability plot shows chronological uncertainty. Neither figure alone supplies a date for all settlement activity at Mehrgarh.",
-    "Optional addition: a permitted photograph or plan of the relevant aceramic settlement phase, clearly distinguished from the cemetery. Mehrgarh is in present-day Pakistan and is included as subcontinental context for Indian prehistory.",
   ],
   "bagor-mesolithic": [
     "Bagor represents a particular settlement sequence within a much wider regional history. Its phase dates should remain attached to the excavated deposits rather than being used as universal boundaries for the Mesolithic.",
-    "Add a licensed Bagor, Rajasthan, Phase I floor plan or excavation photograph and a labelled microlith plate. Avoid unrelated images of places with similar names.",
+    "The labelled Bagor microlith plate is now present. Still add a licensed Bagor, Rajasthan, Phase I floor plan or excavation photograph with its trench, phase and scale; avoid unrelated places with similar names.",
   ],
   "balathal-ahar-banas": [
-    "The excavation image illustrates a specific context within a long-lived settlement. The burial association around 2000 cal BCE is later than the beginning of the displayed occupation range; it should not be used to date every structure.",
-    "Optional addition: a licensed Ahar-Banas pottery plate from Balathal, with phase, specimen numbers and scale, to complement the excavation photograph.",
+    "The osteological plate illustrates burial 1997-1, a specific later context within Balathal's long sequence. Its approximately 2000 cal BCE association must not date the settlement's earlier architecture or pottery. The gallery separately identifies the modern distribution map and Chalcolithic ceramic evidence.",
+    "Confirm reuse permission for the ASI Balathal pottery plate. Keep the burial plate, pottery and modern distribution map distinct; none is a general photograph of the settlement's full occupation.",
   ],
   "chopani-mando-late-phase": [
     "The map locates Chopani Mando within a comparative plant-evidence discussion. Settlement phases and botanical claims need separate supporting evidence; being mapped alongside rice sites does not establish domesticated rice here.",
-    "Add a licensed late-phase Chopani Mando hut-floor plan or pottery plate, with its phase and chronological association. Keep the late-phase dating distinct from the site's earlier sequence.",
+    "Add a licensed late-phase Chopani Mando hut-floor plan or pottery plate, with its phase and chronological association. The supplied plan and decorated-pottery page were not displayed because they could not be matched to Chopani Mando; one is explicitly headed Further Excavations at Mansar.",
   ],
   "harappa-ravi-phase": [
     "The Ravi phase belongs to Harappa's early settlement sequence. Later urban streets, seals and monuments cannot automatically illustrate this earlier phase, even when they come from the same archaeological site.",
     "Request permission for the Ravi-phase pottery fragments shown at https://www.harappa.com/slide/ravi-phase-pottery-fragments or supply an equivalent licensed HARP catalogue photograph with phase and object details.",
   ],
   "burzahom-neolithic": [
-    "Burzahom's pits, structures, pottery and later remains must be read by phase. The gallery's museum vessel is attributed to Burzahom around 2700 BCE, but it does not illustrate pit architecture or date every Neolithic occupation at the site.",
-    "Add an authorised Burzahom Neolithic pit section or measured plan, with excavation phase and scale. Label any modern site photograph separately from later megalithic features.",
+    "Burzahom's pits, structures, pottery and later remains must be read by phase. The gallery now separates the museum vessel from modern published photographs of excavated pits; the photographs do not by themselves provide a measured stratigraphic sequence.",
+    "Still add an authorised Burzahom Neolithic pit section or measured plan with excavation phase and scale. The supplied roofed-dwelling illustration is a teaching reconstruction, not archaeological stratigraphy, so it is not displayed as evidence.",
   ],
   "southern-neolithic-ashmounds": [
-    "Geophysical survey offers a way to investigate buried features without exposing their whole extent. The Brahmagiri plot is a modern interpretation of subsurface measurements, not an excavation photograph or a direct date for ash formation.",
-    "Add a licensed field photograph or excavated section of a named southern Neolithic ashmound, with site, scale and phase. Do not use the geophysical model as a reconstruction of all ashmounds.",
+    "The licensed Kudathini photographs document the modern mound and exposed surface material; they do not independently establish phase, original dimensions or burning sequence. The Brahmagiri plot is a modern interpretation of subsurface measurements, not an excavation photograph or direct date for ash formation.",
   ],
   "harappa-kot-diji-phase": [
     "This entry concerns the Kot Diji phase at Harappa. The phase name should not cause an image of the separate Kot Diji site, or a later Mature Harappan object, to be presented as a find from this Harappa context.",
@@ -147,7 +148,19 @@ export function enrichPrehistoryEvent(event: HistoricalEvent): HistoricalEvent {
     ],
     imageNeeds: [
       ...(event.imageNeeds ?? []),
-      { tag: `IMAGE_${event.id.replaceAll("-", "_").toUpperCase()}`, instruction: evidence[1] },
+      ...(evidence[1] &&
+      !(
+        gallery.length ||
+        (event.id === "lower-palaeolithic-scaffold" && lowerPalaeolithicGallery.length) ||
+        (event.id === "attirampakkam-middle-palaeolithic" && middlePalaeolithicGallery.length)
+      )
+        ? [
+            {
+              tag: `IMAGE_${event.id.replaceAll("-", "_").toUpperCase()}`,
+              instruction: evidence[1],
+            },
+          ]
+        : []),
     ],
     media: [
       ...(event.media ?? []),

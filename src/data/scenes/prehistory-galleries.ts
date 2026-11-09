@@ -130,7 +130,20 @@ const riceMap = (site: string, number: number) =>
 /** Full published figures, not reconstructions. Shared plates keep their complete date scope. */
 export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGalleryImage[]>> = {
   "singi-talav-acheulian": [singiTools, singiSection],
-  "dhaba-toba-sequence": [dhabaSection, dhabaTools],
+  "dhaba-toba-sequence": [
+    {
+      src: "/assets/images/prehistoric_india/researched/dhaba-excavation-site.jpg",
+      title: "Dhaba — Archaeological Excavation",
+      alt: "Archaeologists working at an excavation site in the Middle Son Valley, Madhya Pradesh.",
+      caption:
+        "Modern archaeological fieldwork at Dhaba, Madhya Pradesh. The excavations document stone-tool evidence associated with the region's long Middle Palaeolithic sequence.",
+      category: "Site photograph",
+      credit: "Christina M. Neudorf",
+      sourceUrl: "https://www.nature.com/articles/nindia.2020.37",
+    },
+    dhabaSection,
+    dhabaTools,
+  ],
   "dhaba-microliths": [dhabaTools, dhabaSection],
   "mehtakheri-microblades": [
     plate(
@@ -142,6 +155,14 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
       "Artefact",
     ),
     plate(
+      "mehtakheri-figure-11.png",
+      "mehtakheri",
+      "Mehtakheri · microblade cores and tools",
+      "Labelled archaeological stone tools including microblade cores, flakes, hammerstones and a trimmed nodule.",
+      "Published Figure 11 from Mishra, Chauhan and Singhvi (2013). Shows microblade cores D3, F1, M25, J15 and M23, alongside other artefacts from the Mehtakheri assemblage.",
+      "Artefact",
+    ),
+    plate(
       "mehtakheri-figure-4.png",
       "mehtakheri",
       "Mehtakheri · the 2009 excavation",
@@ -150,10 +171,164 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
       "Site photograph",
     ),
   ],
-  "lahuradewa-rice-use": [riceMap("Lahuradewa", 15)],
+  "jwalapuram-toba": [
+    {
+      src: "/assets/images/prehistoric_india/researched/jwalapuram-excavation.jpg",
+      title: "Jwalapuram — Archaeological Excavation",
+      alt: "Archaeological excavation trenches at Jwalapuram Locality 3.",
+      caption:
+        "Excavation at Jwalapuram in Andhra Pradesh, where stone tools were studied in relation to the Toba volcanic deposits.",
+      category: "Site photograph",
+      credit: "Photographer to be verified",
+      sourceUrl:
+        "https://www.researchgate.net/publication/222319081_The_74_ka_Toba_super-eruption_and_southern_Indian_hominins_Archaeology_lithic_technology_and_environments_at_Jwalapuram_Locality_3",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/jwalapuram-ash-stratigraphy.jpg",
+      title: "Jurreru Valley — comparative stratigraphic sequences",
+      alt: "Comparative diagram of Jurreru River Valley stratigraphic columns, including Jwalapuram localities and Youngest Toba Tuff markers.",
+      caption:
+        "A regional comparison of Jurreru Valley sequences. JWP 3 distinguishes primary and redeposited ash beside Middle Palaeolithic deposits; other columns have different dates and contexts, so this is not one continuous excavation section.",
+      category: "Illustration",
+      credit: "Publication and figure credit to be verified",
+      sourceUrl: "https://ora.ox.ac.uk/objects/uuid:6b843834-ed3d-4e72-8a1c-da3e82342233",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/jwalapuram-stone-tools.jpg",
+      title: "Jwalapuram — excavation trench and layers",
+      alt: "Deep archaeological excavation trench at Jwalapuram with sediment units C, D, E and F labelled on the section wall.",
+      caption:
+        "A Jwalapuram excavation trench with sediment units labelled C–F. It supplies field context but is not a stone-tool plate and should not be read as assigning one age to every visible deposit.",
+      category: "Site photograph",
+      credit: "Publication and figure credit to be verified",
+      sourceUrl:
+        "https://www.researchgate.net/publication/222319081_The_74_ka_Toba_super-eruption_and_southern_Indian_hominins_Archaeology_lithic_technology_and_environments_at_Jwalapuram_Locality_3",
+    },
+  ],
+  "jwalapuram-rockshelter": [
+    {
+      src: "/assets/images/prehistoric_india/researched/jwalapuram-9-rockshelter.jpg",
+      title: "Jwalapuram Locality 9 — Rockshelter",
+      alt: "Archaeological rockshelter and excavation area at Jwalapuram Locality 9.",
+      caption:
+        "Modern view of Jwalapuram Locality 9, a rockshelter with archaeological evidence extending back approximately 35,000 years.",
+      category: "Site photograph",
+      credit: "Clarkson et al. (2009); photographer to verify",
+      sourceUrl: "https://doi.org/10.1017/S0003598X0009846X",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/jwalapuram-9-stratigraphy.jpg",
+      title: "Jwalapuram Locality 9 — Stratigraphy",
+      alt: "Archaeological cross-section showing excavated sediment layers.",
+      caption:
+        "Published excavation section showing distinct archaeological deposits at Locality 9. Layer dates and artefact associations must be interpreted separately.",
+      category: "Illustration",
+      credit: "Clarkson et al. (2009)",
+      sourceUrl: "https://doi.org/10.1017/S0003598X0009846X",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/jwalapuram-9-microliths.jpg",
+      title: "Jwalapuram Locality 9 — Microliths",
+      alt: "Scientific illustration of microlithic cores and stone artefacts.",
+      caption:
+        "Microlithic cores and stone tools from Jwalapuram Locality 9, published by Petraglia and colleagues in 2009.",
+      category: "Artefact",
+      credit: "Petraglia et al. (2009)",
+      sourceUrl: "https://pmc.ncbi.nlm.nih.gov/articles/PMC2718386/",
+    },
+  ],
+  "lahuradewa-rice-use": [
+    riceMap("Lahuradewa", 15),
+    {
+      src: "/assets/images/prehistoric_india/researched/lahuradewa-rice-remains.jpg",
+      title: "Lahuradewa — Archaeological Rice Remains",
+      alt: "Photographic plate of excavated rice grains, glumes, and husk fragments with millimetre scales.",
+      caption:
+        "Figure 9 from Early Farming at Lahuradewa shows the Period IB crop assemblage: wheat, barley, lentil, Job's tear, millets and other plant remains. It is retained as comparative archaeobotanical evidence and is not a rice-only plate.",
+      category: "Artefact",
+      credit: "Tewari et al., after K. S. Saraswat",
+      sourceUrl: "https://www.researchgate.net/publication/284499845_Early_farming_at_Lahuradewa",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/lahuradewa-carbonised-rice.jpg",
+      title: "Lahuradewa — Carbonised Rice Evidence",
+      alt: "Archaeological plate showing carbonised rice grains, husks and associated plant fragments.",
+      caption:
+        "Figure 6 from Early Farming at Lahuradewa shows Period IA botanical remains, including rice grains and rice husk-surface tissue with millimetre scales. The publication's domestication interpretation should be read alongside later archaeobotanical debate.",
+      category: "Artefact",
+      credit: "Tewari et al., after K. S. Saraswat",
+      sourceUrl: "https://www.researchgate.net/publication/284499845_Early_farming_at_Lahuradewa",
+    },
+  ],
+  "bagor-mesolithic": [
+    {
+      src: "/assets/images/prehistoric_india/researched/bagor-microliths.jpg",
+      title: "Bagor — Mesolithic Stone Tools",
+      alt: "Archaeological plate showing rows of small stone tools excavated at Bagor with scale bars.",
+      caption:
+        "Microliths from archaeological excavations at Bagor, Rajasthan, published in Indian Archaeology 1968–69 — A Review, Plate XXIX. These finds illustrate the site's microlithic tradition.",
+      category: "Artefact",
+      credit: "Archaeological Survey of India, Indian Archaeology 1968–69 — A Review, Plate XXIX",
+      sourceUrl: "https://indike.org/pramana/inp.archaeology.iar.1968-69.c4.s13.t2",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/bagor-catalogued-microlith.jpg",
+      title: "Bagor — Catalogued Microlith",
+      alt: "Catalogued archaeological microlith from Bagor, Rajasthan.",
+      caption:
+        "A microlith catalogued by the National Mission on Monuments and Antiquities as UM-DCP-MH-449824, with recorded provenance from Bagor, Trench E-III. The catalogue reference alone does not establish a precise phase date.",
+      category: "Artefact",
+      credit: "National Mission on Monuments and Antiquities",
+      sourceUrl: "https://nmma.nic.in/nmma/exploreMaterial.do?mat=94&pager.offset=33900",
+    },
+  ],
   "chopani-mando-late-phase": [riceMap("Chopani Mando", 4)],
+  "harappa-ravi-phase": [
+    {
+      src: "/assets/images/prehistoric_india/researched/harappa-ravi-pottery.jpg",
+      title: "Harappa — Ravi Phase Pottery",
+      alt: "Hand-built Ravi-phase pottery fragments with painted bands, lines and decorative motifs.",
+      caption:
+        "Painted pottery fragments from the early Ravi phase at Harappa, approximately 3300–2800 BCE. The pottery illustrates ceramic traditions before the city's mature urban period.",
+      category: "Artefact",
+      credit: "Harappa Archaeological Research Project",
+      sourceUrl: "https://www.harappa.com/slide/ravi-phase-pottery-fragments",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/harappa-ravi-storage-pits.jpg",
+      title: "Harappa — Ravi Phase Storage Pits",
+      alt: "Excavated bell-shaped clay-plastered pits at Harappa with archaeological measurement scales.",
+      caption:
+        "Excavated storage pits associated with Ravi-phase occupation at Harappa. These features provide evidence of everyday activities in the settlement.",
+      category: "Site photograph",
+      credit: "Harappa Archaeological Research Project",
+      sourceUrl: "https://www.harappa.com/indus2/98.html",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/harappa-ravi-terracotta-beads.jpg",
+      title: "Harappa — Ravi Phase Terracotta Beads",
+      alt: "Assorted terracotta beads of different shapes arranged beside a measurement scale.",
+      caption:
+        "Terracotta beads recovered from Ravi-phase contexts at Harappa, illustrating early ornament production and craft activities.",
+      category: "Artefact",
+      credit: "Harappa Archaeological Research Project",
+      sourceUrl: "https://www.harappa.com/slide/terra-cotta-beads",
+    },
+  ],
   "mahagara-neolithic": [riceMap("Mahagara", 17)],
   "mehrgarh-aceramic-cemetery": [
+    {
+      src: "/assets/images/prehistoric_india/researched/mehrgarh-period-1-houses.jpg",
+      title: "Mehrgarh — Neolithic Period I Houses",
+      alt: "Excavated remains of mud-brick houses from Mehrgarh Period I in Balochistan, Pakistan.",
+      caption:
+        "Archaeological remains of Neolithic Period I houses at Mehrgarh, photographed by Catherine Jarrige. The image illustrates early settlement architecture. The revised 2025 chronology is based on dated cemetery evidence and does not individually date every wall shown.",
+      category: "Site photograph",
+      credit: "Catherine Jarrige / Wikimedia Commons",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Mehrgarh_p%C3%A9r._I.jpg",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
     plate(
       "mehrgarh-figure-4.png",
       "mehrgarh",
@@ -174,13 +349,61 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
     plate(
       "balathal-excavation.png",
       "balathal",
-      "Balathal · settlement and excavation",
-      "Location inset, exposed settlement walls and archaeologists excavating a stone enclosure.",
-      "Published Figure 1. The enclosure includes the context of burial 1997-1, associated with approximately 2000 cal BCE. This specific context falls within the site's longer occupation; it does not date every visible wall.",
-      "Site photograph",
+      "Balathal · cranium of individual 1997-1",
+      "Anterior and inferior views of the cranium and maxilla of Balathal individual 1997-1, with arrows marking pathological changes and centimetre scales.",
+      "Published Figure 3 from Robbins et al. (2009). The plate documents lesions on individual 1997-1, associated with approximately 2000 BCE; it is osteological evidence from one burial, not an excavation overview or a date for the settlement's full occupation.",
+      "Illustration",
     ),
+    {
+      src: "/assets/images/prehistoric_india/researched/balathal-chalcolithic-pottery.png",
+      title: "Balathal — Chalcolithic Pottery",
+      alt: "Archaeological plate showing pottery vessels excavated at Balathal, Rajasthan.",
+      caption:
+        "Chalcolithic pottery from Balathal, published in Indian Archaeology 1996–97 — A Review, Plate XXX A. The vessels illustrate ceramic traditions associated with the Ahar-Banas culture.",
+      category: "Artefact",
+      credit: "Archaeological Survey of India, Indian Archaeology 1996–97 — A Review, Plate XXX A",
+      sourceUrl:
+        "https://nmma.nic.in/nmma/NAS1/nmma_doc/IAR/Indian%20Archaeology%201996_97%20A%20Review.pdf",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/balathal-ahar-banas-map.svg",
+      title: "Balathal — Ahar-Banas Culture Map",
+      alt: "Topographic map showing Balathal, Ahar, Gilund and other archaeological sites in Rajasthan.",
+      caption:
+        "Modern map showing the geographical distribution of Ahar-Banas culture sites, including Balathal. It is not a reconstruction of the settlement during one specific period.",
+      category: "Map",
+      credit: "Merikanto / Wikimedia Commons",
+      sourceUrl:
+        "https://commons.wikimedia.org/wiki/File:Topographic_map_of_Ahar-Banas_culture_1.svg",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
   ],
   "southern-neolithic-ashmounds": [
+    {
+      src: "/assets/images/prehistoric_india/researched/kudathini-neolithic-ashmound.jpg",
+      title: "Kudathini — Neolithic Ashmound",
+      alt: "Present-day photograph of a surviving Neolithic ashmound near Kudathini, Karnataka.",
+      caption:
+        "Surviving Neolithic ashmound near Kudathini in Ballari district, Karnataka. Photographed in July 2025. The photograph documents the modern appearance of the mound, not its original prehistoric dimensions.",
+      category: "Site photograph",
+      credit: "Shyamal / Wikimedia Commons (2025)",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Neolithic_ashmound.jpg",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/kudathini-ashmound-material.jpg",
+      title: "Kudathini — Ashmound Material",
+      alt: "Close-up photograph of material exposed at the Kudathini Neolithic ashmound.",
+      caption:
+        "Surface material at the Kudathini ashmound, photographed in July 2025. The image illustrates the physical deposit but does not independently establish its age, composition or sequence of burning.",
+      category: "Site photograph",
+      credit: "Shyamal / Wikimedia Commons (2025)",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Ashmound_material_1.jpg",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
     plate(
       "brahmagiri-resistivity.png",
       "brahmagiri",
@@ -206,6 +429,18 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
       "Modern photograph of specifically identified Rock Shelter 8. It supplies architectural context for one shelter, but does not date its paintings or represent every Bhimbetka occupation phase.",
       "Site photograph",
     ),
+    {
+      src: "/assets/images/prehistoric_india/researched/bhimbetka-cave-paintings.jpg",
+      title: "Bhimbetka — Prehistoric Rock Paintings",
+      alt: "Red and pale rock paintings depicting animals and other figures on a sandstone shelter surface at Bhimbetka.",
+      caption:
+        "A modern photograph of prehistoric paintings at Bhimbetka, Madhya Pradesh. The rock-art complex contains paintings from multiple periods. This image does not independently establish the age or specific shelter of the illustrated panel.",
+      category: "Site photograph",
+      credit: "Raveesh Vyas / Wikimedia Commons",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Bhimbetka_Cave_Paintings.jpg",
+      license: "CC BY-SA 2.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/2.0/",
+    },
   ],
   "burzahom-neolithic": [
     plate(
@@ -213,8 +448,34 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
       "burzahomVessel",
       "Burzahom · vessel with horned motifs",
       "A restored round vessel painted with large curved horn-like forms, displayed at the National Museum, New Delhi.",
-      "The museum photograph identifies the vessel with Burzahom and about 2700 BCE. It illustrates ceramic material from the site's long sequence; it is not evidence for the construction or use of a pit dwelling, and the catalogue attribution should be checked before drawing wider conclusions from the motif.",
+      "The museum photograph identifies the vessel with Burzahom and about 2700 BCE. It illustrates ceramic material from the site's long sequence; it is not evidence for the construction or use of a pit dwelling.",
       "Artefact",
     ),
+    {
+      src: "/assets/images/prehistoric_india/researched/burzahom-excavated-pit.png",
+      title: "Burzahom — Neolithic Excavated Pit",
+      alt: "Excavated rectangular pit with deep earth-cut walls at the Burzahom archaeological site.",
+      caption:
+        "Excavated pit at Burzahom, Kashmir. The photograph shows surviving pit architecture associated with the site's Neolithic occupation. Figure 1, Ahmed et al. (2024).",
+      category: "Site photograph",
+      credit: "Ahmed, Farswan and Singh (2024), ShodhKosh, Figure 1",
+      sourceUrl:
+        "https://www.granthaalayahpublication.org/journals-html-galley/67_ShodhKosh_950.htm",
+      license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/burzahom-pit-niche.png",
+      title: "Burzahom — Pit with Niche and Post-Holes",
+      alt: "Archaeological photograph of a Burzahom pit showing a niche and structural details.",
+      caption:
+        "Excavated pit showing a niche and features identified as post-holes at Burzahom. Figure 2, Ahmed et al. (2024).",
+      category: "Site photograph",
+      credit: "Ahmed, Farswan and Singh (2024), ShodhKosh, Figure 2",
+      sourceUrl:
+        "https://www.granthaalayahpublication.org/journals-html-galley/67_ShodhKosh_950.htm",
+      license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+    },
   ],
 };

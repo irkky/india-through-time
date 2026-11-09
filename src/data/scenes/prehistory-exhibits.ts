@@ -18,7 +18,8 @@ const exhibit = (
     { label: "Context", x: 70, y: 65, field: "significance" },
     { label: "Dating & limits", x: 72, y: 25, field: "interpretation" },
   ],
-  browseImages: gallery === lowerPalaeolithicGallery || gallery === middlePalaeolithicGallery,
+  browseImages: Boolean(gallery),
+  watchVideo: true,
 });
 
 /** Original explanatory artwork, not excavation plans or replicas of individual finds. */
@@ -89,6 +90,7 @@ const baseExhibits: Readonly<Record<string, PrehistoryExhibit>> = {
     "strata",
     "The ash as a marker",
     "A conceptual ash layer between tool-bearing deposits, not a scaled excavation drawing.",
+    prehistoryGalleries["jwalapuram-toba"],
   ),
   "dhaba-microliths": exhibit(
     "blades",
@@ -176,7 +178,14 @@ export const prehistoryExhibits: Readonly<Record<string, PrehistoryExhibit>> = O
     const gallery = prehistoryGalleries[id];
     return [
       id,
-      gallery ? { ...visual, gallery, stageImages: [0, gallery.length > 1 ? 1 : 0, null] } : visual,
+      gallery
+        ? {
+            ...visual,
+            gallery,
+            browseImages: true,
+            stageImages: [0, gallery.length > 1 ? 1 : 0, null],
+          }
+        : visual,
     ];
   }),
 );

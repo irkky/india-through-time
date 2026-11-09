@@ -86,7 +86,7 @@
     "licenseUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0069280#copyright",
     "downloadUrl": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0069280.g004",
     "reviewedOn": "2026-10-27",
-    "sha256": "e0ff2ba1d6769658c0d688154c5d02a492db74e5c4ac4433193c9547e44f4b66",
+    "sha256": "ca0440aeef580d9066dc89ef722b184b194d0753196559e17141b1f53294bddd",
     "eventIds": ["mehtakheri-microblades"]
   },
   {
@@ -101,7 +101,7 @@
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
     "downloadUrl": "https://www.frontiersin.org/files/Articles/924977/xml-images/fevo-10-924977-g001.webp",
     "reviewedOn": "2026-10-27",
-    "sha256": "68b49e0f4d2e4e3926ed3ec809548b3b9ab1a11447bd411f5edce52a0e4bc9d0",
+    "sha256": "624c7b21a65095704aa0a03074bbce6ccbf2f52497b1e8fe672e61a99b16667e",
     "eventIds": ["lahuradewa-rice-use", "chopani-mando-late-phase", "mahagara-neolithic"]
   },
   {
@@ -136,17 +136,17 @@
   },
   {
     "src": "/assets/images/prehistoric_india/researched/balathal-excavation.png",
-    "title": "Balathal · settlement and excavation",
-    "alt": "Location inset, exposed settlement walls and archaeologists excavating a stone enclosure.",
-    "caption": "Published Figure 1. The enclosure includes the context of burial 1997-1, associated with approximately 2000 cal BCE. This specific context falls within the site's longer occupation; it does not date every visible wall.",
-    "category": "Site photograph",
+    "title": "Balathal · cranium of individual 1997-1",
+    "alt": "Anterior and inferior views of the cranium and maxilla of Balathal individual 1997-1, with arrows marking pathological changes and centimetre scales.",
+    "caption": "Published Figure 3 from Robbins et al. (2009). The plate documents lesions on individual 1997-1, associated with approximately 2000 BCE; it is osteological evidence from one burial, not an excavation overview or a date for the settlement's full occupation.",
+    "category": "Illustration",
     "credit": "Robbins et al. (2009), PLOS ONE",
     "sourceUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0005669",
     "license": "Creative Commons Attribution (article licence)",
     "licenseUrl": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0005669#copyright",
-    "downloadUrl": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0005669.g001",
-    "reviewedOn": "2026-10-27",
-    "sha256": "bba113f8850040b666284369f966aa0eb41229ddf51c6eebad67c06a55a8ba37",
+    "downloadUrl": "https://journals.plos.org/plosone/article/figure/image?size=large&id=10.1371/journal.pone.0005669.g003",
+    "reviewedOn": "2026-11-09",
+    "sha256": "62eb38447fb7c0d31d035b018c6590985843bba64fa2a447bb52dc619b0cdd1d",
     "eventIds": ["balathal-ahar-banas"]
   },
   {

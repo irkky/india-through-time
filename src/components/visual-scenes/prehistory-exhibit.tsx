@@ -14,6 +14,21 @@ const storyStageLabels = ["What happened", "Why it matters", "Evidence & limits"
 function InlineHistoricalVideo({ video }: { readonly video: HistoricalVideo }) {
   const instance = useId();
   const [playing, setPlaying] = useState(false);
+  const playerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!playing) return;
+    // Scenes remain mounted while scrolling; hidden iframes otherwise keep playing.
+    const stopWhenHidden = () => {
+      if (playerRef.current?.closest('[aria-hidden="true"], [inert]')) setPlaying(false);
+    };
+    const observer = new MutationObserver(stopWhenHidden);
+    for (let parent = playerRef.current?.parentElement; parent; parent = parent.parentElement) {
+      observer.observe(parent, { attributes: true, attributeFilter: ["aria-hidden", "inert"] });
+    }
+    stopWhenHidden();
+    return () => observer.disconnect();
+  }, [playing]);
 
   useEffect(() => {
     const stopOthers = (event: Event) => {
@@ -29,7 +44,7 @@ function InlineHistoricalVideo({ video }: { readonly video: HistoricalVideo }) {
   };
 
   return (
-    <div className="inline-exhibit-video">
+    <div className="inline-exhibit-video" ref={playerRef}>
       {video.mode === "youtube" && playing ? (
         <iframe
           src={`https://www.youtube-nocookie.com/embed/${video.videoId}?playsinline=1&rel=0`}
@@ -99,7 +114,9 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
         ? 2
         : 1;
   const canBrowse = visual.browseImages && !!visual.gallery?.length;
-  const inlineVideo = canBrowse ? record.videos?.[0] : undefined;
+  const inlineVideo = visual.watchVideo
+    ? (record.videos?.find((video) => video.mode === "youtube") ?? record.videos?.[0])
+    : undefined;
   const defaultChoice = selected === 2 && inlineVideo ? "video" : imageIndex;
   const displayedChoice = canBrowse && imageChoice !== null ? imageChoice : defaultChoice;
   const showVideo = displayedChoice === "video" && !!inlineVideo;
@@ -129,7 +146,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
     <div
       className="prehistory-exhibit story-exhibit"
       data-layout={layout}
-      data-media-browser={canBrowse || undefined}
+      data-media-browser={canBrowse || showVideo || undefined}
       ref={rootRef}
     >
       <div className="prehistory-exhibit-inner">

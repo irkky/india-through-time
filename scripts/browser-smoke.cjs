@@ -17,6 +17,10 @@ const { independenceGalleries } = require("../src/data/scenes/independence-galle
 const { postIndependenceEvents } = require("../src/data/timeline/post-independence/events.ts");
 const { postIndependenceGalleries } = require("../src/data/scenes/post-independence-galleries.ts");
 const { prehistoryGalleries } = require("../src/data/scenes/prehistory-galleries.ts");
+const {
+  lowerPalaeolithicGallery,
+  middlePalaeolithicGallery,
+} = require("../src/data/scenes/palaeolithic-gallery.ts");
 const { ancientGalleries } = require("../src/data/scenes/ancient-galleries.ts");
 const { empireGalleries } = require("../src/data/scenes/empire-galleries.ts");
 const { empireEvents } = require("../src/data/timeline/empires/events.ts");
@@ -27,6 +31,22 @@ const totalEvents =
   colonialEvents.length +
   independenceEvents.length +
   postIndependenceEvents.length;
+const distinctGalleryImages = new Set(
+  [
+    lowerPalaeolithicGallery,
+    middlePalaeolithicGallery,
+    ...Object.values(prehistoryGalleries),
+    ...Object.values(ancientGalleries),
+    ...Object.values(empireGalleries),
+    ...Object.values(classicalGalleries),
+    ...Object.values(earlyModernGalleries),
+    ...Object.values(colonialGalleries),
+    ...Object.values(independenceGalleries),
+    ...Object.values(postIndependenceGalleries),
+  ]
+    .flat()
+    .map((image) => image.src),
+).size;
 
 async function main() {
   const base = process.argv[2] || "http://localhost:3000";
@@ -829,7 +849,7 @@ async function main() {
     console.log(
       process.env.BROWSER_MOTION_ONLY
         ? "PASS: motion and chapter transitions; forward/reverse crossfades; no hydration/runtime exceptions; all eight readers without JavaScript."
-        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; 185 distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
+        : `PASS: all ${totalEvents} exhibits on desktop/tablet/mobile; ${distinctGalleryImages} distinct gallery images; evidence tags; combined era/community/century filters; people search; sources; keyboard focus; contemporary navigation; shared links; BCE/CE and chapter transitions; forward/reverse crossfades; reduced motion; no hydration/runtime exceptions; all eight readers without JavaScript.`,
     );
     console.log(`Screenshots: ${artifactDir}`);
   } finally {
