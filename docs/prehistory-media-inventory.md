@@ -1,6 +1,6 @@
 # Prehistoric India: visual evidence inventory
 
-Reviewed 9 November 2026. The chapter retains 24 chronological entries. Eighteen entries now have local image galleries, including the two six-image Attirampakkam collections. Placeholder tags render only where evidence, attribution or reuse permission is still genuinely unresolved.
+Reviewed 10 November 2026. The chapter retains 24 chronological entries. Nineteen entries now have local image galleries, including the two six-image Attirampakkam collections. Populated galleries do not display reserved-image cards; outstanding provenance and permission notes remain documented below.
 
 ## How to explore
 
@@ -15,7 +15,7 @@ Scroll through **What happened**, **Why it matters** and **Evidence & limits**, 
 | Tools above and below the ash (jwalapuram-toba)                         | Excavation views and comparative Jurreru Valley stratigraphy                                            | Verify the photographer/figure credits and reuse terms. The regional comparison is not one continuous excavation section and must retain its separate locality labels.                                                       |
 | A changing stone-tool tradition (attirampakkam-middle-palaeolithic)     | Existing supplied gallery; provenance still pending                                                     | Identify the provenance and reuse terms of all six supplied images. Add the published Attirampakkam stratigraphic sequence or a site-specific specimen plate, preserving scale, layer labels and dating uncertainties.       |
 | Life across the Toba eruption (dhaba-toba-sequence)                     | Dhaba field photograph; dated profiles; changing-toolkit plate                                          | Confirm that the field photograph is Dhaba 1, identify the visible section and record its reuse permission. Do not substitute third-party satellite imagery.                                                                 |
-| Toolmaking near the coast (sandhav-coastal-occupation)                  | Teaching diagram; source-linked evidence                                                                | Add an authorised Sandhav excavation photograph and a plate of tools from the approximately 114,000-year occupation. Identify the sampled layer; a modern coastline map must be labelled as modern.                          |
+| Toolmaking near the coast (sandhav-coastal-occupation)                  | Project-supplied tool montage, excavation landscape, location map and period video                      | No reserved-image card remains. If the montage is later replaced by a publication plate, preserve its specimen numbers, scale and documented layer associations.                                                             |
 | Small tools, early origins (dhaba-microliths)                           | Dhaba · a changing toolkit; Dhaba · layers and dated samples                                            | Optional addition: a licensed close-up of a catalogued Dhaba microlith with its excavation unit, scale and dating association. Do not label every object on the comparative plate as 48,000 years old.                       |
 | Microblades in the Narmada Valley (mehtakheri-microblades)              | Core/tool plate, microblade plate and the 2009 excavation section                                       | —                                                                                                                                                                                                                            |
 | A rockshelter's long record (jwalapuram-rockshelter)                    | Locality 9 shelter, stratigraphy and microlith plate                                                    | Verify complete figure/photographer credits, reuse terms and layer associations before treating the images as specimen-level evidence.                                                                                       |
@@ -52,9 +52,15 @@ The [media manifest](prehistory-media-manifest.json) records each local file, or
 
 The Mesolithic overview links to [IIT Kanpur / NPTEL: Introduction to Indian Art - An Appreciation](https://nptel.ac.in/courses/109104102), Week 2, Pre-historic art: Rock painting of Bhimbetka, taught by Soumik Nandy Majumdar. This is a course link: select the lecture there. No video has been downloaded or presented as ancient footage.
 
+## Sandhav update
+
+The supplied tool montage, excavation landscape and location map are registered in the gallery, with SHA-256 hashes in the manifest. The project owner confirmed permission to use all three on 10 November 2026; this is recorded as permission rather than an invented open licence, so the credits and source links must remain attached.
+
+The tool image is described as a project-supplied teaching montage based on the Sandhav research context. It is not presented as a published specimen plate, and its caption does not claim that every illustrated object came from the approximately 114,000-year-old dated horizon. A future publication plate should retain specimen numbers, scale and layer associations.
+
 ## Candidates deliberately not substituted
 
-Harappa/HARP Ravi and Kot Diji phase images still need recorded reuse permission. Dhaba satellite imagery carries separate third-party credits. The supplied Sandhav landscape and tool montage remain unused because their source, object provenance and reuse terms were not documented; the tool montage cannot safely be represented as an excavated assemblage. The supplied Burzahom roofed-house illustration is a reconstruction, not stratigraphy. The two files labelled for Chopani Mando could not be matched to that site and remain unused. A Commons Navdatoli goblet dated 1300 BCE does not match this entry's 1700–1500 BCE range. The remaining requests identify the actual site and phase needed rather than filling gaps with lookalikes.
+Harappa/HARP Ravi and Kot Diji phase images still need recorded reuse permission. Dhaba satellite imagery carries separate third-party credits. The supplied Burzahom roofed-house illustration is a reconstruction, not stratigraphy. The two files labelled for Chopani Mando could not be matched to that site and remain unused. A Commons Navdatoli goblet dated 1300 BCE does not match this entry's 1700–1500 BCE range. The remaining requests identify the actual site and phase needed rather than filling gaps with lookalikes.
 
 ## Editorial follow-up tags
 

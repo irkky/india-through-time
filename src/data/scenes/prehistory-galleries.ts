@@ -478,4 +478,101 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
       licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
     },
   ],
+  "sandhav-coastal-occupation": [
+    {
+      src: "/assets/images/prehistoric_india/researched/sandhav-stone-tools.png",
+      title: "Sandhav — Palaeolithic Stone Tools",
+      alt: "Labelled montage of twelve stone artefacts associated with Sandhav, including bifaces, a prepared core, points, scrapers and flakes, beside a five-centimetre scale.",
+      caption:
+        "A labelled teaching montage of stone-tool forms associated with Sandhav. It combines several tool types and should not be read as a published specimen plate or as proof that every illustrated object came from the approximately 114,000-year-old dated horizon.",
+      category: "Artefact",
+      credit:
+        "Project-supplied montage based on Blinkhorn et al. (2019); use permission confirmed by the project owner",
+      sourceUrl:
+        "https://science.thewire.in/the-sciences/sandhav-kachchh-modern-humans-migration-south-asia-levallois-blade/",
+      license: "Used with permission",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/sandhav-excavation.jpg",
+      title: "Sandhav — Excavation Landscape",
+      alt: "Field photograph showing an exposed archaeological sediment section and researcher at Sandhav, Gujarat.",
+      caption:
+        "Modern field photograph of the archaeological landscape at Sandhav in the Naira Valley, Kachchh. This view illustrates the excavation setting, not a reconstruction of the landscape 114,000 years ago.",
+      category: "Site photograph",
+      credit: "Max Planck Institute of Geoanthropology",
+      sourceUrl: "https://www.shh.mpg.de/1508604/palaeolithic-sandhav-india",
+      license: "Used with permission",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/sandhav-location-map.png",
+      title: "Sandhav — Location in South Asia",
+      alt: "Topographic map showing Sandhav in western India and other Palaeolithic archaeological sites.",
+      caption:
+        "Research location map showing Sandhav and comparative Palaeolithic sites across South Asia. The coastline shown is modern, not a reconstruction of prehistoric shorelines.",
+      category: "Map",
+      credit: "Blinkhorn et al. (2019), reproduced by The Wire Science",
+      sourceUrl:
+        "https://science.thewire.in/the-sciences/sandhav-kachchh-modern-humans-migration-south-asia-levallois-blade/",
+      license: "Used with permission",
+    },
+  ],
+  "gufkral-aceramic": [
+    {
+      src: "/assets/images/prehistoric_india/researched/gufkral-neolithic-pits.png",
+      title: "Gufkral — Neolithic Excavated Pits",
+      alt: "Archaeological photograph showing three excavated pits at Gufkral, with a measurement scale.",
+      caption:
+        "Excavated pits at Gufkral in Kashmir. The photograph illustrates pit structures associated with Neolithic occupation. Figure 7 in Sofi Sabzar Ahmad (2023), after A. K. Sharma (2013).",
+      category: "Site photograph",
+      credit: "A. K. Sharma (2013), reproduced in Sofi Sabzar Ahmad (2023), Figure 7",
+      sourceUrl:
+        "https://www.arfjournals.com/image/catalog/Journals%20Papers/JASI/2023/No%201%20%282023%29/5_Sofi%20Sabzar.pdf",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/gufkral-aceramic-bone-tools.png",
+      title: "Gufkral — Aceramic Neolithic Bone Tools",
+      alt: "Black-and-white archaeological plate showing pointed bone implements from Gufkral Period IA.",
+      caption:
+        "Bone tools excavated at Gufkral and explicitly attributed to Period IA, the aceramic Neolithic phase. Indian Archaeology 1981–82 — A Review, Plate XI.",
+      category: "Artefact",
+      credit: "Archaeological Survey of India, Indian Archaeology 1981–82, Plate XI",
+      sourceUrl:
+        "https://nmma.nic.in/nmma/NAS1/nmma_doc/IAR/Indian%20Archaeology%201981-82%20A%20Review.pdf",
+    },
+  ],  
+  "harappa-kot-diji-phase": [
+    {
+      src: "/assets/images/prehistoric_india/researched/harappa-kot-diji-settlement-plan.jpg",
+      title: "Harappa — Kot Diji Settlement Plan",
+      alt: "Measured archaeological plan of Kot Diji-phase streets and mud-brick structures at Harappa.",
+      caption:
+        "Plan of Trench 39N on Mound AB, showing early settlement structures and a street during Harappa's Kot Diji phase.",
+      category: "Map",
+      credit: "Harappa Archaeological Research Project",
+      sourceUrl:
+        "https://www.harappa.com/slide/plan-kot-diji-phase-levels",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/harappa-kot-diji-trench-39.jpg",
+      title: "Harappa — Kot Diji Excavation",
+      alt: "Excavated settlement deposits and architectural remains in Trench 39 South at Harappa.",
+      caption:
+        "Excavation of Trench 39 South, Mound AB, documenting early Kot Diji-phase occupation beneath later settlement remains.",
+      category: "Site photograph",
+      credit: "Harappa Archaeological Research Project",
+      sourceUrl:
+        "https://www.harappa.com/slide/trench-39-south",
+    },
+    {
+      src: "/assets/images/prehistoric_india/researched/harappa-kot-diji-pottery-marks.jpg",
+      title: "Harappa — Early Pottery Marks",
+      alt: "Pottery fragments bearing incised marks from Harappa's Kot Diji phase.",
+      caption:
+        "Incised symbols on pottery associated with the Kot Diji phase at Harappa, approximately 2800–2600 BCE.",
+      category: "Artefact",
+      credit: "Harappa Archaeological Research Project",
+      sourceUrl:
+        "https://www.harappa.com/slide/kot-dijian-phase-symbols",
+    },
+  ],
 };

@@ -21,7 +21,7 @@ export const prehistoryEvidence: Readonly<Record<string, readonly [string, strin
   ],
   "sandhav-coastal-occupation": [
     "Sandhav provides a dated occupation near a changing coastal landscape. A site's present-day relationship to the coast is not a map of the ancient shoreline, nor does proximity alone demonstrate a coastal migration route.",
-    "Add an authorised Sandhav excavation photograph and a plate of tools from the approximately 114,000-year occupation. Identify the sampled layer; a modern coastline map must be labelled as modern.",
+    "The gallery now includes the project-supplied tool montage, excavation landscape and research location map with owner-confirmed permission. Treat the montage as a teaching overview rather than a published specimen plate: it combines multiple tool types and does not establish that every illustrated object came from the approximately 114,000-year-old horizon.",
   ],
   "dhaba-toba-sequence": [
     "The sediment profiles place the volcanic signal within a dated sequence. Compare their uncertainties rather than treating the eruption anchor as the age of every artefact. The companion tool plate spans several occupations.",

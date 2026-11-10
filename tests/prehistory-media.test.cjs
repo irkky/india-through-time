@@ -16,8 +16,8 @@ const manifest = require("../docs/prehistory-media-manifest.json");
 test("prehistoric media stays attached to documented sites with intact local originals", () => {
   const events = prehistoricIndiaEra.periods.flatMap((period) => period.events);
   assert.equal(events.length, 24);
-  assert.equal(manifest.length, 16);
-  assert.equal(Object.keys(prehistoryGalleries).length, 16);
+  assert.equal(manifest.length, 19);
+  assert.equal(Object.keys(prehistoryGalleries).length, 17);
   const galleries = {
     ...prehistoryGalleries,
     "lower-palaeolithic-scaffold": lowerPalaeolithicGallery,
@@ -27,16 +27,19 @@ test("prehistoric media stays attached to documented sites with intact local ori
     const bytes = fs.readFileSync(`public${item.src}`);
     assert.equal(crypto.createHash("sha256").update(bytes).digest("hex"), item.sha256);
     assert.ok(bytes.length > 10000);
-    for (const key of [
-      "credit",
-      "license",
-      "licenseUrl",
-      "sourceUrl",
-      "downloadUrl",
-      "alt",
-      "caption",
-    ])
+    for (const key of ["credit", "sourceUrl", "alt", "caption"])
       assert.ok(item[key], `${item.src}: missing ${key}`);
+    if (item.rightsStatus === "pending") {
+      assert.ok(item.rightsNote, `${item.src}: missing rights follow-up`);
+      assert.equal(item.license, null);
+      assert.equal(item.licenseUrl, null);
+    } else if (item.rightsStatus === "permission-confirmed") {
+      assert.equal(item.license, "Used with permission");
+      assert.equal(item.licenseUrl, null);
+      assert.ok(item.rightsNote, `${item.src}: missing permission note`);
+    } else {
+      assert.ok(item.license && item.licenseUrl && item.downloadUrl);
+    }
     assert.deepEqual(
       item.eventIds.sort(),
       Object.entries(galleries)
@@ -82,6 +85,13 @@ test("prehistoric media stays attached to documented sites with intact local ori
   );
   assert.match(prehistoryGalleries["balathal-ahar-banas"][0].title, /cranium/i);
   assert.match(prehistoryGalleries["jwalapuram-toba"][2].title, /excavation trench/i);
+  const sandhav = prehistoryGalleries["sandhav-coastal-occupation"];
+  assert.equal(sandhav.length, 3);
+  assert.ok(sandhav.every((image) => manifest.some((item) => item.src === image.src)));
+  assert.deepEqual(
+    sandhav.map((image) => image.src.split("/").at(-1)),
+    ["sandhav-stone-tools.png", "sandhav-excavation.jpg", "sandhav-location-map.png"],
+  );
 });
 
 test("prehistoric records expose sourced evidence notes and only unresolved image requests", () => {

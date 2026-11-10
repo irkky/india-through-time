@@ -118,6 +118,57 @@ module.exports = async function checkExhibitMedia({
           await waitFor(
             `${active}.querySelector('.exhibit-media-controls [role=status]').textContent !== ${JSON.stringify(status)}`,
           );
+        await waitFor(
+          `(()=>{const img=${active}.querySelector('.exhibit-drawing img');return img?.complete && img.naturalWidth>0})()`,
+        );
+        if (id === "sandhav-coastal-occupation") {
+          assert.equal(count, 3);
+          assert.match(
+            await evaluate(`${active}.querySelector('.exhibit-drawing img').getAttribute('src')`),
+            /sandhav-excavation\.jpg/,
+          );
+          await click(`${selector} [aria-label="Next image"]`);
+          await waitFor(
+            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "3 / 3"`,
+          );
+          assert.match(
+            await evaluate(`${active}.querySelector('.exhibit-drawing img').getAttribute('src')`),
+            /sandhav-location-map\.png/,
+          );
+          await click(`${selector} [aria-label="Next image"]`);
+          await waitFor(
+            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "1 / 3"`,
+          );
+          assert.match(
+            await evaluate(`${active}.querySelector('.exhibit-drawing img').getAttribute('src')`),
+            /sandhav-stone-tools\.png/,
+          );
+          await click(`${selector} [aria-label="Next image"]`);
+          await waitFor(
+            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "2 / 3"`,
+          );
+          await evaluate(`${active}.querySelector('.exhibit-drawing img').decode()`);
+          await evaluate(
+            "new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))",
+          );
+          await screenshot(`sandhav-gallery-${width}`);
+          await click(`${selector} .gallery-jump`);
+          await waitFor("document.querySelector('.exhibit-dialog[open]') !== null");
+          assert.equal(
+            await evaluate(
+              "document.querySelectorAll('.exhibit-dialog[open] .gallery-choices button').length",
+            ),
+            3,
+          );
+          assert.equal(
+            await evaluate(
+              "document.querySelector('.exhibit-dialog[open] .image-spaces') === null",
+            ),
+            true,
+          );
+          await click(".exhibit-dialog[open] .history-dialog-header button");
+          await waitFor("document.querySelector('.exhibit-dialog[open]') === null");
+        }
         await click(`${selector} [aria-label="Previous image"]`);
         await waitFor(
           `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === ${JSON.stringify(status)}`,
