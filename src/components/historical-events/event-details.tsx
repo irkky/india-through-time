@@ -35,20 +35,22 @@ export function ImageNeeds({
   return (
     <div
       className={compact ? "image-space image-space-compact" : "image-spaces"}
-      aria-label="Reserved image spaces"
+      aria-label="Visual evidence status"
     >
       {(compact ? event.imageNeeds.slice(0, 1) : event.imageNeeds).map((need) => (
         <section className="image-space-card" key={need.tag}>
           <span className="image-space-icon" aria-hidden="true">
             ▧
           </span>
-          <h3>Reserved for visual evidence</h3>
-          <strong className="content-need-tag">{need.tag}</strong>
-          <p>{need.instruction}</p>
+          <h3>Visual evidence under review</h3>
+          <p>
+            A verified image is not yet published for this part of {event.title}. The teaching
+            diagram remains in place until a source, context and reuse status can be documented.
+          </p>
           {!compact && (
             <small>
-              Include creator, source URL, reuse licence, ancient date or phase, and the
-              photograph&apos;s capture date. Keep archaeological scales and labels visible.
+              Image provenance and archaeological context are reviewed separately from the
+              event&apos;s historical sources.
             </small>
           )}
         </section>

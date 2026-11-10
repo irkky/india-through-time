@@ -92,6 +92,8 @@ export const upperPalaeolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Microlithic tools appear at Dhaba around 48,000 years ago, alongside some continuing Levallois technology. Small-tool traditions therefore predate the later Mesolithic.",
+    significance:
+      "Dhaba shows that small-tool traditions developed much earlier than the later Mesolithic and could overlap with older Levallois methods rather than replacing them in one sudden change.",
     categories: ["stone-tools", "technology"],
     regions: ["Madhya Pradesh, India"],
     archaeologicalSites: [{ id: "dhaba", name: "Dhaba" }],
@@ -115,6 +117,8 @@ export const upperPalaeolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Optically dated deposits at Mehtakheri contain microblade assemblages about 45,000 years old. The site adds another dated example of small-blade technology in central India.",
+    significance:
+      "Mehtakheri adds an independently dated central Indian context to evidence that microblade technology has deep regional roots, while the luminescence dates still apply to sediment burial rather than an exact invention date.",
     categories: ["stone-tools"],
     regions: ["Madhya Pradesh, India"],
     archaeologicalSites: [{ id: "mehtakheri", name: "Mehtakheri" }],
@@ -191,6 +195,8 @@ export const neolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Charred rice grains at Lahuradewa in the Middle Ganges region are reported from the seventh millennium BCE. They document early rice use; whether this was wild-rice gathering, cultivation or domesticated rice is debated.",
+    significance:
+      "Lahuradewa makes the Middle Ganges evidence central to the long history of rice use while showing why gathering, cultivation and domestication must remain separate claims.",
     categories: ["plants", "subsistence"],
     regions: ["Uttar Pradesh, India"],
     archaeologicalSites: [{ id: "lahuradewa", name: "Lahuradewa" }],
@@ -215,6 +221,8 @@ export const neolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Mehrgarh in present-day Pakistan is a key early farming settlement. A 2025 tooth-enamel study proposes a much later chronology for its aceramic cemetery than the familiar seventh-millennium BCE account.",
+    significance:
+      "The revised cemetery model shows that even a foundational site's chronology can change with new dating evidence, without automatically redating every settlement phase at Mehrgarh.",
     categories: ["farming", "settlement", "dating"],
     regions: ["Balochistan, Pakistan"],
     archaeologicalSites: [{ id: "mehrgarh", name: "Mehrgarh" }],
@@ -289,6 +297,8 @@ export const neolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Southern Neolithic communities left large ashmounds formed by burning accumulated cattle dung. These features connect herding, settlement and the use of the landscape in the southern Deccan.",
+    significance:
+      "Ashmounds connect cattle management with repeated communal burning and landscape use, so they are evidence for social practice as well as subsistence and settlement.",
     categories: ["herding", "settlement", "landscape"],
     regions: ["Southern Deccan, India"],
     people: [],
@@ -346,6 +356,8 @@ export const chalcolithicEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Balathal in Rajasthan preserves Ahar-Banas Chalcolithic occupation, with stone and mud-built houses, storage facilities and evidence of food processing. Copper-age village traditions developed alongside other regional lifeways.",
+    significance:
+      "Balathal documents a durable regional village tradition in which architecture, storage and food processing can be studied together rather than treating the Chalcolithic as a single uniform culture.",
     categories: ["settlement", "food-processing", "chalcolithic"],
     regions: ["Rajasthan, India"],
     archaeologicalSites: [{ id: "balathal", name: "Balathal" }],
@@ -378,6 +390,8 @@ export const harappanTransitionEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Ravi-phase levels at Harappa contain houses, pottery and bead-making debris. Imported raw materials show connections with places beyond the settlement before its mature urban phase.",
+    significance:
+      "Ravi-phase craft debris and imported materials show that settlement growth and long-distance connections preceded Harappa's mature urban form.",
     categories: ["craft", "exchange", "settlement"],
     regions: ["Punjab, Pakistan"],
     archaeologicalSites: [{ id: "harappa", name: "Harappa" }],
@@ -408,6 +422,8 @@ export const harappanTransitionEvents: readonly HistoricalEvent[] = [
     contentStatus: "researched",
     description:
       "Harappa's Kot Diji phase precedes its mature urban development. Excavations place the subsequent transformation around 2600–2500 BCE, linking this chapter to the later Indus cities.",
+    significance:
+      "The Kot Diji phase at Harappa frames urbanisation as a staged local transformation rather than an instantaneous appearance of the mature Indus city.",
     categories: ["urbanism", "settlement"],
     regions: ["Punjab, Pakistan"],
     archaeologicalSites: [{ id: "harappa", name: "Harappa" }],

@@ -539,7 +539,7 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
       sourceUrl:
         "https://nmma.nic.in/nmma/NAS1/nmma_doc/IAR/Indian%20Archaeology%201981-82%20A%20Review.pdf",
     },
-  ],  
+  ],
   "harappa-kot-diji-phase": [
     {
       src: "/assets/images/prehistoric_india/researched/harappa-kot-diji-settlement-plan.jpg",
@@ -549,8 +549,7 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
         "Plan of Trench 39N on Mound AB, showing early settlement structures and a street during Harappa's Kot Diji phase.",
       category: "Map",
       credit: "Harappa Archaeological Research Project",
-      sourceUrl:
-        "https://www.harappa.com/slide/plan-kot-diji-phase-levels",
+      sourceUrl: "https://www.harappa.com/slide/plan-kot-diji-phase-levels",
     },
     {
       src: "/assets/images/prehistoric_india/researched/harappa-kot-diji-trench-39.jpg",
@@ -560,8 +559,7 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
         "Excavation of Trench 39 South, Mound AB, documenting early Kot Diji-phase occupation beneath later settlement remains.",
       category: "Site photograph",
       credit: "Harappa Archaeological Research Project",
-      sourceUrl:
-        "https://www.harappa.com/slide/trench-39-south",
+      sourceUrl: "https://www.harappa.com/slide/trench-39-south",
     },
     {
       src: "/assets/images/prehistoric_india/researched/harappa-kot-diji-pottery-marks.jpg",
@@ -571,8 +569,7 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
         "Incised symbols on pottery associated with the Kot Diji phase at Harappa, approximately 2800–2600 BCE.",
       category: "Artefact",
       credit: "Harappa Archaeological Research Project",
-      sourceUrl:
-        "https://www.harappa.com/slide/kot-dijian-phase-symbols",
+      sourceUrl: "https://www.harappa.com/slide/kot-dijian-phase-symbols",
     },
   ],
 };

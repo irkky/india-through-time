@@ -160,14 +160,11 @@ export function PrehistoryReader({
                   key={gap.topic}
                   className="mt-6 rounded-lg border border-dashed border-[#8f3e28]/40 p-5"
                 >
-                  <h4 className="font-semibold">Evidence still to add: {gap.topic}</h4>
-                  <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6">
-                    {gap.missing.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 text-xs">
-                    No invented date has been assigned to this research slot.
+                  <h4 className="font-semibold">Coverage note: {gap.topic}</h4>
+                  <p className="mt-3 text-sm leading-6">
+                    This topic is not yet represented by a dated timeline record. It remains in the
+                    reading context until its chronology and supporting evidence can be verified; no
+                    date has been invented to force it into the journey.
                   </p>
                 </aside>
               ))}

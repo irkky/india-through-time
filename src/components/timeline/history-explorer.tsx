@@ -5,6 +5,7 @@ import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
 import { EventDetails, ImageNeeds } from "@/components/historical-events/event-details";
 import {
+  centuryCoverageHelp,
   centuryOptions,
   contemporaryEvents,
   emptyHistoryFilters,
@@ -184,10 +185,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
                 Reset all filters
               </button>
             </div>
-            <p className="history-filter-hint">
-              Centuries cover 800 BCE–2000 CE and include overlapping topic ranges. Results stay in
-              chronological order; selecting a result returns to the full timeline.
-            </p>
+            <p className="history-filter-hint">{centuryCoverageHelp}</p>
             <p className="history-result-count" role="status">
               {matches.length} {matches.length === 1 ? "event" : "events"}
             </p>
@@ -226,20 +224,20 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
               className="history-reader-link"
               href={
                 readerEra === "post-independence-present"
-                  ? "#post-independence-reader"
+                  ? "/read#post-independence-reader"
                   : readerEra === "indian-independence-movement"
-                    ? "#independence-reader"
+                    ? "/read#independence-reader"
                     : readerEra === "colonial-era-british-rule"
-                      ? "#colonial-reader"
+                      ? "/read#colonial-reader"
                       : readerEra === "early-modern-india"
-                        ? "#early-modern-reader"
+                        ? "/read#early-modern-reader"
                         : readerEra === "classical-medieval-eras"
-                          ? "#classical-reader"
+                          ? "/read#classical-reader"
                           : readerEra === "second-urbanization-empires"
-                            ? "#empires-reader"
+                            ? "/read#empires-reader"
                             : readerEra === "ancient-india-early-transitions"
-                              ? "#ancient-reader"
-                              : "#prehistory-reader"
+                              ? "/read#ancient-reader"
+                              : "/read#prehistory-reader"
               }
               onClick={() => dialogRef.current?.close()}
             >
@@ -281,7 +279,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             <h3>Sources</h3>
             <ContentNeeds event={record} />
             {record.sources.length === 0 && (
-              <p>This prototype record still needs historical citations.</p>
+              <p>No source list is currently published for this record.</p>
             )}
             <ol className="history-source-list">
               {record.sources.map((source) => (

@@ -80,7 +80,7 @@ interface FormatHistoricalDateOptions {
 export const formatScrollDate = (date: HistoricalDate) =>
   date.kind === "years-ago"
     ? `~${date.years.toLocaleString("en-IN")} years ago`
-    : `~${date.year.toLocaleString("en-IN")} ${date.era}`;
+    : `~${date.year} ${date.era}`;
 
 export const formatHistoricalDate = (
   date: HistoricalDate,
@@ -89,7 +89,7 @@ export const formatHistoricalDate = (
   const prefix = approximate ? "~" : "";
 
   if (date.kind === "calendar") {
-    return `${prefix}${date.year.toLocaleString("en-IN")} ${date.era}`;
+    return `${prefix}${date.year} ${date.era}`;
   }
 
   const value =

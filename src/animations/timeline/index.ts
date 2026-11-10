@@ -47,6 +47,8 @@ export function createTimelineAnimation({
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const context = gsap.context(() => {
+    let resizeProgress: number | null = null;
+    let restoringResize = false;
     const updateReadout = (scrollProgress: number) => {
       const timelineProgress = opening
         ? Math.min(
@@ -105,6 +107,17 @@ export function createTimelineAnimation({
       end: "bottom bottom",
       onRefresh: (self) => {
         followScroll.tween.pause();
+        const preservedProgress = resizeProgress;
+        resizeProgress = null;
+        if (preservedProgress !== null) {
+          const targetY = getScrollPositionForProgress(preservedProgress, self.start, self.end);
+          restoringResize = true;
+          window.scrollTo({ top: targetY });
+          restoringResize = false;
+          playhead.progress = preservedProgress;
+          updateReadout(preservedProgress);
+          return;
+        }
         playhead.progress = self.progress;
         updateReadout(self.progress);
       },
@@ -114,8 +127,15 @@ export function createTimelineAnimation({
       },
     });
     activeScrollTrigger = trigger;
+    const preservePositionOnResize = () => {
+      if (restoringResize || resizeProgress !== null) return;
+      resizeProgress = playhead.progress;
+      navigationTween?.kill();
+    };
+    window.addEventListener("resize", preservePositionOnResize, { passive: true });
 
     return () => {
+      window.removeEventListener("resize", preservePositionOnResize);
       followScroll.tween.kill();
       trigger.kill();
       activeScrollTrigger = undefined;

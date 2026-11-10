@@ -87,10 +87,10 @@ export const prehistoryVideos: Readonly<Record<string, readonly HistoricalVideo[
     {
       id: "video-bhimbetka-nptel",
       title: "Pre-historic art: Rock painting of Bhimbetka",
-      publisher: "IIT Kanpur / NPTEL ? Soumik Nandy Majumdar",
+      publisher: "IIT Kanpur / NPTEL — Soumik Nandy Majumdar",
       watchUrl: "https://nptel.ac.in/courses/109104102",
       description:
-        "An art-history companion to the Mesolithic overview. Open Introduction to Indian Art ? An Appreciation and select the Week 2 Bhimbetka lecture.",
+        "An art-history companion to the Mesolithic overview. Open Introduction to Indian Art — An Appreciation and select the Week 2 Bhimbetka lecture.",
       context:
         "The course is a viewing guide, not a dating source for every rock-art panel. A stable individual player was not verified, so this card opens the course.",
       verifiedAt: "2026-11-03",

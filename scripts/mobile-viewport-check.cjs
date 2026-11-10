@@ -13,17 +13,19 @@ module.exports = async function checkMobileViewport({
   const root = `document.querySelector('[aria-label="Journey through time"]')`;
   const checkGeometry = async (label, pinned = true) => {
     const geometry = await evaluate(`(() => {
-      const rect = ${root}.firstElementChild.getBoundingClientRect();
+      const stageElement = ${root}?.firstElementChild;
+      const rect = stageElement?.getBoundingClientRect();
       const viewport = window.visualViewport;
-      const nav = document.querySelector('.historical-navigation').getBoundingClientRect();
+      const navElement = document.querySelector('.historical-navigation');
+      const nav = navElement?.getBoundingClientRect();
       return {
         width: document.documentElement.clientWidth,
         scrollWidth: document.documentElement.scrollWidth,
         innerWidth,
         x: scrollX,
-        stage: { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom },
+        stage: rect ? { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom } : null,
         viewport: { width: viewport.width, height: viewport.height },
-        nav: { top: nav.top, bottom: nav.bottom },
+        nav: nav ? { top: nav.top, bottom: nav.bottom } : null,
       };
     })()`);
     assert.ok(
@@ -62,7 +64,9 @@ module.exports = async function checkMobileViewport({
   await resize(390, 780);
   await send("Emulation.setTouchEmulationEnabled", { enabled: true });
   await send("Page.navigate", { url: base });
-  await waitFor("document.querySelectorAll('.story-exhibit').length > 200");
+  await waitFor(
+    "document.querySelectorAll('.visual-scene').length === 252 && document.querySelectorAll('.story-exhibit').length > 0 && document.querySelectorAll('.story-exhibit').length <= 5",
+  );
   await waitFor("document.querySelector('.visual-scene[aria-hidden=false]') !== null");
   await checkGeometry("opening");
 
@@ -118,7 +122,9 @@ module.exports = async function checkMobileViewport({
   }
   await screenshot("mobile-viewport-fixed");
 
-  // Previously, placeholder text in readers far below the timeline widened the whole page.
+  // Reader chapters live on their own server-rendered route so they do not inflate the journey.
+  await send("Page.navigate", { url: `${base}/read` });
+  await waitFor("document.querySelectorAll('.history-reader').length === 8");
   await evaluate(
     "document.querySelectorAll('.history-reader details').forEach(d => d.open = true)",
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createOpeningCinematic } from "@/animations/opening/cinematic";
 import { createSceneController } from "@/animations/scenes/scene-controller";
 import { createTimelineAnimation, type TimelineAnimationController } from "@/animations/timeline";
@@ -26,13 +26,7 @@ const requireFirstEvent = <T,>(events: readonly T[]): T => {
   return firstEvent;
 };
 
-export function TimelineExperience({
-  model,
-  children,
-}: {
-  readonly model: CompiledHistory;
-  readonly children?: ReactNode;
-}) {
+export function TimelineExperience({ model }: { readonly model: CompiledHistory }) {
   const {
     events: historicalEvents,
     points: timelinePoints,
@@ -109,10 +103,12 @@ export function TimelineExperience({
       const sceneRoot = sceneRefs.current[index];
 
       if (!sceneRoot) throw new Error(`Missing DOM binding for scene ${index}.`);
+      const layers = sceneLayerRefs.current[index] ?? new Map<string, HTMLDivElement>();
+      sceneLayerRefs.current[index] = layers;
 
       return {
         root: sceneRoot,
-        layers: sceneLayerRefs.current[index] ?? new Map(),
+        layers,
       };
     });
     const sceneController = createSceneController({
@@ -166,7 +162,7 @@ export function TimelineExperience({
   return (
     <main>
       <a
-        href="#prehistory-reader"
+        href="/read#prehistory-reader"
         className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:p-4 focus:text-black"
       >
         Skip animation and read the evidence
@@ -197,17 +193,18 @@ export function TimelineExperience({
             <StorytellingScene
               events={historicalEvents}
               definitions={sceneDefinitions}
+              activeIndex={activeIndex}
               initialDateLabel={timelinePoints[0]!.dateLabel}
               dateRef={storyDateRef}
               registerScene={(element, index) => {
                 if (element) sceneRefs.current[index] = element;
               }}
               registerLayer={(element, sceneIndex, layerId) => {
-                if (!element) return;
                 const layers =
                   sceneLayerRefs.current[sceneIndex] ?? new Map<string, HTMLDivElement>();
-                layers.set(layerId, element);
                 sceneLayerRefs.current[sceneIndex] = layers;
+                if (element) layers.set(layerId, element);
+                else layers.delete(layerId);
               }}
             />
 
@@ -239,14 +236,23 @@ export function TimelineExperience({
       <section className="flex min-h-[55vh] items-center justify-center bg-[#f2ecdf] px-6 py-24 text-[#20251f]">
         <div className="max-w-xl text-center">
           <p className="text-xs font-semibold tracking-[0.2em] text-[#8f3e28] uppercase">
-            Prototype complete
+            Sourced reading
           </p>
           <h2 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
-            The journey continues from here.
+            Continue through the evidence.
           </h2>
+          <p className="mt-5 leading-7">
+            Open the server-rendered reading chapters for every record, source list and undated
+            context section.
+          </p>
+          <a
+            className="mt-6 inline-block rounded-full border border-[#20251f]/30 px-5 py-3 underline"
+            href="/read#prehistory-reader"
+          >
+            Read all chapters →
+          </a>
         </div>
       </section>
-      {children}
     </main>
   );
 }

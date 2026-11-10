@@ -5,6 +5,7 @@ import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 interface StorytellingSceneProps {
   readonly events: readonly TimelineDisplayEvent[];
   readonly definitions: readonly SceneDefinition[];
+  readonly activeIndex: number;
   readonly initialDateLabel: string;
   readonly dateRef: React.RefObject<HTMLSpanElement | null>;
   readonly registerScene: (element: HTMLElement | null, index: number) => void;
@@ -18,6 +19,7 @@ interface StorytellingSceneProps {
 export function StorytellingScene({
   events,
   definitions,
+  activeIndex,
   initialDateLabel,
   dateRef,
   registerScene,
@@ -28,6 +30,7 @@ export function StorytellingScene({
       <SceneStage
         events={events}
         definitions={definitions}
+        activeIndex={activeIndex}
         registerScene={registerScene}
         registerLayer={registerLayer}
       />

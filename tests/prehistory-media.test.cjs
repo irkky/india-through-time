@@ -17,7 +17,27 @@ test("prehistoric media stays attached to documented sites with intact local ori
   const events = prehistoricIndiaEra.periods.flatMap((period) => period.events);
   assert.equal(events.length, 24);
   assert.equal(manifest.length, 19);
-  assert.equal(Object.keys(prehistoryGalleries).length, 17);
+  assert.deepEqual(Object.keys(prehistoryGalleries).sort(), [
+    "bagor-mesolithic",
+    "balathal-ahar-banas",
+    "burzahom-neolithic",
+    "chopani-mando-late-phase",
+    "dhaba-microliths",
+    "dhaba-toba-sequence",
+    "gufkral-aceramic",
+    "harappa-kot-diji-phase",
+    "harappa-ravi-phase",
+    "jwalapuram-rockshelter",
+    "jwalapuram-toba",
+    "lahuradewa-rice-use",
+    "mahagara-neolithic",
+    "mehrgarh-aceramic-cemetery",
+    "mehtakheri-microblades",
+    "mesolithic-regional-overview",
+    "sandhav-coastal-occupation",
+    "singi-talav-acheulian",
+    "southern-neolithic-ashmounds",
+  ]);
   const galleries = {
     ...prehistoryGalleries,
     "lower-palaeolithic-scaffold": lowerPalaeolithicGallery,

@@ -43,7 +43,13 @@ const setLayerParallax = (
 };
 
 const resetLayers = (binding: SceneElementBinding) => {
-  gsap.set([...binding.layers.values()], { xPercent: 0, yPercent: 0 });
+  const layers = [...binding.layers.values()];
+  if (layers.length) gsap.set(layers, { xPercent: 0, yPercent: 0 });
+};
+
+export const getReadableCrossfade = (progress: number) => {
+  const bounded = Math.min(Math.max(progress, 0), 1);
+  return { outgoing: 1 - bounded, incoming: bounded } as const;
 };
 
 export const renderSceneTransition = ({
@@ -66,21 +72,22 @@ export const renderSceneTransition = ({
   // Prototype scenes use different markup and may have no staged copy.
   const outgoingCopy = outgoing.root.querySelectorAll(".story-copy");
   const incomingCopy = incoming.root.querySelectorAll(".story-copy");
+  const copyOpacity = getReadableCrossfade(transitionProgress);
   if (outgoingCopy.length)
     gsap.set(outgoingCopy, {
-      opacity: Math.max(0, 1 - transitionProgress / 0.45),
+      opacity: copyOpacity.outgoing,
       y: -10 * transitionProgress,
     });
   if (incomingCopy.length)
     gsap.set(incomingCopy, {
-      opacity: Math.max(0, (transitionProgress - 0.55) / 0.45),
+      opacity: copyOpacity.incoming,
       y: 10 * (1 - transitionProgress),
     });
 
   switch (transition.type) {
     case "fade": {
-      const outgoingOpacity = Math.max(0, 1 - easedProgress * 2);
-      const incomingOpacity = Math.max(0, easedProgress * 2 - 1);
+      const { outgoing: outgoingOpacity, incoming: incomingOpacity } =
+        getReadableCrossfade(easedProgress);
       gsap.set(outgoing.root, { autoAlpha: outgoingOpacity, xPercent: 0, yPercent: 0, scale: 1 });
       gsap.set(incoming.root, { autoAlpha: incomingOpacity, xPercent: 0, yPercent: 0, scale: 1 });
       break;

@@ -76,7 +76,7 @@ export function TimelineNavigation({
                       disabled={period.firstEventIndex === null}
                     >
                       {period.title}
-                      {period.firstEventIndex === null ? " (coming later)" : ""}
+                      {period.firstEventIndex === null ? " (undated reading)" : ""}
                     </option>
                   ))}
                 </optgroup>

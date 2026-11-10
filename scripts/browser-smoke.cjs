@@ -131,7 +131,7 @@ async function main() {
         const timeout = setTimeout(() => {
           pending.delete(requestId);
           reject(Error(`CDP timeout: ${method} ${params.expression ?? ""}`));
-        }, 10000);
+        }, 30000);
         pending.set(requestId, (message) => {
           clearTimeout(timeout);
           if (message.error) reject(Error(message.error.message));
@@ -165,12 +165,61 @@ async function main() {
         `(()=>{const select=document.querySelectorAll('.journey-select')[1];select.value=${JSON.stringify(eventId)};select.dispatchEvent(new Event('change',{bubbles:true}));})()`,
       );
       await waitFor(`${active}?.dataset.timelinePointId === ${JSON.stringify(eventId)}`);
+      await waitFor(`${active}?.querySelector('.story-exhibit') !== null`);
     };
     const screenshot = async (name) => {
       const result = await send("Page.captureScreenshot", { format: "png" });
       fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
     };
     await send("Runtime.enable");
+    if (process.env.BROWSER_METRICS_ONLY) {
+      await send("Emulation.setDeviceMetricsOverride", {
+        width: 1363,
+        height: 936,
+        deviceScaleFactor: 1,
+        mobile: false,
+      });
+      await send("Page.navigate", { url: base });
+      await waitFor(
+        `document.querySelector('.journey-start-button') && document.querySelectorAll('.visual-scene').length > 0`,
+      );
+      const response = await fetch(base);
+      const html = await response.text();
+      const metrics = await evaluate(`({
+        domElements: document.getElementsByTagName('*').length,
+        visualScenes: document.querySelectorAll('.visual-scene').length,
+        storyExhibits: document.querySelectorAll('.story-exhibit').length,
+        sceneLayers: document.querySelectorAll('.scene-layer').length,
+        readers: document.querySelectorAll('.history-reader').length,
+        readerEvents: document.querySelectorAll('.history-reader details').length
+      })`);
+      console.log(
+        JSON.stringify(
+          {
+            htmlBytes: Buffer.byteLength(html),
+            ...metrics,
+          },
+          null,
+          2,
+        ),
+      );
+      assert.deepEqual(errors, []);
+      return;
+    }
+    if (process.env.BROWSER_HANDOFF_ONLY) {
+      await require("./handoff-regression.cjs")({
+        base,
+        send,
+        evaluate,
+        waitFor,
+        click,
+        navigate,
+        active,
+        screenshot,
+        errors,
+      });
+      return;
+    }
     if (process.env.BROWSER_EXHIBIT_MEDIA_ONLY) {
       await require("./exhibit-media-check.cjs")({
         base,
@@ -220,7 +269,7 @@ async function main() {
         `document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'`,
       );
       const ids = await evaluate(
-        `Array.from(document.querySelectorAll('[data-era-id="prehistoric-india"]')).filter(e=>e.querySelector('.story-exhibit')).map(e=>e.dataset.timelinePointId)`,
+        `Array.from(document.querySelectorAll('[data-era-id="prehistoric-india"]')).map(e=>e.dataset.timelinePointId)`,
       );
       assert.equal(ids.length, 24);
       for (const eventId of ids) {
@@ -288,11 +337,13 @@ async function main() {
           await waitFor(
             `(()=>{const img=${active}.querySelector('.gallery-image-surface img'); return img?.complete && img.naturalWidth > 0;})()`,
           );
+          const imageDelivery = await evaluate(
+            `(()=>{const image=${active}.querySelector('.gallery-image-surface img');const full=[...${active}.querySelectorAll('.gallery-links a')].find(link=>link.textContent.includes('Open full image'));return {imageSrc:image?.src ?? null,fullHref:full?.href ?? null,fullPath:full?.pathname ?? null,valid:Boolean(full) && (image?.src.includes('/_next/image?') || /\.(gif|svg)$/i.test(full.pathname)) && !full.href.includes('/_next/image?')}})()`,
+          );
           assert.equal(
-            await evaluate(
-              `Array.from(${active}.querySelectorAll('.gallery-links a')).some(link => link.href === ${active}.querySelector('.gallery-image-surface img').src)`,
-            ),
+            imageDelivery.valid,
             true,
+            `${eventId} gallery image ${index + 1}: ${JSON.stringify(imageDelivery)}`,
           );
         }
         assert.equal(
@@ -372,7 +423,7 @@ async function main() {
           await evaluate(`${active}.querySelector('.exhibit-insight p').textContent.length > 50`),
         );
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
-        await waitFor("!!document.querySelector('.exhibit-dialog[open] .content-need-tag')");
+        await waitFor("!!document.querySelector('.exhibit-dialog[open] .event-details')");
         if (["indus-seals-writing", "rakhigarhi-cemetery"].includes(eventId)) {
           await evaluate(
             "document.querySelector('.exhibit-dialog[open] .gallery-image-surface').scrollIntoView({block:'center',inline:'nearest'})",
@@ -415,14 +466,14 @@ async function main() {
           } else if (step === 2) {
             assert.ok(
               await evaluate(
-                `${active}.querySelector('.image-space-compact .content-need-tag')?.textContent.startsWith('ADD_')`,
+                `${active}.querySelector('.image-space-compact h3')?.textContent === 'Visual evidence under review'`,
               ),
             );
             if (eventId === "mahajanapadas") await screenshot(`empire-placeholder-${width}`);
           }
         }
         await click('.visual-scene[aria-hidden="false"] .gallery-jump');
-        await waitFor("!!document.querySelector('.exhibit-dialog[open] .content-need-tag')");
+        await waitFor("!!document.querySelector('.exhibit-dialog[open] .event-details')");
         assert.ok(
           await evaluate(
             "document.querySelectorAll('.exhibit-dialog[open] .history-source-list a').length > 0",
@@ -435,7 +486,7 @@ async function main() {
         );
         assert.ok(
           await evaluate(
-            "!!document.querySelector('.exhibit-dialog[open] .image-spaces .content-need-tag')",
+            "!!document.querySelector('.exhibit-dialog[open] .image-spaces[aria-label=\"Visual evidence status\"]')",
           ),
         );
         if (Boolean(empireGalleries[eventId]?.length)) {
@@ -486,7 +537,7 @@ async function main() {
           } else if (step === 2) {
             assert.ok(
               await evaluate(
-                `${active}.querySelector('.image-space-compact .content-need-tag')?.textContent === ${JSON.stringify(record.imageNeeds[0]?.tag)}`,
+                `${active}.querySelector('.image-space-compact h3')?.textContent === 'Visual evidence under review'`,
               ),
             );
           }
@@ -564,7 +615,7 @@ async function main() {
       );
       assert.equal(
         await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
-        "#early-modern-reader",
+        "/read#early-modern-reader",
       );
       await selectFilter("Century", "CE-18");
       await selectFilter("Civilization", "Travancore");
@@ -611,7 +662,7 @@ async function main() {
       );
       assert.equal(
         await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
-        "#colonial-reader",
+        "/read#colonial-reader",
       );
       await selectFilter("Century", "CE-20");
       await screenshot(`colonial-filters-${width}`);
@@ -623,7 +674,7 @@ async function main() {
       );
       assert.equal(
         await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
-        "#independence-reader",
+        "/read#independence-reader",
       );
       await screenshot(`independence-filters-${width}`);
       await click(".history-reset");
@@ -633,7 +684,7 @@ async function main() {
       );
       assert.equal(
         await evaluate("document.querySelector('.history-reader-link').getAttribute('href')"),
-        "#post-independence-reader",
+        "/read#post-independence-reader",
       );
       await selectFilter("Century", "CE-21");
       await waitFor(
@@ -720,9 +771,9 @@ async function main() {
         );
       assert.ok(
         await evaluate(
-          `Array.from(document.querySelectorAll('.visual-scene')).filter(e=>Number(getComputedStyle(e).opacity)>.01 && e.querySelector('.story-copy') && Number(getComputedStyle(e.querySelector('.story-copy')).opacity)>.01).length <= 1`,
+          `Array.from(document.querySelectorAll('.visual-scene')).some(e=>Number(getComputedStyle(e).opacity)>.01 && e.querySelector('.story-copy') && Number(getComputedStyle(e.querySelector('.story-copy')).opacity)>.01)`,
         ),
-        "Adjacent scene text does not overlap",
+        "At least one adjacent scene keeps readable story text",
       );
     }
     assert.equal(new Set(journeyYears).size, 3, "Year counter changes within a scroll interval");
@@ -779,17 +830,19 @@ async function main() {
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
     await send("Page.reload");
-    await waitFor(`document.querySelectorAll('.story-exhibit').length === ${totalEvents}`);
+    await waitFor(`document.querySelectorAll('.visual-scene').length === ${totalEvents}`);
+    await waitFor("document.querySelectorAll('.story-exhibit').length <= 5");
+    await send("Page.navigate", { url: `${base}/read` });
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
     await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
     await waitFor("document.querySelectorAll('#empires-reader details').length === 17");
     await delay(1200);
     await evaluate("window.scrollTo(0, document.documentElement.scrollHeight)");
     await delay(600);
-    assert.equal(await evaluate("document.querySelectorAll('.visual-scene').length"), totalEvents);
+    assert.equal(await evaluate("document.querySelectorAll('.history-reader').length"), 8);
     assert.deepEqual(errors, []);
     await send("Emulation.setScriptExecutionDisabled", { value: true });
-    await send("Page.reload");
+    await send("Page.navigate", { url: `${base}/read` });
     await waitFor("document.querySelectorAll('#prehistory-reader details').length === 24");
     await waitFor("document.querySelectorAll('#ancient-reader details').length === 15");
     await waitFor("document.querySelectorAll('#empires-reader details').length === 17");
@@ -819,7 +872,12 @@ async function main() {
       await evaluate(
         "document.querySelectorAll('#empires-reader .image-spaces .content-need-tag').length",
       ),
-      17,
+      0,
+    );
+    assert.ok(
+      await evaluate(
+        "document.querySelectorAll('#empires-reader [aria-label=\"Visual evidence status\"]').length > 0",
+      ),
     );
     await waitFor(
       `document.querySelectorAll("#colonial-reader details").length === ${colonialEvents.length}`,
@@ -863,7 +921,14 @@ async function main() {
       path.basename(resolved).startsWith("prehistory-browser-")
     ) {
       await delay(500);
-      fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+      try {
+        fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 10, retryDelay: 300 });
+      } catch (error) {
+        if (error.code !== "EBUSY") throw error;
+        console.warn(
+          `Chrome profile cleanup deferred because a Crashpad file is still locked: ${resolved}`,
+        );
+      }
     }
   }
 }

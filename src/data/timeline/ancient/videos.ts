@@ -67,7 +67,7 @@ export const ancientVideoLibrary = {
     description:
       "An anthropology lecture comparing copper- and iron-age features and distribution, useful background for regional technological transitions.",
     context:
-      "Its scope is broader than the Ganga?Vindhya record. A general metal-age overview cannot establish the age of an individual furnace or imply that all regions adopted iron together.",
+      "Its scope is broader than the Ganga–Vindhya record. A general metal-age overview cannot establish the age of an individual furnace or imply that all regions adopted iron together.",
     durationSeconds: 1635,
     verifiedAt: "2026-11-03",
     mode: "youtube",

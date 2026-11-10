@@ -1,6 +1,7 @@
 ﻿"use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import Image from "next/image";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { HistoricalVideo } from "@/types/history";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { PrehistoryDiagram } from "./prehistory-diagram";
@@ -10,6 +11,8 @@ import { EventDetails, ImageNeeds } from "@/components/historical-events/event-d
 import { HistoricalVideos } from "@/components/historical-events/historical-videos";
 
 const storyStageLabels = ["What happened", "Why it matters", "Evidence & limits"] as const;
+const selectedStageByEvent = new Map<string, number>();
+const manuallySelectedEvents = new Set<string>();
 
 function InlineHistoricalVideo({ video }: { readonly video: HistoricalVideo }) {
   const instance = useId();
@@ -74,18 +77,60 @@ function InlineHistoricalVideo({ video }: { readonly video: HistoricalVideo }) {
 }
 
 export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEvent }) {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelectedState] = useState(() => selectedStageByEvent.get(event.id) ?? 0);
   const [open, setOpen] = useState(false);
   const [imageChoice, setImageChoice] = useState<number | "video" | null>(null);
   const [lastImage, setLastImage] = useState(0);
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const galleryButtonRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const setSelected = useCallback(
+    (index: number) => {
+      selectedStageByEvent.set(event.id, index);
+      setSelectedState(index);
+    },
+    [event.id],
+  );
+  const chooseStage = (index: number) => {
+    manuallySelectedEvents.add(event.id);
+    setSelected(index);
+  };
   useEffect(() => {
     const root = rootRef.current;
-    const update = () => setSelected(Number(root?.dataset.storyStep ?? 0));
+    const update = () => {
+      if (!manuallySelectedEvents.has(event.id)) setSelected(Number(root?.dataset.storyStep ?? 0));
+    };
     root?.addEventListener("story-step", update);
     return () => root?.removeEventListener("story-step", update);
+  }, [event.id, setSelected]);
+  useEffect(() => {
+    const resumeScrollStages = () => {
+      if (!manuallySelectedEvents.size) return;
+      manuallySelectedEvents.clear();
+      setSelected(Number(rootRef.current?.dataset.storyStep ?? 0));
+    };
+    window.addEventListener("wheel", resumeScrollStages, { passive: true });
+    window.addEventListener("touchstart", resumeScrollStages, { passive: true });
+    window.addEventListener("keydown", resumeScrollStages);
+    return () => {
+      window.removeEventListener("wheel", resumeScrollStages);
+      window.removeEventListener("touchstart", resumeScrollStages);
+      window.removeEventListener("keydown", resumeScrollStages);
+    };
+  }, [setSelected]);
+  useEffect(() => {
+    const scene = rootRef.current?.closest<HTMLElement>(".visual-scene");
+    if (!scene) return;
+    const closeWhenInactive = () => {
+      if (scene.getAttribute("aria-hidden") !== "true" && !scene.inert) return;
+      if (dialogRef.current?.open) dialogRef.current.close();
+      setOpen(false);
+    };
+    const observer = new MutationObserver(closeWhenInactive);
+    observer.observe(scene, { attributes: true, attributeFilter: ["aria-hidden", "inert"] });
+    closeWhenInactive();
+    return () => observer.disconnect();
   }, []);
   useEffect(() => {
     if (!open) return;
@@ -131,6 +176,12 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
     setImageChoice(next);
   };
   const showImageSpace = !canBrowse && !showPhoto && selected === 1 && !!record.imageNeeds?.length;
+  const handleDialogClose = () => {
+    setOpen(false);
+    const scene = rootRef.current?.closest<HTMLElement>(".visual-scene");
+    if (scene?.getAttribute("aria-hidden") === "false" && !scene.inert)
+      requestAnimationFrame(() => galleryButtonRef.current?.focus());
+  };
   const layout =
     visual.layout ??
     (visual.gallery
@@ -164,7 +215,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
                 aria-label={`${index + 1}. ${storyStageLabels[index]}`}
                 aria-pressed={selected === index}
                 aria-controls={panelId}
-                onClick={() => setSelected(index)}
+                onClick={() => chooseStage(index)}
               >
                 <span>0{index + 1}</span>
                 {storyStageLabels[index]}
@@ -178,7 +229,12 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
               <p>{detailFor(point?.field ?? "description")}</p>
             </div>
           </div>
-          <button type="button" className="gallery-jump" onClick={() => setOpen(true)}>
+          <button
+            ref={galleryButtonRef}
+            type="button"
+            className="gallery-jump"
+            onClick={() => setOpen(true)}
+          >
             {record.videos?.length
               ? "Explore videos, images & evidence"
               : visual.gallery?.length
@@ -201,9 +257,14 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
           </div>
           <div className="exhibit-drawing" id={`${panelId}-visual`} key={selected}>
             {showPhoto ? (
-              // Keep archaeological scales and labels intact.
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                sizes="(max-width: 760px) calc(100vw - 48px), 48vw"
+                loading="lazy"
+                unoptimized={photo.src.toLowerCase().endsWith(".gif")}
+              />
             ) : showVideo ? (
               <InlineHistoricalVideo video={inlineVideo} />
             ) : showImageSpace ? (
@@ -279,7 +340,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
         ref={dialogRef}
         className="history-dialog exhibit-dialog"
         aria-labelledby={`${panelId}-title`}
-        onClose={() => setOpen(false)}
+        onClose={handleDialogClose}
       >
         {open && (
           <>

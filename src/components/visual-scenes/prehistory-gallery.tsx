@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useId, useState } from "react";
 import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
 
@@ -30,14 +31,14 @@ export function PrehistoryGallery({
             {failed === item.src ? (
               <p>Image unavailable. Choose another image below.</p>
             ) : (
-              // Preserve complete plates, scales and labels; never crop archaeological images.
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 key={item.src}
                 src={item.src}
                 alt={item.alt}
+                fill
+                sizes="(max-width: 760px) calc(100vw - 64px), (max-width: 1200px) 58vw, 720px"
                 loading="lazy"
-                decoding="async"
+                unoptimized={item.src.toLowerCase().endsWith(".gif")}
                 onError={() => setFailed(item.src)}
               />
             )}
@@ -47,7 +48,8 @@ export function PrehistoryGallery({
             <h4>{item.title}</h4>
             <p>{item.caption}</p>
             <small>
-              {item.credit ?? "Image credit pending"} · {item.license ?? "Reuse terms pending"}
+              {item.credit ?? "Image credit pending verification"} ·{" "}
+              {item.license ?? "Reuse terms pending verification"}
             </small>
             <div className="gallery-links">
               {item.licenseUrl && (
@@ -75,8 +77,16 @@ export function PrehistoryGallery({
               aria-controls={id}
               onClick={() => setSelected(index)}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image.src} alt="" loading="lazy" decoding="async" />
+              <span className="gallery-thumbnail" aria-hidden="true">
+                <Image
+                  src={image.src}
+                  alt=""
+                  fill
+                  sizes="(max-width: 760px) 132px, 70px"
+                  loading="lazy"
+                  unoptimized={image.src.toLowerCase().endsWith(".gif")}
+                />
+              </span>
               <span>
                 <small>
                   {String(index + 1).padStart(2, "0")} · {image.category}

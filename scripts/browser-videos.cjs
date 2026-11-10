@@ -223,17 +223,15 @@ async function main() {
         mobile: width < 600,
       });
       remoteRequests = [];
-      await send("Page.navigate", { url: base });
+      await send("Page.navigate", { url: `${base}/read` });
       await waitFor(
         `document.querySelectorAll('#${readerId} .history-video-card').length === ${expectedCards}`,
       );
+      // The reader is server-rendered; wait for React to attach delegated button handlers before
+      // exercising controls on this large page.
+      await delay(1200);
       assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
       assert.equal(remoteRequests.length, 0, "No video requests before viewer interaction");
-      await waitFor("document.querySelector('.visual-scene[data-scene-state=active]') !== null");
-      await click(".journey-start-button");
-      await waitFor(
-        "document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'",
-      );
       const cards = await evaluate(
         `Array.from(document.querySelectorAll('#${readerId} .history-video-card')).map((c,i)=>{c.dataset.videoCheckIndex=String(i);return c.dataset.videoId})`,
       );
@@ -276,7 +274,14 @@ async function main() {
           `Player fits at ${width}`,
         );
       }
+      await send("Page.navigate", { url: base });
+      await waitFor("document.querySelector('.journey-start-button') !== null");
       // Dialog mount/unmount must stop its player, including Escape dismissal.
+      await waitFor("document.querySelector('.visual-scene[data-scene-state=active]') !== null");
+      await click(".journey-start-button");
+      await waitFor(
+        "document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'",
+      );
       await navigate(sampleEvent);
       await click('.visual-scene[aria-hidden="false"] .gallery-jump');
       await waitFor(
@@ -311,6 +316,7 @@ async function main() {
         windowsVirtualKeyCode: 27,
       });
       await waitFor("!document.querySelector('.exhibit-dialog[open]')");
+      await waitFor("document.querySelectorAll('iframe').length === 0");
       assert.equal(await evaluate("document.querySelectorAll('iframe').length"), 0);
       console.log(
         `PASS video cards, click-to-load, source fallbacks, single player and dialog cleanup at ${width}px`,
@@ -354,7 +360,7 @@ async function main() {
     await screenshot("videos-live-playing");
     await click(".exhibit-dialog[open] .history-dialog-header button");
     await send("Emulation.setScriptExecutionDisabled", { value: true });
-    await send("Page.navigate", { url: base });
+    await send("Page.navigate", { url: `${base}/read` });
     await waitFor(
       `document.querySelectorAll('#${readerId} .history-video-card').length === ${expectedCards}`,
     );

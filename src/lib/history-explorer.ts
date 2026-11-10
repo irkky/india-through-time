@@ -26,6 +26,8 @@ export const centuryOptions = [
   })),
 ];
 
+export const centuryCoverageHelp = `Century options run from ${centuryOptions[0]!.label} through ${centuryOptions.at(-1)!.label}. Dated content in this timeline currently ends in 2025 CE; overlapping topic ranges remain included.`;
+
 export function matchesCentury(event: TimelineDisplayEvent, century: string): boolean {
   if (century === "all") return true;
   const [era, raw] = century.split("-");

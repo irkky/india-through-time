@@ -6,6 +6,7 @@ import { SceneLayer } from "./scene-layer";
 interface SceneStageProps {
   readonly events: readonly TimelineDisplayEvent[];
   readonly definitions: readonly SceneDefinition[];
+  readonly activeIndex: number;
   readonly registerScene: (element: HTMLElement | null, index: number) => void;
   readonly registerLayer: (
     element: HTMLDivElement | null,
@@ -14,12 +15,19 @@ interface SceneStageProps {
   ) => void;
 }
 
-export function SceneStage({ events, definitions, registerScene, registerLayer }: SceneStageProps) {
+export function SceneStage({
+  events,
+  definitions,
+  activeIndex,
+  registerScene,
+  registerLayer,
+}: SceneStageProps) {
   return (
     <div className="scene-stage" aria-label="Historical visual scenes">
       {definitions.map((scene, sceneIndex) => {
         const event = events[sceneIndex];
         if (!event) return null;
+        const isMounted = Math.abs(sceneIndex - activeIndex) <= 2;
 
         return (
           <section
@@ -38,22 +46,24 @@ export function SceneStage({ events, definitions, registerScene, registerLayer }
             data-scene-id={scene.id}
             data-timeline-point-id={scene.timelinePointId}
             data-era-id={event.node.era.id}
+            data-scene-mounted={isMounted ? "true" : "false"}
             aria-label={`${event.title} scene`}
             aria-hidden={sceneIndex === 0 ? undefined : true}
             inert={sceneIndex !== 0}
           >
-            {scene.layers.map((layer) => (
-              <div
-                key={layer.id}
-                ref={(element) => registerLayer(element, sceneIndex, layer.id)}
-                className="scene-layer"
-                data-layer-id={layer.id}
-                data-layer-kind={layer.kind}
-                style={layer.stack === undefined ? undefined : { zIndex: layer.stack }}
-              >
-                <SceneLayer definition={layer} event={event} />
-              </div>
-            ))}
+            {isMounted &&
+              scene.layers.map((layer) => (
+                <div
+                  key={layer.id}
+                  ref={(element) => registerLayer(element, sceneIndex, layer.id)}
+                  className="scene-layer"
+                  data-layer-id={layer.id}
+                  data-layer-kind={layer.kind}
+                  style={layer.stack === undefined ? undefined : { zIndex: layer.stack }}
+                >
+                  <SceneLayer definition={layer} event={event} />
+                </div>
+              ))}
           </section>
         );
       })}
