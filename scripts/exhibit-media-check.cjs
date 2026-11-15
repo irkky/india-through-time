@@ -30,11 +30,14 @@ module.exports = async function checkExhibitMedia({
     await waitFor(
       "document.querySelector('.historical-experience-layer').getAttribute('aria-hidden') === 'false'",
     );
-    const prehistoricIds = await evaluate(
-      `Array.from(document.querySelectorAll('[data-era-id="prehistoric-india"]')).map(scene => scene.dataset.timelinePointId)`,
+    const eventIds = await evaluate(
+      `Array.from(document.querySelectorAll('.visual-scene')).map(scene => scene.dataset.timelinePointId)`,
     );
-    assert.equal(prehistoricIds.length, 24);
-    for (const [eventIndex, id] of prehistoricIds.entries()) {
+    assert.equal(eventIds.length, 252);
+    let galleryCount = 0;
+    let sourceOnlyVideoCount = 0;
+    const testedEmbedEras = new Set();
+    for (const [eventIndex, id] of eventIds.entries()) {
       await navigate(id);
       const selector = '.visual-scene[aria-hidden="false"]';
       await click(`${selector} .exhibit-point:last-child`);
@@ -52,6 +55,42 @@ module.exports = async function checkExhibitMedia({
       assert.ok(
         await evaluate(`${active}.querySelector('.inline-exhibit-video > a').href.length > 0`),
       );
+      const hasLoadButton = await evaluate(
+        `${active}.querySelector('.inline-video-prompt button') !== null`,
+      );
+      const eraId = await evaluate(`${active}.dataset.eraId`);
+      if (hasLoadButton) {
+        assert.match(
+          await evaluate(`${active}.querySelector('.inline-exhibit-video > a').textContent`),
+          /Watch on YouTube/,
+        );
+      } else {
+        sourceOnlyVideoCount += 1;
+        assert.match(
+          await evaluate(`${active}.querySelector('.inline-exhibit-video > a').textContent`),
+          /Open video source/,
+        );
+      }
+      assert.equal(
+        await evaluate(
+          `(()=>{const e=${active}.querySelector('.story-exhibit');const v=${active}.querySelector('.inline-exhibit-video').getBoundingClientRect();return e.scrollWidth<=e.clientWidth+1 && v.left>=-1 && v.right<=innerWidth+1 && v.width>0 && v.height>0})()`,
+        ),
+        true,
+        `${id} at ${width}: inline video fits horizontally`,
+      );
+      if (eventIndex !== 0 && hasLoadButton && !testedEmbedEras.has(eraId)) {
+        await click(`${selector} .inline-video-prompt button`);
+        await waitFor(`${active}.querySelector('.inline-exhibit-video iframe') !== null`);
+        assert.match(
+          await evaluate(`${active}.querySelector('.inline-exhibit-video iframe').src`),
+          /youtube-nocookie\.com\/embed\//,
+        );
+        await click(`${selector} .exhibit-point:first-child`);
+        await waitFor(`${active}.querySelector('.inline-exhibit-video iframe') === null`);
+        await click(`${selector} .exhibit-point:last-child`);
+        await waitFor(`${active}.querySelector('.inline-video-prompt button') !== null`);
+        testedEmbedEras.add(eraId);
+      }
       if (eventIndex === 0) {
         await screenshot(`inline-video-${id}-${width}`);
         await click(`${selector} .inline-video-prompt button`);
@@ -60,7 +99,7 @@ module.exports = async function checkExhibitMedia({
           await evaluate(`${active}.querySelector('.inline-exhibit-video iframe').src`),
           /youtube-nocookie\.com\/embed\//,
         );
-        await navigate(prehistoricIds[1]);
+        await navigate(eventIds[1]);
         await waitFor("document.querySelector('.inline-exhibit-video iframe') === null");
         await navigate(id);
         await click(`${selector} .exhibit-point:last-child`);
@@ -80,16 +119,24 @@ module.exports = async function checkExhibitMedia({
         await navigate(id);
         await click(`${selector} .exhibit-point:last-child`);
         await waitFor(`${active}.querySelector('.inline-video-prompt button') !== null`);
+        testedEmbedEras.add(eraId);
       }
       const hasControls = await evaluate(
         `${active}.querySelector('.exhibit-media-controls') !== null`,
       );
       if (hasControls) {
+        galleryCount += 1;
         assert.equal(
           await evaluate(
             `${active}.querySelector('.exhibit-media-controls [role=status]').textContent`,
           ),
           "Video",
+        );
+        assert.deepEqual(
+          await evaluate(
+            `Array.from(${active}.querySelectorAll('.exhibit-media-controls button')).map(button=>button.getAttribute('aria-label') ?? button.textContent.trim())`,
+          ),
+          ["Previous image", "Next image", "View images"],
         );
         await click(`${selector} .exhibit-media-controls button:last-child`);
         await waitFor(
@@ -100,6 +147,12 @@ module.exports = async function checkExhibitMedia({
         );
         assert.match(status, /^1 \/ \d+$/);
         const count = Number(status.split(" / ")[1]);
+        assert.equal(
+          await evaluate(
+            `${active}.querySelector('.exhibit-media-controls button:last-child').textContent.trim()`,
+          ),
+          "Watch video",
+        );
         assert.equal(
           await evaluate(
             `${active}.querySelector('.exhibit-point:last-child').getAttribute('aria-pressed')`,
@@ -178,6 +231,12 @@ module.exports = async function checkExhibitMedia({
         }
         await click(`${selector} .exhibit-media-controls button:last-child`);
         await waitFor(`${active}.querySelector('.inline-exhibit-video') !== null`);
+        assert.equal(
+          await evaluate(
+            `${active}.querySelector('.exhibit-media-controls button:last-child').textContent.trim()`,
+          ),
+          "View images",
+        );
       } else {
         assert.equal(
           await evaluate(`${active}.querySelector('.exhibit-drawing img') === null`),
@@ -185,8 +244,11 @@ module.exports = async function checkExhibitMedia({
         );
       }
     }
+    assert.equal(galleryCount, 168);
+    assert.equal(sourceOnlyVideoCount, 2);
+    assert.equal(testedEmbedEras.size, 8);
     console.log(
-      `PASS: Watch video replaces the third-stage teaching diagram for all 24 Prehistoric India scenes; gallery toggles and viewport fit verified at ${width}px.`,
+      `PASS: all 252 events show their assigned video; arrows, image navigation and View images/Watch video toggles verified for all 168 gallery events at ${width}px.`,
     );
   }
   assert.deepEqual(errors, []);

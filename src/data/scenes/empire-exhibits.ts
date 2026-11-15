@@ -36,6 +36,7 @@ export const empireExhibitPresentations: Readonly<Record<string, TimelineScenePr
             diagram: entry.diagram,
             title: entry.visualTitle,
             caption: captions[entry.diagram]!,
+            watchVideo: true,
             layout:
               entry.diagram === "network" || entry.diagram === "town"
                 ? "settlement"
@@ -43,7 +44,11 @@ export const empireExhibitPresentations: Readonly<Record<string, TimelineScenePr
                   ? "comparison"
                   : "artefact",
             ...(gallery
-              ? { gallery, stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null] }
+              ? {
+                  gallery,
+                  browseImages: true,
+                  stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null],
+                }
               : {}),
             points: [
               { label: "Evidence", field: "description", x: 25, y: 40 },

@@ -102,6 +102,7 @@ export const ancientExhibitPresentations: Readonly<Record<string, TimelineSceneP
               diagram,
               title,
               caption,
+              watchVideo: true,
               layout:
                 event.id === "rakhigarhi-cemetery"
                   ? "photograph"
@@ -111,7 +112,11 @@ export const ancientExhibitPresentations: Readonly<Record<string, TimelineSceneP
                       ? "comparison"
                       : "artefact",
               ...(gallery
-                ? { gallery, stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null] }
+                ? {
+                    gallery,
+                    browseImages: true,
+                    stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null],
+                  }
                 : {}),
               points: [
                 { label: "Evidence", field: "description", x: 25, y: 40 },

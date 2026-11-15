@@ -37,7 +37,7 @@ export interface PrehistoryGalleryImage {
 
 export interface PrehistoryExhibit {
   readonly browseImages?: boolean;
-  /** Replace the third-stage teaching diagram with the event's period video. */
+  /** Replace the third-stage teaching diagram with the event's assigned video. */
   readonly watchVideo?: boolean;
   readonly layout?: "artefact" | "photograph" | "strata" | "settlement" | "comparison";
   readonly stageImages?: readonly (number | null)[];

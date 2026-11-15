@@ -28,6 +28,7 @@ export const independenceExhibitPresentations: Readonly<Record<string, TimelineS
             title: entry.civilization,
             caption:
               "Conceptual teaching diagram, not a geographic map, measured plan, historical inscription or reconstruction. Open the evidence for sources and visual context.",
+            watchVideo: true,
             layout:
               entry.diagram === "network" || entry.diagram === "town" || entry.diagram === "water"
                 ? "settlement"
@@ -35,7 +36,11 @@ export const independenceExhibitPresentations: Readonly<Record<string, TimelineS
                   ? "comparison"
                   : "artefact",
             ...(gallery
-              ? { gallery, stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null] }
+              ? {
+                  gallery,
+                  browseImages: true,
+                  stageImages: gallery.length > 1 ? [0, 1, null] : [null, 0, null],
+                }
               : {}),
             points: [
               { label: "What happened", field: "description", x: 25, y: 40 },

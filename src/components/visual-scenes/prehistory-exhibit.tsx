@@ -298,20 +298,22 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
               >
                 →
               </button>
-              <button
-                type="button"
-                aria-controls={`${panelId}-visual`}
-                onClick={() => {
-                  if (showPhoto) {
-                    setLastImage(displayedChoice as number);
-                    setImageChoice("video");
-                  } else {
-                    setImageChoice(lastImage);
-                  }
-                }}
-              >
-                {showPhoto ? "Watch video" : "View images"}
-              </button>
+              {inlineVideo && (
+                <button
+                  type="button"
+                  aria-controls={`${panelId}-visual`}
+                  onClick={() => {
+                    if (showPhoto) {
+                      setLastImage(displayedChoice as number);
+                      setImageChoice("video");
+                    } else {
+                      setImageChoice(lastImage);
+                    }
+                  }}
+                >
+                  {showPhoto ? "Watch video" : "View images"}
+                </button>
+              )}
             </div>
           )}
           <figcaption className="story-copy">
