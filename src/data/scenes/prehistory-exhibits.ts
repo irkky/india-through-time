@@ -206,11 +206,16 @@ export const prehistoryExhibitPresentations: Readonly<Record<string, TimelineSce
           scene: {
             id: `scene-${eventId}`,
             timelinePointId: eventId,
-            duration: visual.gallery
-              ? 2.2
-              : ["strata", "pit", "ashmound"].includes(visual.diagram)
-                ? 1.5
-                : 1,
+            // The first scene has only the outgoing half of a timeline interval.
+            // Compensate so its story stages have the same reading distance as later galleries.
+            duration:
+              eventId === "lower-palaeolithic-scaffold"
+                ? 6.6
+                : visual.gallery
+                  ? 2.2
+                  : ["strata", "pit", "ashmound"].includes(visual.diagram)
+                    ? 1.5
+                    : 1,
             transitionIn: { type: "crossfade", portion: 0.36, ease: "sine.inOut" },
             layers: [
               { id: "background", kind: "background", renderer: "gradient" },
