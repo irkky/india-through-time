@@ -480,8 +480,34 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       sourceUrl:
         "https://nmma.nic.in/nmma/NAS1/nmma_doc/IAR/Indian%20Archaeology%201996_97%20A%20Review.pdf",
     },
+  ],  
+  "lothal-crafts-exchange": [
+    images["lothal-basin.jpg"]!,
+    {
+      src: "/assets/images/ancient_india/researched/lothal-stone-beads.jpg",
+      title: "Lothal — Stone Beads",
+      category: "Artefact",
+      alt: "Archaeological photograph showing stone beads associated with the Harappan settlement of Lothal.",
+      caption:
+        "Stone beads from Lothal, Gujarat, illustrating the specialised craft production associated with the Mature Harappan settlement. Bead-making involved selecting, shaping, drilling and polishing different stone materials.",
+      credit: "Source: Wikimedia Commons, Stone beads from Lothal",
+      license: "Government Open Data License–India (as listed on Wikimedia Commons; verify current file-page status)",
+      sourceUrl:
+        "https://commons.wikimedia.org/wiki/File:Stone_beads_from_Lothal.jpg",
+    },
+    {
+      src: "/assets/images/ancient_india/researched/lothal-bead-making-furnace.jpg",
+      title: "Lothal — Furnace Associated with Bead Manufacture",
+      category: "Site photograph",
+      alt: "Published archaeological excavation photograph of a furnace associated with bead manufacture at Lothal.",
+      caption:
+        "Excavation photograph published in Indian Archaeology 1957–58: A Review, Plate XIV. The furnace provides archaeological evidence for specialised craft activities at Lothal. The image documents the excavated feature and should not be treated as a complete reconstruction of the ancient workshop.",
+      credit: "Archaeological Survey of India, Indian Archaeology 1957–58: A Review, Plate XIV",
+      license: "Reuse permission required; licence not verified",
+      sourceUrl:
+        "https://assets.ctfassets.net/l47hkrce4wip/7hwUnlL30uTG6PjPdE21n0/31f4f2c39cb0078abfe513173e38ba16/013_Indian_Archaeology_A_Review_1957-58.pdf",
+    },
   ],
-  "lothal-crafts-exchange": [images["lothal-basin.jpg"]!],
   "late-harappan-regionalisation": [images["cemetery-h-pottery.png"]!],
   "rigvedic-oral-traditions": [images["rigveda-manuscript.jpg"]!],
   "painted-grey-ware": [images["pgw-sonkh.jpg"]!],
