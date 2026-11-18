@@ -453,7 +453,34 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "https://commons.wikimedia.org/wiki/File:Poids_cubiques_harapp%C3%A9ens_-_BM.jpg",
     },
   ],
-  "indus-food-farming": [images["crop-sites.gif"]!, images["crop-processing.gif"]!],
+  "indus-food-farming": [
+    images["crop-sites.gif"]!,
+    images["crop-processing.gif"]!,
+    {
+      src: "/assets/images/ancient_india/researched/indus-regional-cropping-strategies-map.jpg",
+      title: "Different cropping strategies across the Indus region",
+      category: "Map",
+      alt: "Research map showing proposed regional differences in cropping strategies across the Indus region.",
+      caption:
+        "Petrie and Bates (2017), Figure 6. The map presents a research interpretation of regional cropping strategies based on archaeobotanical evidence. It is not a map of ancient political boundaries, and the proposed zones should not be treated as rigid divisions.",
+      credit: "C. A. Petrie and J. Bates (2017)",
+      license: "CC BY 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
+      sourceUrl: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6991972/",
+    },
+    {
+      src: "/assets/images/ancient_india/researched/balu-mature-harappan-seed-remains.jpg",
+      title: "Ancient crop remains from Balu",
+      category: "Artefact",
+      alt: "Published archaeological plate showing plant remains identified from excavations at Balu, Haryana.",
+      caption:
+        "Archaeological Survey of India, Indian Archaeology 1996–97: A Review, Plate LV, printed page 200. The published plate documents plant remains identified at Balu, including cereals and pulses. These finds provide evidence for crop diversity; they do not establish that every crop was cultivated at every Harappan settlement.",
+      credit: "Archaeological Survey of India, Indian Archaeology 1996–97: A Review, Plate LV",
+      license: "Reuse permission required; licence not verified",
+      sourceUrl:
+        "https://nmma.nic.in/nmma/NAS1/nmma_doc/IAR/Indian%20Archaeology%201996_97%20A%20Review.pdf",
+    },
+  ],
   "lothal-crafts-exchange": [images["lothal-basin.jpg"]!],
   "late-harappan-regionalisation": [images["cemetery-h-pottery.png"]!],
   "rigvedic-oral-traditions": [images["rigveda-manuscript.jpg"]!],
