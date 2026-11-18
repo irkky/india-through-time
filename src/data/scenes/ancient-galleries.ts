@@ -392,9 +392,67 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       licenseUrl:
         "https://creativecommons.org/publicdomain/mark/1.0/",
     },
+  ],  
+  "indus-seals-writing": [
+    indusSealImage,
+    {
+      src: "/assets/images/ancient_india/researched/dholavira-north-gate-signboard.svg",
+      title: "Dholavira — Ten Signs at the North Gate",
+      alt: "Vector illustration showing ten large Indus script signs associated with the northern gate of Dholavira.",
+      caption:
+        "Modern vector tracing of the ten signs reported from the northern gate of Dholavira. The signboard dates to approximately 2500–1900 BCE, and individual signs were reportedly up to 37 centimetres high. This illustration records the shapes and arrangement of the signs; it does not provide a deciphered reading.",
+      category: "Illustration",
+      credit: "Swastik Harish / Wikimedia Commons",
+      sourceUrl:
+        "https://commons.wikimedia.org/wiki/File:Banner_at_the_North_Gate_of_Dholavira.svg",
+      license: "CC BY-SA 4.0",
+      licenseUrl:
+        "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
+    {
+      src: "/assets/images/ancient_india/researched/susa-indus-seal-impression.jpg",
+      title: "Susa — Indus Seal Impression and Sign Sequence",
+      alt: "Annotated image of a cylinder-seal impression associated with Susa excavations, showing an elongated buffalo and Indus signs, with modern sign identifiers above.",
+      caption:
+        "Annotated image derived from an Indus-related cylinder-seal impression associated with the Susa excavations and identified with Louvre object Sb 2425. The image illustrates the presence of Indus signs in a wider archaeological context. The sign identifiers above the impression are modern catalogue labels, not a deciphered translation.",
+      category: "Artefact",
+      credit: "ALFGRN; sign transcription by Pataliputra / Wikimedia Commons",
+      sourceUrl:
+        "https://commons.wikimedia.org/wiki/File:Susa_seal_with_Indus_signs.jpg",
+      license: "CC BY-SA 2.0",
+      licenseUrl:
+        "https://creativecommons.org/licenses/by-sa/2.0/",
+    },
   ],
-  "indus-seals-writing": [indusSealImage],
-  "harappan-weights": [images["mohenjo-weights.jpg"]!],
+  "harappan-weights": [
+    images["mohenjo-weights.jpg"]!,
+    {
+      src: "/assets/images/ancient_india/researched/harappan-balance-weights-national-museum.jpg",
+      title: "Harappan balance and weights",
+      category: "Artefact",
+      alt: "Museum photograph showing an ancient balance and a collection of Harappan stone weights.",
+      caption:
+        "A balance and weights associated with the Indus Valley civilisation, photographed at the National Museum, New Delhi. The objects illustrate the material evidence for weighing and measurement in Harappan society.",
+      credit: "Gary Todd / Wikimedia Commons",
+      license: "CC0 1.0",
+      licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/",
+      sourceUrl:
+        "https://commons.wikimedia.org/wiki/File:Harappan_(Indus_Valley)_Balance_%26_Weights.jpg",
+    },
+    {
+      src: "/assets/images/ancient_india/researched/harappan-cubical-weights-british-museum.jpg",
+      title: "Cubical weights from the Harappan world",
+      category: "Artefact",
+      alt: "A group of cubical stone weights of different sizes from the Harappan civilisation.",
+      caption:
+        "Cubical weights associated with Mohenjo-daro, now in the British Museum collection. Their different sizes illustrate the variety of weight denominations used in the Harappan system. The photograph is not a calibrated comparison of their masses.",
+      credit: "Zunkir / Wikimedia Commons",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+      sourceUrl:
+        "https://commons.wikimedia.org/wiki/File:Poids_cubiques_harapp%C3%A9ens_-_BM.jpg",
+    },
+  ],
   "indus-food-farming": [images["crop-sites.gif"]!, images["crop-processing.gif"]!],
   "lothal-crafts-exchange": [images["lothal-basin.jpg"]!],
   "late-harappan-regionalisation": [images["cemetery-h-pottery.png"]!],
