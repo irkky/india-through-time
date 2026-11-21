@@ -244,11 +244,11 @@ module.exports = async function checkExhibitMedia({
         );
       }
     }
-    assert.equal(galleryCount, 168);
+    assert.equal(galleryCount, 169);
     assert.equal(sourceOnlyVideoCount, 2);
     assert.equal(testedEmbedEras.size, 8);
     console.log(
-      `PASS: all 252 events show their assigned video; arrows, image navigation and View images/Watch video toggles verified for all 168 gallery events at ${width}px.`,
+      `PASS: all 252 events show their assigned video; arrows, image navigation and View images/Watch video toggles verified for all 169 gallery events at ${width}px.`,
     );
   }
   assert.deepEqual(errors, []);

@@ -184,11 +184,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Modern schematic plan of Dholavira, showing the principal urban divisions. This helps explain the city's spatial organization but does not date every feature or reproduce a complete phase-by-phase excavation plan.",
       category: "Map",
       credit: "Yodaspirine, based on Nizil Shah / Wikimedia Commons",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Dholavira-layout-en.svg",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Dholavira-layout-en.svg",
       license: "CC BY-SA 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/dholavira-water-system.jpg",
@@ -201,10 +199,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       sourceUrl:
         "https://commons.wikimedia.org/wiki/File:System_of_reservoirs_and_canals_found_at_Dholavira.jpg",
       license: "CC BY-SA 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
     },
-  ],  
+  ],
   "indus-valley-civilization": [
     {
       src: "/assets/images/ancient_india/researched/indus-major-sites-map.png",
@@ -217,8 +214,7 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       sourceUrl:
         "https://commons.wikimedia.org/wiki/File:Simple_map_of_Indus_valley_civilization.png",
       license: "CC BY 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/indus-mature-phase-topography.svg",
@@ -228,11 +224,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Topographic distribution map of sites associated with the Mature Harappan phase, approximately 2600–1900 BCE. The positions of archaeological sites help explain regional connections, but do not establish exact routes of movement or a unified political boundary.",
       category: "Map",
       credit: "Merikanto / Wikimedia Commons (2018)",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Indus_sites_mature_phase_topo_map.svg",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Indus_sites_mature_phase_topo_map.svg",
       license: "CC BY-SA 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/harappa-archaeological-mounds.jpg",
@@ -242,13 +236,11 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Archaeological remains at Harappa in Punjab, Pakistan, photographed on 3 February 2013. Harappa developed into a major urban centre during the Mature Harappan period. The photograph documents the surviving site and does not independently date every visible structure.",
       category: "Site photograph",
       credit: "Amir Islam / Wikimedia Commons (2013)",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Mounds_at_Harappa.JPG",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Mounds_at_Harappa.JPG",
       license: "CC BY-SA 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
     },
-  ],  
+  ],
   "rakhigarhi-cemetery": [
     rakhigarhiImage,
     {
@@ -259,11 +251,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Map of the Rakhigarhi cemetery excavation, showing the distribution and organisation of investigated graves. Shinde et al. (2018), Figure 7. This records archaeological fieldwork rather than the full original extent of the cemetery.",
       category: "Map",
       credit: "Shinde et al. (2018), PLOS ONE, Figure 7",
-      sourceUrl:
-        "https://doi.org/10.1371/journal.pone.0192299.g007",
+      sourceUrl: "https://doi.org/10.1371/journal.pone.0192299.g007",
       license: "CC BY 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/rakhigarhi-burial-types.png",
@@ -273,11 +263,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Two primary burials at Rakhigarhi: a typical burial (A2/BR 36) and an atypical brick-lined burial (A2/BR 22). Shinde et al. (2018), Figure 5. The differences illustrate variation in funerary practices, without independently establishing the individuals' social status.",
       category: "Site photograph",
       credit: "Shinde et al. (2018), PLOS ONE, Figure 5",
-      sourceUrl:
-        "https://doi.org/10.1371/journal.pone.0192299.g005",
+      sourceUrl: "https://doi.org/10.1371/journal.pone.0192299.g005",
       license: "CC BY 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/rakhigarhi-symbolic-grave.png",
@@ -287,28 +275,24 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Symbolic grave BR16 at Rakhigarhi, containing pottery and small mammal bones without identified human remains. Shinde et al. (2018), Figure 6. The researchers classified this as a symbolic burial based on its archaeological context.",
       category: "Site photograph",
       credit: "Shinde et al. (2018), PLOS ONE, Figure 6",
-      sourceUrl:
-        "https://doi.org/10.1371/journal.pone.0192299.g006",
+      sourceUrl: "https://doi.org/10.1371/journal.pone.0192299.g006",
       license: "CC BY 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by/4.0/",
     },
     images["rakhigarhi-pot-counts.png"]!,
-  ],  
+  ],
   "mohenjo-daro-urban-life": [
     {
       src: "/assets/images/ancient_india/researched/mohenjo-street.jpg",
       title: "Mohenjo-daro — An Ancient City Street",
       alt: "Excavated street lined with surviving brick walls near the stupa mound at Mohenjo-daro.",
       caption:
-        "An excavated street near the stupa mound at Mohenjo-daro, photographed on 8 March 2014. The exposed brickwork illustrates the surviving urban layout. The later Buddhist stupa belongs to a different historical period.",
+        "An excavated street near the stupa mound at Mohenjo-daro, photographed on 8 March 2014. The exposed brickwork illustrates the surviving urban layout. The later Buddhist stupa belongs to the second century CE, not the Harappan phase.",
       category: "Site photograph",
       credit: "Saqib Qayyum / Wikimedia Commons (2014)",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Street_-_Mohenjodaro.JPG",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Street_-_Mohenjodaro.JPG",
       license: "CC BY-SA 3.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/3.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/mohenjo-brick-well.jpg",
@@ -318,11 +302,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "A surviving well at Mohenjo-daro, photographed on 23 January 2010. Brick-lined wells formed an important part of the city's water infrastructure. The photograph illustrates the structure without establishing its precise construction date.",
       category: "Site photograph",
       credit: "Najamuddin Shahwani / Wikimedia Commons (2010)",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Monejodaro_well_-_panoramio.jpg",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Monejodaro_well_-_panoramio.jpg",
       license: "CC BY 3.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by/3.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by/3.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/mohenjo-bath-channel.jpg",
@@ -335,11 +317,10 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       sourceUrl:
         "https://commons.wikimedia.org/wiki/File:Water_canal_for_the_great_bath_-_Mohenjo-daro.jpg",
       license: "CC BY-SA 3.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/3.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/3.0/",
     },
     images["mohenjo-great-bath.jpg"]!,
-  ],  
+  ],
   "harappan-craft-workshops": [
     {
       src: "/assets/images/ancient_india/researched/harappa-unfinished-steatite-beads.jpg",
@@ -349,8 +330,8 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Unfinished steatite bead pieces recovered from an ashy floor in Trench 54 at Harappa. Some specimens were already perforated. This archaeological evidence helps reconstruct different stages of bead production during the Indus civilisation.",
       category: "Artefact",
       credit: "Harappa Archaeological Research Project",
-      sourceUrl:
-        "https://www.harappa.com/indus3/222.html",
+      license: "Used with permission",
+      sourceUrl: "https://www.harappa.com/indus3/222.html",
     },
     {
       src: "/assets/images/ancient_india/researched/harappa-bead-drilling-techniques.png",
@@ -360,8 +341,8 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Research illustration explaining bead-perforation techniques. Different drilling methods and tools helped craftspeople produce holes through hard stone materials. This is an explanatory research diagram, not a photograph of an excavated workshop.",
       category: "Illustration",
       credit: "J. Mark Kenoyer / Harappa.com",
-      sourceUrl:
-        "https://www.harappa.com/content/trade-and-technology-indus-valley",
+      license: "Used with permission",
+      sourceUrl: "https://www.harappa.com/content/trade-and-technology-indus-valley",
     },
     images["mohenjo-beads.jpg"]!,
     {
@@ -372,11 +353,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Beads photographed in 2017 and catalogued on Wikimedia Commons in association with Dholavira. The photograph illustrates bead forms within the wider Harappan tradition, although the individual excavation contexts and manufacturing stages are not documented.",
       category: "Artefact",
       credit: "Ranjith Kumar Inbasekaran / Wikimedia Commons",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Beads_found_from_harappan_site.jpg",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Beads_found_from_harappan_site.jpg",
       license: "CC BY-SA 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/chanhu-daro-decorated-beads.jpg",
@@ -386,13 +365,11 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Decorated beads associated with Chanhu-daro, an important Harappan craft-producing settlement. The objects illustrate specialised material selection, surface decoration and finishing techniques. These are finished artefacts rather than workshop debris.",
       category: "Artefact",
       credit: "Museum of Fine Arts, Boston / Wikimedia Commons",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Chanhu-Daro_beads.jpg",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Chanhu-Daro_beads.jpg",
       license: "Public Domain Mark 1.0",
-      licenseUrl:
-        "https://creativecommons.org/publicdomain/mark/1.0/",
+      licenseUrl: "https://creativecommons.org/publicdomain/mark/1.0/",
     },
-  ],  
+  ],
   "indus-seals-writing": [
     indusSealImage,
     {
@@ -406,8 +383,7 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       sourceUrl:
         "https://commons.wikimedia.org/wiki/File:Banner_at_the_North_Gate_of_Dholavira.svg",
       license: "CC BY-SA 4.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/4.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
     },
     {
       src: "/assets/images/ancient_india/researched/susa-indus-seal-impression.jpg",
@@ -417,11 +393,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
         "Annotated image derived from an Indus-related cylinder-seal impression associated with the Susa excavations and identified with Louvre object Sb 2425. The image illustrates the presence of Indus signs in a wider archaeological context. The sign identifiers above the impression are modern catalogue labels, not a deciphered translation.",
       category: "Artefact",
       credit: "ALFGRN; sign transcription by Pataliputra / Wikimedia Commons",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Susa_seal_with_Indus_signs.jpg",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Susa_seal_with_Indus_signs.jpg",
       license: "CC BY-SA 2.0",
-      licenseUrl:
-        "https://creativecommons.org/licenses/by-sa/2.0/",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/2.0/",
     },
   ],
   "harappan-weights": [
@@ -449,8 +423,7 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       credit: "Zunkir / Wikimedia Commons",
       license: "CC BY-SA 4.0",
       licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Poids_cubiques_harapp%C3%A9ens_-_BM.jpg",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Poids_cubiques_harapp%C3%A9ens_-_BM.jpg",
     },
   ],
   "indus-food-farming": [
@@ -480,7 +453,7 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       sourceUrl:
         "https://nmma.nic.in/nmma/NAS1/nmma_doc/IAR/Indian%20Archaeology%201996_97%20A%20Review.pdf",
     },
-  ],  
+  ],
   "lothal-crafts-exchange": [
     images["lothal-basin.jpg"]!,
     {
@@ -491,9 +464,9 @@ export const ancientGalleries: Readonly<Record<string, readonly PrehistoryGaller
       caption:
         "Stone beads from Lothal, Gujarat, illustrating the specialised craft production associated with the Mature Harappan settlement. Bead-making involved selecting, shaping, drilling and polishing different stone materials.",
       credit: "Source: Wikimedia Commons, Stone beads from Lothal",
-      license: "Government Open Data License–India (as listed on Wikimedia Commons; verify current file-page status)",
-      sourceUrl:
-        "https://commons.wikimedia.org/wiki/File:Stone_beads_from_Lothal.jpg",
+      license:
+        "Government Open Data License–India (as listed on Wikimedia Commons; verify current file-page status)",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:Stone_beads_from_Lothal.jpg",
     },
     {
       src: "/assets/images/ancient_india/researched/lothal-bead-making-furnace.jpg",

@@ -17,7 +17,7 @@ test("every timeline event exposes its assigned video in the third story stage",
 
 test("every gallery uses the shared arrow, image and video browser configuration", () => {
   const galleryEvents = model.events.filter((event) => event.exhibit?.gallery?.length);
-  assert.equal(galleryEvents.length, 168);
+  assert.equal(galleryEvents.length, 169);
 
   for (const event of galleryEvents) {
     const gallery = event.exhibit.gallery;

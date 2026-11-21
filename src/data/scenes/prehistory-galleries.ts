@@ -316,6 +316,31 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
     },
   ],
   "mahagara-neolithic": [riceMap("Mahagara", 17)],
+  "kayatha-culture": [
+    {
+      src: "/assets/images/ancient_india/researched/malwa-painted-goblet-navdatoli.jpg",
+      title: "Navdatoli · painted Malwa goblet",
+      category: "Artefact",
+      alt: "Tall painted pottery goblet from Navdatoli in central India, with a rounded bowl and long pedestal base.",
+      caption:
+        "This painted goblet is catalogued to Navdatoli around 1300 BCE. It illustrates a later Malwa Chalcolithic pottery tradition and is shown as a regional comparison; it is neither a Kayatha find nor evidence for the scene's approximately 2000 BCE date.",
+      credit: "PHGCOM / Wikimedia Commons",
+      sourceUrl: "https://commons.wikimedia.org/wiki/File:NavdatoliGoblet1300BCE.jpg",
+      license: "CC BY-SA 4.0",
+      licenseUrl: "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
+    {
+      src: "/assets/images/ancient_india/researched/malwa-chalcolithic-copper-tools.jpg",
+      title: "Gungeria · copper celt comparison",
+      category: "Artefact",
+      alt: "Long green-patinated copper celt from Gungeria in Madhya Pradesh, with a narrow body and rounded cutting edge.",
+      caption:
+        "A copper celt from the Gungeria hoard in Madhya Pradesh, broadly dated to about 2000–1500 BCE. It demonstrates copper working in central India, but the hoard lacks Kayatha's archaeological context and must not be presented as a Kayatha-culture object.",
+      credit: "Trustees of the British Museum; reproduced by Impart",
+      sourceUrl: "https://imp-art.org/articles/copper-hoard-culture/",
+      license: "Used with permission",
+    },
+  ],
   "mehrgarh-aceramic-cemetery": [
     {
       src: "/assets/images/prehistoric_india/researched/mehrgarh-period-1-houses.jpg",

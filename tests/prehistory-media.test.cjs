@@ -16,7 +16,7 @@ const manifest = require("../docs/prehistory-media-manifest.json");
 test("prehistoric media stays attached to documented sites with intact local originals", () => {
   const events = prehistoricIndiaEra.periods.flatMap((period) => period.events);
   assert.equal(events.length, 24);
-  assert.equal(manifest.length, 19);
+  assert.equal(manifest.length, 21);
   assert.deepEqual(Object.keys(prehistoryGalleries).sort(), [
     "bagor-mesolithic",
     "balathal-ahar-banas",
@@ -29,6 +29,7 @@ test("prehistoric media stays attached to documented sites with intact local ori
     "harappa-ravi-phase",
     "jwalapuram-rockshelter",
     "jwalapuram-toba",
+    "kayatha-culture",
     "lahuradewa-rice-use",
     "mahagara-neolithic",
     "mehrgarh-aceramic-cemetery",
@@ -105,6 +106,9 @@ test("prehistoric media stays attached to documented sites with intact local ori
   );
   assert.match(prehistoryGalleries["balathal-ahar-banas"][0].title, /cranium/i);
   assert.match(prehistoryGalleries["jwalapuram-toba"][2].title, /excavation trench/i);
+  assert.equal(prehistoryGalleries["kayatha-culture"].length, 2);
+  assert.match(prehistoryGalleries["kayatha-culture"][0].caption, /neither a Kayatha find/i);
+  assert.match(prehistoryGalleries["kayatha-culture"][1].caption, /must not be presented/i);
   const sandhav = prehistoryGalleries["sandhav-coastal-occupation"];
   assert.equal(sandhav.length, 3);
   assert.ok(sandhav.every((image) => manifest.some((item) => item.src === image.src)));
