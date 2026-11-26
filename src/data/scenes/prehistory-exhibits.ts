@@ -216,7 +216,13 @@ export const prehistoryExhibitPresentations: Readonly<Record<string, TimelineSce
                   : ["strata", "pit", "ashmound"].includes(visual.diagram)
                     ? 1.5
                     : 1,
-            transitionIn: { type: "crossfade", portion: 0.36, ease: "sine.inOut" },
+            transitionIn: {
+              type: "crossfade",
+              // The opening record reaches its video at 35% of this interval.
+              // Hold it fully visible until 46% before blending into record two.
+              portion: eventId === "attirampakkam-middle-palaeolithic" ? 0.08 : 0.36,
+              ease: "sine.inOut",
+            },
             layers: [
               { id: "background", kind: "background", renderer: "gradient" },
               { id: "exhibit", kind: "text", renderer: "prehistory-exhibit" },

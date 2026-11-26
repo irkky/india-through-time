@@ -728,6 +728,35 @@ async function main() {
     await navigate("attirampakkam-middle-palaeolithic");
     await delay(1300);
     const firstY = await evaluate("scrollY");
+    await navigate("lower-palaeolithic-scaffold");
+    await delay(1300);
+    const openingY = await evaluate("scrollY");
+    for (const fraction of [0.25, 0.36, 0.4, 0.45, 0.56, 0.45]) {
+      await evaluate(`window.scrollTo(0, ${openingY + (firstY - openingY) * fraction})`);
+      await delay(600);
+      if (fraction === 0.56) {
+        assert.equal(
+          await evaluate(`${active}.dataset.timelinePointId`),
+          "attirampakkam-middle-palaeolithic",
+        );
+      } else if (fraction > 0.35) {
+        assert.equal(
+          await evaluate(`${active}.dataset.timelinePointId`),
+          "lower-palaeolithic-scaffold",
+        );
+        assert.ok(
+          await evaluate(
+            `${active}.querySelector('.inline-exhibit-video') !== null && Number(getComputedStyle(${active}).opacity) === 1`,
+          ),
+          "Opening video holds at full opacity",
+        );
+      } else {
+        assert.equal(
+          await evaluate(`${active}.querySelector('.story-exhibit').dataset.storyStep`),
+          "1",
+        );
+      }
+    }
     await navigate("singi-talav-acheulian");
     await delay(1300);
     const secondY = await evaluate("scrollY");
