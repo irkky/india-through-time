@@ -172,6 +172,77 @@ async function main() {
       fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
     };
     await send("Runtime.enable");
+    if (process.env.BROWSER_JOURNEY_UX_ONLY) {
+      const id = "sandhav-coastal-occupation";
+      const record = "#read-" + id;
+      for (const width of [1440, 390]) {
+        await send("Emulation.setDeviceMetricsOverride", {
+          width,
+          height: 850,
+          deviceScaleFactor: 1,
+          mobile: width < 600,
+        });
+        await send("Emulation.setEmulatedMedia", {
+          features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+        });
+        await send("Page.navigate", { url: base + "/#event=" + id });
+        await waitFor(active + "?.dataset.timelinePointId === " + JSON.stringify(id));
+        await click(".date-help-button");
+        await waitFor("document.querySelector('#journey-dates').matches(':popover-open')");
+        await click("#journey-dates button");
+        await click(".journey-toolbar > button");
+        await click(".history-dialog-switch button:last-child");
+        await waitFor(
+          "document.querySelector('.history-dialog-switch button:last-child').getAttribute('aria-pressed') === 'true'",
+        );
+        const search = async (value) => {
+          await evaluate(
+            `(()=>{const el=document.querySelector('input[type=search]');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));})()`,
+          );
+          await waitFor("!!document.querySelector('.history-event-result')");
+          return evaluate(
+            "Array.from(document.querySelectorAll('.history-event-result strong'),e=>e.textContent)",
+          );
+        };
+        assert.deepEqual(await search("paleolithic"), await search("palaeolithic"));
+        await click(".history-reset");
+        const ranked = await search("Dholavira");
+        assert.match(ranked[0], /Dholavira/i);
+        await click(".history-dialog[open] .history-dialog-header button");
+        await click('.visual-scene[aria-hidden="false"] [aria-label="Next image"]');
+        const caption = await evaluate(active + ".querySelector('figcaption strong').textContent");
+        await click('.visual-scene[aria-hidden="false"] .image-credit-link');
+        await waitFor(
+          "document.querySelector('.exhibit-dialog[open] .gallery-selected h4')?.textContent === " +
+            JSON.stringify(caption),
+        );
+        for (const n of [2, 3, 1]) {
+          await click(".evidence-sections button:nth-child(" + n + ")");
+          await waitFor("document.activeElement.id.endsWith('-section-" + (n - 1) + "')");
+        }
+        await click(".evidence-sections a");
+        await waitFor("document.querySelector(" + JSON.stringify(record) + ")?.open === true");
+        await click(record + " a[href^='/#event=']");
+        await waitFor(active + "?.dataset.timelinePointId === " + JSON.stringify(id));
+        await waitFor("localStorage.getItem('history-last-event') === " + JSON.stringify(id));
+        await send("Page.navigate", { url: "about:blank" });
+        await send("Page.navigate", { url: base + "/" });
+        await waitFor(
+          "document.querySelector('.journey-resume')?.textContent.includes('Toolmaking near the coast')",
+        );
+        await click(".journey-resume");
+        await waitFor(active + "?.dataset.timelinePointId === " + JSON.stringify(id));
+        await send("Page.navigate", { url: base + "/#event=brahmagupta-628" });
+        await waitFor(active + "?.dataset.timelinePointId === 'brahmagupta-628'");
+        console.log(
+          "PASS: evidence, reader round trip, resume, shared link, dates and ranked search at " +
+            width +
+            "px",
+        );
+      }
+      assert.deepEqual(errors, []);
+      return;
+    }
     if (process.env.BROWSER_DEEP_TIME_ONLY) {
       const scene = "document.querySelector('[data-opening-scene-id=deep-time]')";
       for (const [width, height] of [
@@ -486,7 +557,8 @@ async function main() {
         await evaluate(`${active}.querySelector('.exhibit-insight p').textContent.includes('385')`),
       );
       await screenshot(`exhibit-${width}`);
-      await click(".journey-button-accent");
+      await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+      await waitFor("!!document.querySelector('.exhibit-dialog[open]')");
       assert.equal(await evaluate("!!document.querySelector('dialog[open]')"), true);
       assert.ok(
         await evaluate(
@@ -507,7 +579,7 @@ async function main() {
       });
       await waitFor("!document.querySelector('dialog[open]')");
       assert.equal(
-        await evaluate("document.activeElement.classList.contains('journey-button-accent')"),
+        await evaluate("document.activeElement.classList.contains('gallery-jump')"),
         true,
       );
       await click(".journey-toolbar > .journey-button:not(.journey-button-accent)");
@@ -704,7 +776,8 @@ async function main() {
       await waitFor("document.querySelectorAll('.history-event-result').length === 1");
       await click(".history-event-result");
       await waitFor(`${active}?.dataset.timelinePointId === 'brahmagupta-628'`);
-      await click(".journey-button-accent");
+      await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+      await waitFor("!!document.querySelector('.exhibit-dialog[open]')");
       assert.ok(
         await evaluate("document.querySelectorAll('.history-contemporaries button').length > 0"),
       );
@@ -821,13 +894,14 @@ async function main() {
       await screenshot(`ancient-water-${width}`);
       await navigate("early-upanishads");
       await screenshot(`ancient-oral-${width}`);
-      await click(".journey-button-accent");
+      await click('.visual-scene[aria-hidden="false"] .gallery-jump');
+      await waitFor("!!document.querySelector('.exhibit-dialog[open]')");
       assert.ok(
         await evaluate(
           "document.querySelector('.history-evidence').textContent.includes('Date scope:')",
         ),
       );
-      await click(".history-dialog:not(.exhibit-dialog) .history-dialog-header button");
+      await click(".exhibit-dialog[open] .history-dialog-header button");
       console.log(`Verified ${totalEvents} exhibits and chapter filters at ${width}px.`);
     }
     console.log("Checking motion, chapter transitions and static readers.");

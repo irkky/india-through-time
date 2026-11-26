@@ -11,6 +11,7 @@ import {
   TIMELINE_SCROLL_DISTANCE_VH,
 } from "@/data/opening/opening-sequence";
 import type { CompiledHistory } from "@/lib/content/compile";
+import { JourneyEvents, NavigateToEvent } from "./journey-events";
 import { StorytellingScene } from "./storytelling-scene";
 import { TimelineNavigation } from "./timeline-navigation";
 import type { OpeningSceneBinding } from "@/types/opening";
@@ -54,6 +55,7 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
   const sceneRefs = useRef<HTMLElement[]>([]);
   const sceneLayerRefs = useRef<Array<Map<string, HTMLDivElement>>>([]);
   const animationControllerRef = useRef<TimelineAnimationController | null>(null);
+  const [resumeId, setResumeId] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -117,13 +119,28 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
       reducedMotion,
     });
 
+    const resumeFrame = requestAnimationFrame(() => {
+      try {
+        setResumeId(localStorage.getItem("history-last-event"));
+      } catch {
+        /* Storage is optional. */
+      }
+    });
     const controller = createTimelineAnimation({
       root,
       dateReadouts: [storyDate],
       progress: navigationProgress,
       points: timelinePoints,
       sceneController,
-      onEventChange: setActiveIndex,
+      onEventChange: (index) => {
+        setActiveIndex(index);
+        setResumeId(timelinePoints[index]!.id);
+        try {
+          localStorage.setItem("history-last-event", timelinePoints[index]!.id);
+        } catch {
+          /* Private browsing. */
+        }
+      },
       opening: {
         controller: openingController,
         root: openingRoot,
@@ -145,6 +162,7 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
 
     return () => {
       window.cancelAnimationFrame(linkedFrame);
+      window.cancelAnimationFrame(resumeFrame);
       window.removeEventListener("hashchange", visitLinkedEvent);
       controller.destroy();
       sceneController.destroy();
@@ -159,100 +177,107 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
 
   const activeEvent = historicalEvents[activeIndex] ?? initialTimelineEvent;
 
+  const resumeIndex = historicalEvents.findIndex((event) => event.id === resumeId);
   return (
-    <main>
-      <a
-        href="/read#prehistory-reader"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:p-4 focus:text-black"
-      >
-        Skip animation and read the evidence
-      </a>
-      <section
-        ref={rootRef}
-        className="relative"
-        style={{ height: `${totalScrollDistance}vh` }}
-        aria-label="Journey through time"
-      >
-        <div
-          className="sticky top-0 h-dvh overflow-hidden bg-[var(--event-background)] text-[var(--event-foreground)]"
-          style={
-            {
-              "--event-background": activeEvent.palette.background,
-              "--event-foreground": activeEvent.palette.foreground,
-              "--event-muted": activeEvent.palette.muted,
-              "--event-accent": activeEvent.palette.accent,
-            } as React.CSSProperties
-          }
-        >
-          <div
-            ref={historicalLayerRef}
-            className="historical-experience-layer"
-            style={{ opacity: 0, visibility: "hidden" }}
-            aria-hidden="true"
-          >
-            <StorytellingScene
-              events={historicalEvents}
-              definitions={sceneDefinitions}
-              activeIndex={activeIndex}
-              initialDateLabel={timelinePoints[0]!.dateLabel}
-              dateRef={storyDateRef}
-              registerScene={(element, index) => {
-                if (element) sceneRefs.current[index] = element;
-              }}
-              registerLayer={(element, sceneIndex, layerId) => {
-                const layers =
-                  sceneLayerRefs.current[sceneIndex] ?? new Map<string, HTMLDivElement>();
-                sceneLayerRefs.current[sceneIndex] = layers;
-                if (element) layers.set(layerId, element);
-                else layers.delete(layerId);
-              }}
-            />
-
-            <TimelineNavigation
-              activeEvent={activeEvent}
-              navigation={timelineNavigation}
-              events={historicalEvents}
-              progressRef={navigationProgressRef}
-              onNavigate={navigateToEvent}
-            />
-          </div>
-
-          <OpeningCinematic
-            onStart={() => navigateToEvent(0)}
-            rootRef={openingRootRef}
-            atmosphereRef={openingAtmosphereRef}
-            cueRef={openingCueRef}
-            progressRef={openingProgressRef}
-            registerScene={(element, index) => {
-              if (element) openingSceneRefs.current[index] = element;
-            }}
-            registerVisual={(element, index) => {
-              if (element) openingVisualRefs.current[index] = element;
-            }}
-          />
-        </div>
-      </section>
-
-      <section className="flex min-h-[55vh] items-center justify-center bg-[#f2ecdf] px-6 py-24 text-[#20251f]">
-        <div className="max-w-xl text-center">
-          <p className="text-xs font-semibold tracking-[0.2em] text-[#8f3e28] uppercase">
-            Sourced reading
-          </p>
-          <h2 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
-            Continue through the evidence.
-          </h2>
-          <p className="mt-5 leading-7">
-            Open the server-rendered reading chapters for every record, source list and undated
-            context section.
-          </p>
+    <NavigateToEvent.Provider value={navigateToEvent}>
+      <JourneyEvents.Provider value={historicalEvents}>
+        <main>
           <a
-            className="mt-6 inline-block rounded-full border border-[#20251f]/30 px-5 py-3 underline"
             href="/read#prehistory-reader"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-white focus:p-4 focus:text-black"
           >
-            Read all chapters →
+            Skip animation and read the evidence
           </a>
-        </div>
-      </section>
-    </main>
+          <section
+            ref={rootRef}
+            className="relative"
+            style={{ height: `${totalScrollDistance}vh` }}
+            aria-label="Journey through time"
+          >
+            <div
+              className="sticky top-0 h-dvh overflow-hidden bg-[var(--event-background)] text-[var(--event-foreground)]"
+              style={
+                {
+                  "--event-background": activeEvent.palette.background,
+                  "--event-foreground": activeEvent.palette.foreground,
+                  "--event-muted": activeEvent.palette.muted,
+                  "--event-accent": activeEvent.palette.accent,
+                } as React.CSSProperties
+              }
+            >
+              <div
+                ref={historicalLayerRef}
+                className="historical-experience-layer"
+                style={{ opacity: 0, visibility: "hidden" }}
+                aria-hidden="true"
+              >
+                <StorytellingScene
+                  events={historicalEvents}
+                  definitions={sceneDefinitions}
+                  activeIndex={activeIndex}
+                  initialDateLabel={timelinePoints[0]!.dateLabel}
+                  dateRef={storyDateRef}
+                  registerScene={(element, index) => {
+                    if (element) sceneRefs.current[index] = element;
+                  }}
+                  registerLayer={(element, sceneIndex, layerId) => {
+                    const layers =
+                      sceneLayerRefs.current[sceneIndex] ?? new Map<string, HTMLDivElement>();
+                    sceneLayerRefs.current[sceneIndex] = layers;
+                    if (element) layers.set(layerId, element);
+                    else layers.delete(layerId);
+                  }}
+                />
+
+                <TimelineNavigation
+                  activeEvent={activeEvent}
+                  navigation={timelineNavigation}
+                  events={historicalEvents}
+                  progressRef={navigationProgressRef}
+                  onNavigate={navigateToEvent}
+                />
+              </div>
+
+              <OpeningCinematic
+                resumeTitle={historicalEvents[resumeIndex]?.title}
+                onResume={() => navigateToEvent(resumeIndex)}
+                onStart={() => navigateToEvent(0)}
+                rootRef={openingRootRef}
+                atmosphereRef={openingAtmosphereRef}
+                cueRef={openingCueRef}
+                progressRef={openingProgressRef}
+                registerScene={(element, index) => {
+                  if (element) openingSceneRefs.current[index] = element;
+                }}
+                registerVisual={(element, index) => {
+                  if (element) openingVisualRefs.current[index] = element;
+                }}
+              />
+            </div>
+          </section>
+
+          <section className="flex min-h-[55vh] items-center justify-center bg-[#f2ecdf] px-6 py-24 text-[#20251f]">
+            <div className="max-w-xl text-center">
+              <p className="text-xs font-semibold tracking-[0.2em] text-[#8f3e28] uppercase">
+                Sourced reading
+              </p>
+              <h2 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
+                Continue through the evidence.
+              </h2>
+              <p className="mt-5 leading-7">
+                Open the server-rendered reading chapters for every record, source list and undated
+                context section.
+              </p>
+              <a
+                className="mt-6 inline-block rounded-full border border-[#20251f]/30 px-5 py-3 underline"
+                href="/read#prehistory-reader"
+              >
+                Read all chapters →
+              </a>
+            </div>
+          </section>
+        </main>
+      </JourneyEvents.Provider>
+    </NavigateToEvent.Provider>
   );
 }

@@ -4,6 +4,8 @@ import { OpeningProgress } from "./OpeningProgress";
 import { OpeningScene } from "./OpeningScene";
 
 interface OpeningCinematicProps {
+  readonly resumeTitle?: string;
+  readonly onResume: () => void;
   readonly onStart: () => void;
   readonly rootRef: React.RefObject<HTMLElement | null>;
   readonly atmosphereRef: React.RefObject<HTMLDivElement | null>;
@@ -14,6 +16,8 @@ interface OpeningCinematicProps {
 }
 
 export function OpeningCinematic({
+  resumeTitle,
+  onResume,
   onStart,
   rootRef,
   atmosphereRef,
@@ -27,6 +31,11 @@ export function OpeningCinematic({
       <button type="button" className="journey-start-button" onClick={onStart}>
         Enter the timeline ↓
       </button>
+      {resumeTitle && (
+        <button type="button" className="journey-start-button journey-resume" onClick={onResume}>
+          Continue where you left off ? {resumeTitle}
+        </button>
+      )}
       <div ref={atmosphereRef} className="opening-atmosphere" aria-hidden="true">
         <span className="opening-glow opening-glow--one" />
         <span className="opening-glow opening-glow--two" />

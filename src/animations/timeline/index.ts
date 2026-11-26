@@ -41,7 +41,7 @@ export function createTimelineAnimation({
   onEventChange,
   opening,
 }: TimelineAnimationOptions) {
-  let activeIndex = 0;
+  let activeIndex = -1;
   let activeScrollTrigger: ScrollTrigger | undefined;
   let navigationTween: gsap.core.Tween | undefined;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -88,7 +88,10 @@ export function createTimelineAnimation({
       );
       sceneController.update(resolved);
 
-      if (resolved.index !== activeIndex) {
+      if (
+        (!opening || scrollProgress >= opening.handoffProgress) &&
+        resolved.index !== activeIndex
+      ) {
         activeIndex = resolved.index;
         onEventChange(resolved.index);
       }

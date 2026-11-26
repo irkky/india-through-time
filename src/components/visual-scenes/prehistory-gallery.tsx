@@ -6,10 +6,12 @@ import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
 
 export function PrehistoryGallery({
   images,
+  initialIndex = 0,
 }: {
+  readonly initialIndex?: number;
   readonly images: readonly PrehistoryGalleryImage[];
 }) {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(initialIndex);
   const [failed, setFailed] = useState<string | null>(null);
   const id = useId();
   const item = images[selected];
@@ -47,7 +49,7 @@ export function PrehistoryGallery({
             <span className="gallery-category">{item.category}</span>
             <h4>{item.title}</h4>
             <p>{item.caption}</p>
-            <small>
+            <small tabIndex={-1}>
               {item.credit ?? "Image credit pending verification"} ·{" "}
               {item.license ?? "Reuse terms pending verification"}
             </small>
@@ -88,7 +90,7 @@ export function PrehistoryGallery({
                 />
               </span>
               <span>
-                <small>
+                <small tabIndex={-1}>
                   {String(index + 1).padStart(2, "0")} · {image.category}
                 </small>
                 {image.title}

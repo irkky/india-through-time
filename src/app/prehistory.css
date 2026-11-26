@@ -1314,3 +1314,59 @@
   text-underline-offset: 0.2em;
   color: #29564b;
 }
+
+.journey-start-button.journey-resume {
+  top: 76px;
+  max-width: min(23rem, calc(100% - 48px));
+}
+.date-help-button {
+  pointer-events: auto;
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.date-help {
+  pointer-events: auto;
+  margin: auto;
+  width: min(26rem, calc(100% - 2rem));
+  max-height: 80dvh;
+  overflow: auto;
+  padding: 1.4rem;
+  border-radius: 1rem;
+  background: #f3eddf;
+  color: #283229;
+  text-align: left;
+  font: 1rem/1.5 system-ui;
+}
+.date-help h2,
+.date-help h3 {
+  font-weight: 700;
+}
+.date-help p,
+.date-help a,
+.date-help button {
+  display: block;
+  margin-block: 0.65rem;
+}
+.date-help a,
+.date-help button {
+  text-decoration: underline;
+}
+.date-help::backdrop {
+  background: #06151299;
+}
+.evidence-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.exhibit-dialog section[tabindex] {
+  margin-block: 1rem;
+}
+
+.image-credit-link {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

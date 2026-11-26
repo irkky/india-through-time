@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ReaderAnchor } from "@/components/historical-events/reader-anchor";
 import Link from "next/link";
 import { AllReaders } from "@/components/historical-events/all-readers";
 
@@ -25,6 +26,7 @@ export default function ReadingPage() {
           </p>
         </div>
       </header>
+      <ReaderAnchor />
       <AllReaders />
     </main>
   );

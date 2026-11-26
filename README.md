@@ -102,8 +102,8 @@ change if another process is using it. Stop the server with **Ctrl+C**.
 1. Scroll through the opening or use its start control to enter the timeline.
 2. Scroll forward or backward to change the active event and journey year.
 3. Use chapter tabs, period/event selectors or previous/next buttons to jump directly.
-4. Select an exhibit stage, then open its gallery or **Evidence & sources** for more detail.
-5. Use **Explore chapter** to search, combine filters or follow the chapter reader link.
+4. Select an exhibit stage, then open **Explore evidence** for images, videos and sources. **Read this event** opens the exact reader entry, and **View on timeline** brings you back.
+5. Use **Search timeline** across all eras or within this era. **How dates work** beside the journey year explains overlapping dates. On your next visit, the opening offers to resume the last event saved in this browser.
 
 Standard keyboard scrolling and **Tab**, **Enter** and **Escape** work with the page and dialogs.
 The site respects the operating system's reduced-motion setting.

@@ -43,33 +43,62 @@ export function matchesCentury(event: TimelineDisplayEvent, century: string): bo
   );
 }
 
+function searchText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .replace(/palaeolithic/g, "paleolithic")
+    .replace(/\bharappans?\b/g, "harappa")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+}
+
 export function filterHistory(events: readonly TimelineDisplayEvent[], filters: HistoryFilters) {
-  const needle = filters.query.trim().toLowerCase();
-  return events.filter((event) => {
+  const terms = searchText(filters.query).split(" ").filter(Boolean);
+  const matches = events.filter((event) => {
     const record = event.node.event;
     return (
       (filters.era === "all" || event.node.era.id === filters.era) &&
       (filters.period === "all" || event.node.period.id === filters.period) &&
       (filters.civilization === "all" || record.civilizations?.includes(filters.civilization)) &&
-      matchesCentury(event, filters.century) &&
-      [
-        event.title,
-        event.description,
-        event.periodTitle,
-        event.eraTitle,
-        record.significance,
-        ...(record.regions ?? []),
-        ...(record.locations ?? []).map((location) => location.name),
-        ...(record.civilizations ?? []),
-        ...record.categories,
-        ...record.people,
-        ...(record.details ?? []).map((detail) => `${detail.title} ${detail.text}`),
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(needle)
+      matchesCentury(event, filters.century)
     );
   });
+  if (!terms.length) return matches;
+  return matches
+    .flatMap((event) => {
+      const record = event.node.event;
+      const title = searchText(event.title);
+      const places = searchText(
+        [
+          ...(record.regions ?? []),
+          ...(record.locations ?? []).map((location) => location.name),
+        ].join(" "),
+      );
+      const body = searchText(
+        [
+          event.description,
+          event.periodTitle,
+          event.eraTitle,
+          record.significance,
+          ...(record.civilizations ?? []),
+          ...record.categories,
+          ...record.people,
+          ...(record.details ?? []).map((detail) => detail.title + " " + detail.text),
+        ].join(" "),
+      );
+      let score = 0;
+      for (const term of terms) {
+        if (title.includes(term)) score += 4;
+        else if (places.includes(term)) score += 2;
+        else if (body.includes(term)) score += 1;
+        else return [];
+      }
+      return [{ event, score }];
+    })
+    .sort((a, b) => b.score - a.score)
+    .map((match) => match.event);
 }
 
 /** Overlap is chronological comparison, not evidence of historical contact. */

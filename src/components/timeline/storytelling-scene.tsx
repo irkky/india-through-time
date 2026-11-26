@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { NavigateToEvent } from "./journey-events";
+import { contemporaryEvents } from "@/lib/history-explorer";
 import Image from "next/image";
 import { SceneStage } from "@/components/visual-scenes/scene-stage";
 import type { SceneDefinition } from "@/types/scene";
@@ -26,6 +29,8 @@ export function StorytellingScene({
   registerScene,
   registerLayer,
 }: StorytellingSceneProps) {
+  const navigate = useContext(NavigateToEvent);
+  const overlaps = contemporaryEvents(events, events[activeIndex]!);
   return (
     <div className="absolute inset-0">
       <SceneStage
@@ -55,7 +60,43 @@ export function StorytellingScene({
             </div>
           </div>
           <div className="journey-year-counter" aria-label="Approximate position in the timeline">
-            <span className="journey-year-label">Journey year</span>
+            <button
+              className="journey-year-label date-help-button"
+              type="button"
+              popoverTarget="journey-dates"
+            >
+              Journey year ? How dates work
+            </button>
+            <aside id="journey-dates" popover="auto" className="date-help">
+              <h2>How dates work</h2>
+              <p>
+                Events follow their starting dates. Regional traditions overlap, so neighboring
+                events can belong to different chapters. Scroll distance represents reading time.
+                The journey year estimates your position between records.
+              </p>
+              {overlaps.length > 0 && (
+                <>
+                  <h3>At the same time</h3>
+                  <p>These date ranges overlap. Contact or influence requires separate evidence.</p>
+                  {overlaps.slice(0, 3).map((item) => (
+                    <a
+                      key={item.id}
+                      href={"#event=" + item.id}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById("journey-dates")?.hidePopover();
+                        navigate(events.indexOf(item));
+                      }}
+                    >
+                      {item.title} ? {item.dateLabel}
+                    </a>
+                  ))}
+                </>
+              )}
+              <button type="button" popoverTarget="journey-dates" popoverTargetAction="hide">
+                Close
+              </button>
+            </aside>
             <span ref={dateRef} className="journey-year-value" data-journey-year="">
               {initialDateLabel}
             </span>

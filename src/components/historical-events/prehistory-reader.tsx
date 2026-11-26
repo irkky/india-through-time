@@ -108,6 +108,9 @@ export function PrehistoryReader({
                         ` — ${formatHistoricalDate(event.dateEnd, { approximate: event.approximateDate })}`}
                     </span>
                   </summary>
+                  <a className="mt-3 inline-block underline" href={"/#event=" + event.id}>
+                    View on timeline
+                  </a>
                   <p className="mt-4 leading-7">{event.description}</p>
                   {event.dateScope && (
                     <p className="mt-3 text-sm">

@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useContext, useCallback, useEffect, useId, useRef, useState } from "react";
 import type { HistoricalVideo } from "@/types/history";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 import { PrehistoryDiagram } from "./prehistory-diagram";
@@ -9,6 +9,9 @@ import { PrehistoryGallery } from "./prehistory-gallery";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
 import { EventDetails, ImageNeeds } from "@/components/historical-events/event-details";
 import { HistoricalVideos } from "@/components/historical-events/historical-videos";
+
+import { JourneyEvents, NavigateToEvent } from "@/components/timeline/journey-events";
+import { contemporaryEvents } from "@/lib/history-explorer";
 
 const storyStageLabels = ["What happened", "Why it matters", "Evidence & limits"] as const;
 const selectedStageByEvent = new Map<string, number>();
@@ -78,12 +81,16 @@ function InlineHistoricalVideo({ video }: { readonly video: HistoricalVideo }) {
 
 export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEvent }) {
   const [selected, setSelectedState] = useState(() => selectedStageByEvent.get(event.id) ?? 0);
+  const navigate = useContext(NavigateToEvent);
+  const events = useContext(JourneyEvents);
+  const [copyStatus, setCopyStatus] = useState("");
   const [open, setOpen] = useState(false);
   const [imageChoice, setImageChoice] = useState<number | "video" | null>(null);
   const [lastImage, setLastImage] = useState(0);
   const panelId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
-  const galleryButtonRef = useRef<HTMLButtonElement>(null);
+  const openerRef = useRef<HTMLButtonElement | null>(null);
+  const jumpToCredit = useRef(false);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const setSelected = useCallback(
     (index: number) => {
@@ -107,6 +114,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
   useEffect(() => {
     const resumeScrollStages = () => {
       if (!manuallySelectedEvents.size) return;
+      if (document.querySelector("dialog[open]")) return;
       manuallySelectedEvents.clear();
       setSelected(Number(rootRef.current?.dataset.storyStep ?? 0));
     };
@@ -137,6 +145,11 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
     const previous = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
     dialogRef.current?.showModal();
+    if (jumpToCredit.current) {
+      const credit = dialogRef.current?.querySelector<HTMLElement>(".gallery-selected small");
+      credit?.focus({ preventScroll: true });
+      credit?.scrollIntoView({ block: "center" });
+    }
     return () => {
       document.documentElement.style.overflow = previous;
     };
@@ -176,11 +189,33 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
     setImageChoice(next);
   };
   const showImageSpace = !canBrowse && !showPhoto && selected === 1 && !!record.imageNeeds?.length;
+  const contemporaries = open ? contemporaryEvents(events, event) : [];
+  const visit = (id: string) => {
+    dialogRef.current?.close();
+    const index = events.findIndex((item) => item.id === id);
+    if (index >= 0) navigate(index);
+  };
+  const copyLink = async () => {
+    const url = new URL(window.location.href);
+    url.hash = "event=" + event.id;
+    try {
+      await navigator.clipboard.writeText(url.href);
+      setCopyStatus("Event link copied.");
+    } catch {
+      setCopyStatus("Copy this link: " + url.href);
+    }
+  };
+  const openEvidence = (opener: HTMLButtonElement, credit = false) => {
+    openerRef.current = opener;
+    jumpToCredit.current = credit;
+    setOpen(true);
+  };
   const handleDialogClose = () => {
+    setCopyStatus("");
     setOpen(false);
     const scene = rootRef.current?.closest<HTMLElement>(".visual-scene");
     if (scene?.getAttribute("aria-hidden") === "false" && !scene.inert)
-      requestAnimationFrame(() => galleryButtonRef.current?.focus());
+      requestAnimationFrame(() => openerRef.current?.focus({ preventScroll: true }));
   };
   const layout =
     visual.layout ??
@@ -230,16 +265,11 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
             </div>
           </div>
           <button
-            ref={galleryButtonRef}
             type="button"
             className="gallery-jump"
-            onClick={() => setOpen(true)}
+            onClick={(e) => openEvidence(e.currentTarget)}
           >
-            {record.videos?.length
-              ? "Explore videos, images & evidence"
-              : visual.gallery?.length
-                ? `Explore ${visual.gallery.length} ${visual.gallery.length === 1 ? "image" : "images"} & full evidence`
-                : "Read full evidence & image requirements"}
+            Explore evidence
           </button>
         </div>
         <figure className="exhibit-figure">
@@ -253,7 +283,17 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
                     ? "Image to add"
                     : "Teaching diagram"}
             </span>
-            <span>{storyStageLabels[selected]}</span>
+            {showPhoto ? (
+              <button
+                className="image-credit-link"
+                type="button"
+                onClick={(e) => openEvidence(e.currentTarget, true)}
+              >
+                Image credit
+              </button>
+            ) : (
+              <span>{storyStageLabels[selected]}</span>
+            )}
           </div>
           <div className="exhibit-drawing" id={`${panelId}-visual`} key={selected}>
             {showPhoto ? (
@@ -359,57 +399,169 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
             <p>
               {event.dateLabel} / {record.regions?.join(" / ")}
             </p>
-            {record.dateScope && (
-              <p className="story-full-note">
-                <strong>Date scope: </strong>
-                {record.dateScope}
-              </p>
-            )}
-            {!!record.videos?.length && <HistoricalVideos videos={record.videos} />}
-            {visual.points.map((item) => (
-              <section className="story-full-note" key={item.field}>
-                <h3>{item.label}</h3>
-                <p>{detailFor(item.field)}</p>
-              </section>
-            ))}
-            <EventDetails event={record} />
-            {visual.gallery?.length ? (
-              <PrehistoryGallery images={visual.gallery} />
-            ) : record.contentNeeds?.length ? null : (
-              <aside className="exhibit-media-slot">
-                <h3>Visual evidence to add</h3>
-                <p>
-                  Add a site photograph, artefact plate or measured plan for{" "}
-                  {event.title.toLowerCase()}. Include the original caption, site or specimen ID,
-                  scale, source link and image credit. The scene uses a labelled teaching diagram.
-                </p>
-              </aside>
-            )}
-            <ContentNeeds event={record} />
-            <ImageNeeds event={record} />
-            {record.sources.length > 0 && (
-              <section className="story-full-note">
-                <h3>Sources for this record</h3>
-                <ul className="history-source-list">
+            <nav className="evidence-sections" aria-label="Evidence sections">
+              {["Images", "Videos", "Sources & interpretation"].map((label, index) => (
+                <button
+                  type="button"
+                  className="journey-button"
+                  key={label}
+                  onClick={() => {
+                    const section = document.getElementById(panelId + "-section-" + index);
+                    section?.focus({ preventScroll: true });
+                    section?.scrollIntoView({ block: "start" });
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+              <a className="journey-button" href={"/read#read-" + event.id}>
+                Read this event
+              </a>
+            </nav>
+            <section id={panelId + "-section-0"} tabIndex={-1}>
+              <h3>Images</h3>
+              {visual.gallery?.length ? (
+                <PrehistoryGallery
+                  images={visual.gallery}
+                  initialIndex={showPhoto ? (displayedChoice as number) : lastImage}
+                />
+              ) : (
+                <p>No photographs are available for this exhibit.</p>
+              )}
+            </section>
+            <section id={panelId + "-section-1"} tabIndex={-1}>
+              <h3>Videos</h3>
+              {record.videos?.length ? (
+                <HistoricalVideos videos={record.videos} />
+              ) : (
+                <p>No video is available for this exhibit.</p>
+              )}
+            </section>
+            <section id={panelId + "-section-2"} tabIndex={-1}>
+              <h3>Sources &amp; interpretation</h3>
+              <div className="history-evidence">
+                <p className="exhibit-date">{event.dateLabel}</p>
+                <p>{record.description}</p>
+                {record.dateScope && (
+                  <p>
+                    <strong>Date scope: </strong>
+                    {record.dateScope}
+                  </p>
+                )}
+                {record.significance && <p>{record.significance}</p>}
+                <p className="exhibit-location">{record.regions?.join(" · ")}</p>
+                {record.civilizations?.length ? (
+                  <p>
+                    <strong>Community: </strong>
+                    {record.civilizations.join(" · ")}
+                  </p>
+                ) : null}
+                {record.people.length ? (
+                  <p>
+                    <strong>People: </strong>
+                    {record.people.join(" · ")}
+                  </p>
+                ) : null}
+                {record.interpretationNotes?.map((note, index) => (
+                  <aside className="history-evidence-note" key={index}>
+                    <strong>Evidence & interpretation</strong>
+                    <p>{note.text}</p>
+                  </aside>
+                ))}
+
+                <EventDetails event={record} />
+                <ContentNeeds event={record} />
+                <ImageNeeds event={record} />
+                <h3>Sources</h3>
+
+                {record.sources.length === 0 && (
+                  <p>No source list is currently published for this record.</p>
+                )}
+                <ol className="history-source-list">
                   {record.sources.map((source) => (
                     <li key={source.id}>
                       <a href={source.url} target="_blank" rel="noreferrer">
-                        {source.title}
+                        {source.title} ↗
                       </a>
+                      <small>
+                        {[source.author, source.publisher, source.publicationYear]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </small>
                       {record.citations
-                        ?.filter((c) => c.sourceId === source.id)
-                        .map((c, i) => (
-                          <small key={i}>{c.locator}</small>
+                        ?.filter(({ sourceId }) => sourceId === source.id)
+                        .map((citation, index) => (
+                          <small key={index}>{citation.locator}</small>
                         ))}
                     </li>
                   ))}
-                </ul>
-              </section>
-            )}
-            <p>
-              Source references and the complete chronological account are available in Evidence &
-              sources and the reading section below the journey.
-            </p>
+                </ol>
+                {record.media?.length ? (
+                  <>
+                    <h3>Images in this scene</h3>
+                    <ul className="history-source-list">
+                      {record.media.map((media) => (
+                        <li key={media.id}>
+                          {media.alt}
+                          <small>
+                            {media.credit ?? "Credit not yet supplied"} ·{" "}
+                            {media.license ?? "Reuse licence not yet verified"}
+                          </small>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+                {record.relatedEvents.length > 0 && (
+                  <>
+                    <h3>Connected evidence</h3>
+                    <div className="history-related">
+                      {record.relatedEvents.map((id) => {
+                        const related = events.find((event) => event.id === id);
+                        return related ? (
+                          <button
+                            className="journey-button"
+                            type="button"
+                            key={id}
+                            onClick={() => visit(id)}
+                          >
+                            {related.title} →
+                          </button>
+                        ) : null;
+                      })}
+                    </div>
+                  </>
+                )}
+                <button type="button" className="journey-button" onClick={copyLink}>
+                  Copy event link
+                </button>
+                {contemporaries.length > 0 && (
+                  <section className="history-contemporaries">
+                    <h3>Also within these dates</h3>
+                    <p>
+                      Overlapping topic windows, sometimes in distant regions. Comparison alone does
+                      not establish contact or influence.
+                    </p>
+                    <div className="history-related">
+                      {contemporaries.map((event) => (
+                        <button
+                          className="journey-button"
+                          type="button"
+                          key={event.id}
+                          onClick={() => visit(event.id)}
+                        >
+                          {event.title}
+                          <small>{event.dateLabel}</small>
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+                <p role="status" className="history-copy-status">
+                  {copyStatus}
+                </p>
+              </div>
+            </section>
           </>
         )}
       </dialog>
