@@ -45,7 +45,8 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
         type="button"
         onClick={() => dialogRef.current?.showModal()}
       >
-        Search timeline
+        <span className="desktop-browse-label">Search timeline</span>
+        <span className="mobile-browse-label">Browse timeline</span>
       </button>
       <dialog ref={dialogRef} className="history-dialog" aria-labelledby="history-dialog-title">
         <header className="history-dialog-header">
@@ -156,6 +157,19 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             Reset all filters
           </button>
         </div>
+        <label className="mobile-event-picker">
+          Jump to event
+          <select value="" onChange={(e) => visit(e.target.value)}>
+            <option value="" disabled>
+              Choose an event ({matches.length})
+            </option>
+            {matches.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.title}
+              </option>
+            ))}
+          </select>
+        </label>
         <p className="history-filter-hint">{centuryCoverageHelp}</p>
         <p className="history-result-count" role="status">
           {matches.length} {matches.length === 1 ? "event" : "events"}

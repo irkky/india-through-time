@@ -172,6 +172,124 @@ async function main() {
       fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
     };
     await send("Runtime.enable");
+    if (process.env.BROWSER_READING_ONLY) {
+      for (const [width, height] of [
+        [320, 640],
+        [390, 844],
+        [1440, 900],
+      ]) {
+        await send("Emulation.setDeviceMetricsOverride", {
+          width,
+          height,
+          deviceScaleFactor: 1,
+          mobile: width < 600,
+        });
+        await send("Emulation.setEmulatedMedia", {
+          features: [
+            { name: "prefers-reduced-motion", value: width === 390 ? "no-preference" : "reduce" },
+          ],
+        });
+        await send("Page.navigate", { url: "about:blank" });
+        await send("Page.navigate", { url: base + "/#event=sandhav-coastal-occupation" });
+        await waitFor(active + "?.dataset.timelinePointId === 'sandhav-coastal-occupation'");
+        if (width === 390) await delay(1000);
+        const scene = '.visual-scene[aria-hidden="false"] ';
+        await click(scene + ".exhibit-point:last-child");
+        await evaluate("window.dispatchEvent(new Event('touchstart'))");
+        await send("Input.dispatchKeyEvent", {
+          type: "keyDown",
+          key: "Tab",
+          code: "Tab",
+          windowsVirtualKeyCode: 9,
+        });
+        const manual =
+          active +
+          ".querySelector('.exhibit-point:last-child').getAttribute('aria-pressed') === 'true'";
+        assert.ok(await evaluate(manual), "Manual stage survives touch and keyboard focus");
+        const before = await evaluate("scrollY");
+        await send("Input.dispatchMouseEvent", {
+          type: "mouseWheel",
+          x: 4,
+          y: 220,
+          deltaX: 0,
+          deltaY: 24,
+        });
+        await waitFor("scrollY !== " + before);
+        await waitFor(
+          active +
+            ".querySelectorAll('.exhibit-point')[" +
+            active +
+            ".querySelector('.story-exhibit').dataset.storyStep].getAttribute('aria-pressed') === 'true'",
+        );
+        await click(scene + ".exhibit-point:first-child");
+        await click(scene + '[aria-label="Next image"]');
+        const caption = active + ".querySelector('figcaption.story-copy > span')";
+        const explanation = active + ".querySelector('.exhibit-insight p')";
+        for (const [area, node] of [
+          ["figcaption.story-copy", caption],
+          [".exhibit-insight", explanation],
+        ]) {
+          const clipped = await evaluate(
+            `(el=> !el.clientHeight || el.scrollHeight>el.clientHeight+1 || el.scrollWidth>el.clientWidth+1)(${node})`,
+          );
+          const button = scene + area + " .reading-trigger";
+          assert.equal(
+            await evaluate("!!document.querySelector(" + JSON.stringify(button) + ")"),
+            clipped,
+          );
+          if (clipped) {
+            await click(button);
+            await waitFor(
+              "document.querySelector('.reading-dialog[open] > p')?.textContent === " +
+                node +
+                ".textContent",
+            );
+            await click(".reading-dialog .history-dialog-header button");
+            await waitFor("!document.querySelector('.reading-dialog')");
+          }
+        }
+        const openViewer = async (selector) => {
+          await click(selector);
+          await waitFor("document.querySelector('.zoom-viewport img')?.naturalWidth > 0");
+          await click('.reading-dialog [aria-label="Zoom in"]');
+          await waitFor(
+            "document.querySelector('.zoom-viewport').scrollWidth > document.querySelector('.zoom-viewport').clientWidth",
+          );
+          await click(".zoom-caption summary");
+          await waitFor("!!document.querySelector('.zoom-caption[open] .reading-credit')");
+          await click(".zoom-tools button:last-child");
+          await waitFor("document.querySelector('.zoom-tools output').textContent === '100%'");
+          await click(".reading-dialog .history-dialog-header button");
+          await waitFor("!document.querySelector('.reading-dialog')");
+          assert.ok(
+            await evaluate(
+              "document.activeElement === document.querySelector(" + JSON.stringify(selector) + ")",
+            ),
+          );
+        };
+        await openViewer(scene + ".enlarge-image");
+        await click(scene + ".gallery-jump");
+        await openViewer(".exhibit-dialog[open] .enlarge-image");
+        await click(".exhibit-dialog[open] .history-dialog-header button");
+        if (width < 600) {
+          assert.ok(
+            await evaluate("document.querySelector('.journey-selects').offsetHeight === 0"),
+          );
+          await screenshot("compact-navigation-" + width);
+          await click(".journey-toolbar > button");
+          await waitFor("document.querySelector('.mobile-event-picker select').offsetHeight > 0");
+          await evaluate(
+            "(()=>{const el=document.querySelector('.mobile-event-picker select');el.value='dholavira-water-city';el.dispatchEvent(new Event('change',{bubbles:true}));})()",
+          );
+          await waitFor(active + "?.dataset.timelinePointId === 'dholavira-water-city'");
+          await click('.journey-steps [aria-label="Next event"]');
+          await waitFor(active + "?.dataset.timelinePointId !== 'dholavira-water-city'");
+        }
+        console.log("PASS reading, stages, zoom and navigation at " + width + "x" + height);
+      }
+      assert.deepEqual(errors, []);
+      return;
+    }
     if (process.env.BROWSER_JOURNEY_UX_ONLY) {
       const id = "sandhav-coastal-occupation";
       const record = "#read-" + id;

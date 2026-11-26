@@ -1,5 +1,6 @@
 "use client";
 
+import { EnlargeImage } from "./exhibit-reading";
 import Image from "next/image";
 import { useId, useState } from "react";
 import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
@@ -54,6 +55,7 @@ export function PrehistoryGallery({
               {item.license ?? "Reuse terms pending verification"}
             </small>
             <div className="gallery-links">
+              {failed !== item.src && <EnlargeImage item={item} />}
               {item.licenseUrl && (
                 <a href={item.licenseUrl} target="_blank" rel="noopener noreferrer">
                   Image licence

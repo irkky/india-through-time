@@ -1370,3 +1370,124 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+html:has(.reading-dialog[open]) {
+  overflow: hidden;
+}
+.reading-trigger {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 0.78rem;
+}
+.exhibit-drawing > .enlarge-image {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  z-index: 1;
+  background: #142622ee;
+  color: #fff4dd;
+  border-radius: 6px;
+  padding: 5px 9px;
+}
+.reading-dialog {
+  position: fixed;
+  inset: 0;
+  overscroll-behavior: contain;
+}
+.reading-dialog p {
+  margin-block: 0.8rem;
+  line-height: 1.55;
+}
+.reading-dialog a {
+  text-decoration: underline;
+}
+.reading-credit {
+  font-size: 0.85rem;
+}
+.reading-credit a {
+  margin-inline-end: 0.4rem;
+}
+.zoom-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-block: 0.6rem;
+}
+.zoom-viewport {
+  height: min(54dvh, 36rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #172421;
+}
+.zoom-caption {
+  margin-block: 0.8rem;
+}
+.mobile-journey-position,
+.mobile-step-label,
+.mobile-browse-label,
+.mobile-event-picker {
+  display: none;
+}
+@media (max-width: 760px) {
+  .historical-navigation .era-navigation,
+  .historical-navigation .journey-selects,
+  .desktop-browse-label,
+  .journey-steps > span {
+    display: none;
+  }
+  .mobile-step-label,
+  .mobile-browse-label {
+    display: inline;
+  }
+  .mobile-event-picker {
+    display: grid;
+    gap: 0.3rem;
+  }
+  .mobile-event-picker select {
+    min-width: 0;
+    width: 100%;
+    background: white;
+    padding: 0.6rem;
+    border: 1px solid #a38c6a;
+    border-radius: 0.4rem;
+  }
+  .mobile-journey-position {
+    display: block;
+    text-align: center;
+    margin: 3px 0;
+    font-size: 0.72rem;
+    color: var(--event-foreground);
+  }
+  .historical-navigation-inner {
+    padding: 0.4rem 0.65rem;
+  }
+  .journey-toolbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0;
+  }
+  .journey-steps {
+    display: contents;
+  }
+  .journey-steps button:first-child {
+    grid-area: 1/1;
+    justify-self: start;
+  }
+  .journey-steps button:last-child {
+    grid-area: 1/3;
+    justify-self: end;
+  }
+  .journey-toolbar > button {
+    grid-area: 1/2;
+  }
+  .journey-toolbar .journey-button {
+    min-height: 40px;
+  }
+  .prehistory-exhibit.story-exhibit {
+    bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+}

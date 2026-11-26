@@ -145,8 +145,8 @@ module.exports = async function checkExhibitMedia({
         const status = await evaluate(
           `${active}.querySelector('.exhibit-media-controls [role=status]').textContent`,
         );
-        assert.match(status, /^1 \/ \d+$/);
-        const count = Number(status.split(" / ")[1]);
+        assert.match(status, /^Image 1 of \d+$/);
+        const count = Number(status.split(" of ")[1]);
         assert.equal(
           await evaluate(
             `${active}.querySelector('.exhibit-media-controls button:last-child').textContent.trim()`,
@@ -182,7 +182,7 @@ module.exports = async function checkExhibitMedia({
           );
           await click(`${selector} [aria-label="Next image"]`);
           await waitFor(
-            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "3 / 3"`,
+            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "Image 3 of 3"`,
           );
           assert.match(
             await evaluate(`${active}.querySelector('.exhibit-drawing img').getAttribute('src')`),
@@ -190,7 +190,7 @@ module.exports = async function checkExhibitMedia({
           );
           await click(`${selector} [aria-label="Next image"]`);
           await waitFor(
-            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "1 / 3"`,
+            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "Image 1 of 3"`,
           );
           assert.match(
             await evaluate(`${active}.querySelector('.exhibit-drawing img').getAttribute('src')`),
@@ -198,7 +198,7 @@ module.exports = async function checkExhibitMedia({
           );
           await click(`${selector} [aria-label="Next image"]`);
           await waitFor(
-            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "2 / 3"`,
+            `${active}.querySelector('.exhibit-media-controls [role=status]').textContent === "Image 2 of 3"`,
           );
           await evaluate(`${active}.querySelector('.exhibit-drawing img').decode()`);
           await evaluate(

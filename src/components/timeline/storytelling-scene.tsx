@@ -56,7 +56,10 @@ export function StorytellingScene({
               <p className="text-xs font-semibold tracking-[0.22em] uppercase opacity-70">
                 History of India
               </p>
-              <p className="mt-2 text-xs opacity-55">Scroll to travel through time</p>
+              <p className="mt-2 text-xs opacity-55">
+                <span className="sm:hidden">Scroll to explore</span>
+                <span className="hidden sm:inline">Scroll to travel through time</span>
+              </p>
             </div>
           </div>
           <div className="journey-year-counter" aria-label="Approximate position in the timeline">
@@ -65,7 +68,7 @@ export function StorytellingScene({
               type="button"
               popoverTarget="journey-dates"
             >
-              Journey year ? How dates work
+              Journey year · How dates work
             </button>
             <aside id="journey-dates" popover="auto" className="date-help">
               <h2>How dates work</h2>

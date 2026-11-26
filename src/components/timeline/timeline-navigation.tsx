@@ -28,6 +28,9 @@ export function TimelineNavigation({
           progressRef={progressRef}
           onNavigate={onNavigate}
         />
+        <p className="mobile-journey-position">
+          {activeEvent.eraTitle} · Event {index + 1} of {events.length}
+        </p>
         <div className="journey-toolbar">
           <div className="journey-steps">
             <button
@@ -37,7 +40,7 @@ export function TimelineNavigation({
               onClick={() => onNavigate(index - 1)}
               aria-label="Previous event"
             >
-              ←
+              ←<span className="mobile-step-label"> Previous</span>
             </button>
             <span aria-label={`Event ${index + 1} of ${events.length}`}>
               {String(index + 1).padStart(2, "0")} / {events.length}
@@ -49,7 +52,7 @@ export function TimelineNavigation({
               onClick={() => onNavigate(index + 1)}
               aria-label="Next event"
             >
-              →
+              <span className="mobile-step-label">Next </span>→
             </button>
           </div>
           <HistoryExplorer events={events} activeEvent={activeEvent} onNavigate={onNavigate} />

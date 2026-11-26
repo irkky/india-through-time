@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useContext, useCallback, useEffect, useId, useRef, useState } from "react";
 import type { HistoricalVideo } from "@/types/history";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
+import { ClippedStoryText, EnlargeImage } from "./exhibit-reading";
 import { PrehistoryDiagram } from "./prehistory-diagram";
 import { PrehistoryGallery } from "./prehistory-gallery";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
@@ -15,7 +16,7 @@ import { contemporaryEvents } from "@/lib/history-explorer";
 
 const storyStageLabels = ["What happened", "Why it matters", "Evidence & limits"] as const;
 const selectedStageByEvent = new Map<string, number>();
-const manuallySelectedEvents = new Set<string>();
+const manualStageScroll = new Map<string, number>();
 
 function InlineHistoricalVideo({ video }: { readonly video: HistoricalVideo }) {
   const instance = useId();
@@ -100,33 +101,32 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
     [event.id],
   );
   const chooseStage = (index: number) => {
-    manuallySelectedEvents.add(event.id);
+    manualStageScroll.set(event.id, window.scrollY);
     setSelected(index);
   };
   useEffect(() => {
     const root = rootRef.current;
     const update = () => {
-      if (!manuallySelectedEvents.has(event.id)) setSelected(Number(root?.dataset.storyStep ?? 0));
+      if (!manualStageScroll.has(event.id)) setSelected(Number(root?.dataset.storyStep ?? 0));
     };
     root?.addEventListener("story-step", update);
     return () => root?.removeEventListener("story-step", update);
   }, [event.id, setSelected]);
   useEffect(() => {
     const resumeScrollStages = () => {
-      if (!manuallySelectedEvents.size) return;
-      if (document.querySelector("dialog[open]")) return;
-      manuallySelectedEvents.clear();
+      const position = manualStageScroll.get(event.id);
+      if (
+        position === undefined ||
+        window.scrollY === position ||
+        document.querySelector("dialog[open]")
+      )
+        return;
+      manualStageScroll.delete(event.id);
       setSelected(Number(rootRef.current?.dataset.storyStep ?? 0));
     };
-    window.addEventListener("wheel", resumeScrollStages, { passive: true });
-    window.addEventListener("touchstart", resumeScrollStages, { passive: true });
-    window.addEventListener("keydown", resumeScrollStages);
-    return () => {
-      window.removeEventListener("wheel", resumeScrollStages);
-      window.removeEventListener("touchstart", resumeScrollStages);
-      window.removeEventListener("keydown", resumeScrollStages);
-    };
-  }, [setSelected]);
+    window.addEventListener("scroll", resumeScrollStages, { passive: true });
+    return () => window.removeEventListener("scroll", resumeScrollStages);
+  }, [event.id, setSelected]);
   useEffect(() => {
     const scene = rootRef.current?.closest<HTMLElement>(".visual-scene");
     if (!scene) return;
@@ -261,7 +261,11 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
             <span className="exhibit-insight-number">0{selected + 1}</span>
             <div>
               <h3>{point?.label}</h3>
-              <p>{detailFor(point?.field ?? "description")}</p>
+              <ClippedStoryText
+                kind="explanation"
+                title={point?.label ?? event.title}
+                text={detailFor(point?.field ?? "description")}
+              />
             </div>
           </div>
           <button
@@ -297,14 +301,18 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
           </div>
           <div className="exhibit-drawing" id={`${panelId}-visual`} key={selected}>
             {showPhoto ? (
-              <Image
-                src={photo.src}
-                alt={photo.alt}
-                fill
-                sizes="(max-width: 760px) calc(100vw - 48px), 48vw"
-                loading="lazy"
-                unoptimized={photo.src.toLowerCase().endsWith(".gif")}
-              />
+              <>
+                {" "}
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  sizes="(max-width: 760px) calc(100vw - 48px), 48vw"
+                  loading="lazy"
+                  unoptimized={photo.src.toLowerCase().endsWith(".gif")}
+                />
+                <EnlargeImage item={photo} />
+              </>
             ) : showVideo ? (
               <InlineHistoricalVideo video={inlineVideo} />
             ) : showImageSpace ? (
@@ -325,7 +333,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
               </button>
               <span role="status" aria-live="polite">
                 {showPhoto && typeof displayedChoice === "number"
-                  ? `${displayedChoice + 1} / ${visual.gallery!.length}`
+                  ? `Image ${displayedChoice + 1} of ${visual.gallery!.length}`
                   : showVideo
                     ? "Video"
                     : "Diagram"}
@@ -366,15 +374,20 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
                     ? "A place for the original evidence"
                     : visual.title}
             </strong>
-            <span>
-              {showPhoto
-                ? photo.caption
-                : showVideo
-                  ? inlineVideo.context
-                  : showImageSpace
-                    ? "Open full evidence for the image specification and historical sources."
-                    : visual.caption}
-            </span>
+            <ClippedStoryText
+              kind="caption"
+              title={showPhoto ? photo.title : showVideo ? inlineVideo.title : visual.title}
+              image={showPhoto ? photo : undefined}
+              text={
+                showPhoto
+                  ? photo.caption
+                  : showVideo
+                    ? inlineVideo.context
+                    : showImageSpace
+                      ? "Open full evidence for the image specification and historical sources."
+                      : visual.caption
+              }
+            />
           </figcaption>
         </figure>
       </div>
