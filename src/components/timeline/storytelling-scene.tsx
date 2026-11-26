@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SceneStage } from "@/components/visual-scenes/scene-stage";
 import type { SceneDefinition } from "@/types/scene";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
@@ -36,12 +37,22 @@ export function StorytellingScene({
       />
 
       <div className="pointer-events-none relative z-20 mx-auto flex h-full max-w-[1600px] flex-col px-6 py-6 pb-64 sm:px-10 sm:py-8 sm:pb-72 lg:px-16">
-        <header className="flex items-start justify-between gap-6">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.22em] uppercase opacity-70">
-              History of India
-            </p>
-            <p className="mt-2 text-xs opacity-55">Scroll to travel through time</p>
+        <header className="flex items-start justify-between gap-2 sm:gap-6">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <Image
+              src="/icon.svg"
+              alt=""
+              width={44}
+              height={44}
+              unoptimized
+              className="size-8 shrink-0 sm:size-11"
+            />
+            <div>
+              <p className="text-xs font-semibold tracking-[0.22em] uppercase opacity-70">
+                History of India
+              </p>
+              <p className="mt-2 text-xs opacity-55">Scroll to travel through time</p>
+            </div>
           </div>
           <div className="journey-year-counter" aria-label="Approximate position in the timeline">
             <span className="journey-year-label">Journey year</span>

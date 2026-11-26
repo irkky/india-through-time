@@ -83,7 +83,7 @@ export const openingSequence = [
     id: "deep-time",
     text: "~1.5 MILLION YEARS AGO",
     progress: { start: 0.51, end: 0.67 },
-    visual: "deep-time-map-image",
+    visual: "deep-time-landscape",
     textStyle: "date",
     transition: "focus",
     animation: {
@@ -91,9 +91,9 @@ export const openingSequence = [
       enterPortion: 0.3,
       translateY: 0,
       scaleFrom: 0.82,
-      visualTranslateY: 0,
+      visualTranslateY: 32,
       visualScaleFrom: 1,
-      visualScaleTo: 1,
+      visualScaleTo: 1.16,
     },
   },
   {
@@ -101,7 +101,7 @@ export const openingSequence = [
     text: "THE STORY BEGINS",
     subtitle: "in Attirampakkam, Tamil Nadu.",
     progress: { start: 0.64, end: 0.8 },
-    visual: "south-india-image",
+    visual: "attirampakkam-map",
     textStyle: "statement",
     transition: "emerge",
     animation: {
@@ -135,7 +135,7 @@ export const openingSequence = [
     subtitle: "The Dawn of Hominin Habitation and Cultural Evolution",
     instruction: "SCROLL TO CONTINUE",
     progress: { start: 0.88, end: 1 },
-    visual: "chapter-placeholder",
+    visual: "chapter-map",
     textStyle: "chapter",
     transition: "focus",
     animation: {

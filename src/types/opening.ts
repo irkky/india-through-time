@@ -1,12 +1,12 @@
 export type OpeningVisualType =
   | "atmosphere"
   | "india-tricolour"
-  | "deep-time-map-image"
-  | "south-india-image"
+  | "deep-time-landscape"
+  | "attirampakkam-map"
   | "time-depth"
   | "subcontinent-placeholder"
   | "artifact-image"
-  | "chapter-placeholder";
+  | "chapter-map";
 
 export type OpeningTextStyle = "title" | "statement" | "date" | "emphasis" | "chapter";
 

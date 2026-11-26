@@ -172,6 +172,122 @@ async function main() {
       fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
     };
     await send("Runtime.enable");
+    if (process.env.BROWSER_DEEP_TIME_ONLY) {
+      const scene = "document.querySelector('[data-opening-scene-id=deep-time]')";
+      for (const [width, height] of [
+        [1440, 850],
+        [320, 568],
+        [360, 800],
+        [390, 844],
+        [430, 932],
+      ]) {
+        await send("Emulation.setDeviceMetricsOverride", {
+          width,
+          height,
+          deviceScaleFactor: 1,
+          mobile: width < 600,
+        });
+        await send("Page.navigate", { url: base });
+        await waitFor(`${scene}?.querySelector('.opening-deep-landscape')`);
+        await delay(1100);
+        const stops = [
+          [0, ".opening-start-layer"],
+          ...[
+            [0.08, "india-title"],
+            [0.17, "journey-through-time"],
+            [0.28, "before-cities"],
+            [0.38, "before-kingdoms"],
+            [0.48, "before-written-history"],
+            [0.525, "deep-time"],
+            [0.59, "deep-time"],
+            [0.655, "deep-time"],
+            [0.72, "story-begins"],
+            [0.84, "first-artifact"],
+            [0.925, "prehistoric-handoff"],
+          ].map(([fraction, id]) => [fraction, `[data-opening-scene-id="${id}"]`]),
+          [1.02, ".historical-experience-layer"],
+        ];
+        for (const [fraction, selector] of [...stops, ...stops.slice(0, -1).reverse()]) {
+          const deltaY = await evaluate(`Math.round(innerHeight * 7 * ${fraction}) - scrollY`);
+          if (deltaY)
+            await send("Input.dispatchMouseEvent", {
+              type: "mouseWheel",
+              x: 8,
+              y: 250,
+              deltaX: 0,
+              deltaY,
+            });
+          await waitFor(`Math.abs(scrollY - Math.round(innerHeight * 7 * ${fraction})) < 3`);
+          await waitFor(
+            `Number(getComputedStyle(document.querySelector(${JSON.stringify(selector)})).opacity) > 0.05`,
+          );
+          if (selector.includes("deep-time")) {
+            assert.ok(
+              await evaluate(`(() => {
+              const art = document.querySelector('.opening-deep-landscape').getBoundingClientRect();
+              const frame = document.querySelector('.opening-cinematic').getBoundingClientRect();
+              return art.left <= frame.left && art.right >= frame.right &&
+                art.top <= frame.top && art.bottom >= frame.bottom;
+            })()`),
+              `Landscape covers every corner at ${width}px, progress ${fraction}`,
+            );
+          }
+          if (width < 640 && selector.startsWith("[data-opening-scene-id")) {
+            const layout = await evaluate(`(() => {
+              const section = document.querySelector(${JSON.stringify(selector)});
+              const frame = section.getBoundingClientRect();
+              const copy = section.querySelector('.opening-text-shell').getBoundingClientRect();
+              const art = section.querySelector('.opening-visual').getBoundingClientRect();
+              const circle = section.querySelector('.opening-atmosphere-mark, .opening-india-tricolour');
+              return {
+                textFits: copy.left >= frame.left && copy.right <= frame.right,
+                dx: (copy.left + copy.right - frame.left - frame.right) / 2,
+                dy: (copy.top + copy.bottom - frame.top - frame.bottom) / 2,
+                circleFits: !circle || (art.left >= frame.left && art.right <= frame.right &&
+                  Math.abs(art.width - art.height) < 2),
+              };
+            })()`);
+            assert.ok(
+              layout.textFits &&
+                layout.circleFits &&
+                Math.abs(layout.dx) < 2 &&
+                Math.abs(layout.dy) < 2,
+              `${selector} at ${width}×${height}: ${JSON.stringify(layout)}`,
+            );
+          }
+        }
+        const frames = [];
+        for (const fraction of [0.57, 0.61, 0.57]) {
+          await evaluate(`window.scrollTo(0, Math.round(innerHeight * 7 * ${fraction}))`);
+          await delay(650);
+          assert.ok(await evaluate(`Number(getComputedStyle(${scene}).opacity) > 0.8`));
+          frames.push(
+            await evaluate(
+              `getComputedStyle(${scene}.querySelector('.opening-visual-shell')).transform`,
+            ),
+          );
+        }
+        assert.notEqual(frames[0], frames[1]);
+        assert.equal(frames[0], frames[2]);
+        await screenshot(`deep-time-landscape-${width}`);
+        for (const fraction of [0.71, 0.74, 0.71]) {
+          await evaluate(`window.scrollTo(0, Math.round(innerHeight * 7 * ${fraction}))`);
+          await delay(650);
+          assert.ok(
+            await evaluate(`(() => {
+            const scene = document.querySelector('[data-opening-scene-id="story-begins"]');
+            const pin = scene.querySelector('.opening-site-map circle:last-child').getBoundingClientRect();
+            return Number(getComputedStyle(scene).opacity) > 0.8 && pin.width > 0 &&
+              pin.left >= 0 && pin.right <= innerWidth && pin.top >= 0 && pin.bottom <= innerHeight;
+          })()`),
+          );
+        }
+        await screenshot(`attirampakkam-map-${width}`);
+        console.log(`PASS: deep-time landscape visible and movement reversible at ${width}px`);
+      }
+      assert.deepEqual(errors, []);
+      return;
+    }
     if (process.env.BROWSER_METRICS_ONLY) {
       await send("Emulation.setDeviceMetricsOverride", {
         width: 1363,

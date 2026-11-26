@@ -145,29 +145,22 @@ body {
   opacity: 0.38;
 }
 
-.opening-deep-time-map {
-  inset: 0;
+/* Cover the frame even at the entrance scale of .82 and 32px of parallax. */
+[data-opening-scene-id="deep-time"] .opening-visual-shell {
+  inset: calc(-12% - 32px) -12%;
+}
+
+.opening-visual-shell > .opening-deep-landscape {
   width: 100%;
   max-width: none;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0.56;
-  filter: saturate(0.72) brightness(0.7) contrast(1.08);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 78%, transparent 100%);
+  overflow: hidden;
 }
 
-.opening-south-india {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: min(96vw, 60rem);
-  max-width: none;
-  height: auto;
-  opacity: 0.64;
-  filter: saturate(0.72) brightness(0.88) contrast(1.05)
-    drop-shadow(0 2.8rem 5rem rgba(0, 0, 0, 0.6));
-  transform: translate(-34%, -50%);
+.opening-site-map {
+  width: min(96vw, 64rem);
+  height: min(86vh, 54rem);
+  opacity: 0.86;
 }
 
 .opening-time-rings {
@@ -203,8 +196,11 @@ body {
   filter: drop-shadow(0 2.5rem 5rem rgba(0, 0, 0, 0.48));
 }
 
-.opening-landform--chapter {
-  opacity: 0.23;
+.opening-chapter-map {
+  width: min(94vw, 52rem);
+  height: min(84vh, 52rem);
+  color: #dfbd80;
+  opacity: 0.52;
 }
 
 .opening-landform-shape,
@@ -1208,12 +1204,25 @@ body {
   }
 
   .opening-scene {
-    padding: 2rem 1.6rem 6rem;
+    padding: 2rem 1.6rem;
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .opening-visual {
-    width: 118vw;
-    height: 72vh;
+  .opening-visual-shell {
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  }
+
+  .opening-atmosphere-mark {
+    width: min(82vw, 68svh);
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .opening-time-depth,
+  .opening-site-map,
+  .opening-chapter-map {
+    width: 94%;
+    height: 78%;
   }
 
   .opening-landform {
@@ -1221,21 +1230,10 @@ body {
     height: 68vh;
   }
 
-  .opening-deep-time-map {
-    object-position: 53% center;
-    opacity: 0.5;
-  }
-
-  .opening-south-india {
-    width: 180vw;
-    opacity: 0.56;
-    transform: translate(-34%, -52%);
-  }
-
   .opening-artifact {
     width: 210vw;
     height: auto;
-    transform: translate(-50%, calc(-50% - 3vh));
+    transform: translate(-50%, -50%);
   }
 
   .opening-copy--title {
