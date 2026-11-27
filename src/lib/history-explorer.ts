@@ -54,6 +54,50 @@ function searchText(value: string) {
     .trim();
 }
 
+function searchFields(event: TimelineDisplayEvent) {
+  const record = event.node.event;
+  return [
+    event.description,
+    event.periodTitle,
+    event.eraTitle,
+    record.significance,
+    ...(record.civilizations ?? []),
+    ...record.categories,
+    ...record.people,
+    ...(record.details ?? []).map((detail) => detail.title + " " + detail.text),
+  ];
+}
+
+/** Keep the excerpt in the catalogue's original spelling, including diacritics. */
+export function matchExcerpt(event: TimelineDisplayEvent, query: string) {
+  const terms = searchText(query)
+    .split(" ")
+    .filter((term) => term && !searchText(event.title).includes(term));
+  if (!terms.length) return [];
+  const record = event.node.event;
+  for (const field of [
+    ...searchFields(event),
+    ...(record.regions ?? []),
+    ...(record.locations ?? []).map((place) => place.name),
+  ]) {
+    if (!field) continue;
+    const words = field.split(/(\s+)/);
+    const matches = words.map((word) => terms.some((term) => searchText(word).includes(term)));
+    const at = matches.indexOf(true);
+    if (at < 0) continue;
+    const start = Math.max(0, at - 10),
+      end = Math.min(words.length, at + 22);
+    return words.slice(start, end).map((word, i) => ({
+      text:
+        (i === 0 && start > 0 ? "…" : "") +
+        word +
+        (start + i === end - 1 && end < words.length ? "…" : ""),
+      match: matches[start + i],
+    }));
+  }
+  return [];
+}
+
 export function filterHistory(events: readonly TimelineDisplayEvent[], filters: HistoryFilters) {
   const terms = searchText(filters.query).split(" ").filter(Boolean);
   const matches = events.filter((event) => {
@@ -76,18 +120,7 @@ export function filterHistory(events: readonly TimelineDisplayEvent[], filters: 
           ...(record.locations ?? []).map((location) => location.name),
         ].join(" "),
       );
-      const body = searchText(
-        [
-          event.description,
-          event.periodTitle,
-          event.eraTitle,
-          record.significance,
-          ...(record.civilizations ?? []),
-          ...record.categories,
-          ...record.people,
-          ...(record.details ?? []).map((detail) => detail.title + " " + detail.text),
-        ].join(" "),
-      );
+      const body = searchText(searchFields(event).join(" "));
       let score = 0;
       for (const term of terms) {
         if (title.includes(term)) score += 4;

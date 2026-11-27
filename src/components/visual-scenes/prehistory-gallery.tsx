@@ -1,6 +1,6 @@
 "use client";
 
-import { EnlargeImage } from "./exhibit-reading";
+import { EnlargeImage, photoDescription } from "./exhibit-reading";
 import Image from "next/image";
 import { useId, useState } from "react";
 import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
@@ -49,7 +49,7 @@ export function PrehistoryGallery({
           <figcaption aria-live="polite" aria-atomic="true">
             <span className="gallery-category">{item.category}</span>
             <h4>{item.title}</h4>
-            <p>{item.caption}</p>
+            <p>{photoDescription(item)}</p>
             <small tabIndex={-1}>
               {item.credit ?? "Image credit pending verification"} ·{" "}
               {item.license ?? "Reuse terms pending verification"}

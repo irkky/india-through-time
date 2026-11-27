@@ -1,3 +1,4 @@
+import { eraOrientations } from "@/data/timeline/era-orientations";
 import { useContext } from "react";
 import { NavigateToEvent } from "./journey-events";
 import { contemporaryEvents } from "@/lib/history-explorer";
@@ -56,10 +57,16 @@ export function StorytellingScene({
               <p className="text-xs font-semibold tracking-[0.22em] uppercase opacity-70">
                 History of India
               </p>
-              <p className="mt-2 text-xs opacity-55">
-                <span className="sm:hidden">Scroll to explore</span>
-                <span className="hidden sm:inline">Scroll to travel through time</span>
-              </p>
+              <button className="era-help" type="button" popoverTarget="active-era-guide">
+                About this era
+              </button>
+              <aside popover="auto" id="active-era-guide" className="date-help">
+                <h2>{events[activeIndex]!.eraTitle}</h2>
+                <p>{eraOrientations[events[activeIndex]!.node.era.id]}</p>
+                <button type="button" popoverTarget="active-era-guide" popoverTargetAction="hide">
+                  Close
+                </button>
+              </aside>
             </div>
           </div>
           <div className="journey-year-counter" aria-label="Approximate position in the timeline">

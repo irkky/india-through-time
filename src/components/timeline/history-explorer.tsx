@@ -1,5 +1,6 @@
 "use client";
 
+import { SavedCollection } from "@/components/historical-events/saved-events";
 import { useRef, useState } from "react";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
 
@@ -8,6 +9,7 @@ import {
   centuryOptions,
   emptyHistoryFilters,
   filterHistory,
+  matchExcerpt,
 } from "@/lib/history-explorer";
 
 interface HistoryExplorerProps {
@@ -19,6 +21,7 @@ interface HistoryExplorerProps {
 export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExplorerProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [filters, setFilters] = useState(emptyHistoryFilters);
+  const [showFilters, setShowFilters] = useState(false);
   const periods = [
     ...new Map(
       events
@@ -63,6 +66,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             Close ×
           </button>
         </header>
+        <SavedCollection records={events} onVisit={visit} />
         <div className="history-dialog-switch" role="group" aria-label="Search scope">
           {(
             [
@@ -91,6 +95,30 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
               placeholder="Try Aryabhata, Patan, temple…"
             />
           </label>
+          {filters.query && (
+            <button
+              className="search-clear"
+              type="button"
+              onClick={() => setFilters({ ...filters, query: "" })}
+            >
+              Clear search
+            </button>
+          )}
+        </div>
+        <button
+          className="filter-disclosure journey-button"
+          type="button"
+          aria-expanded={showFilters}
+          aria-controls="timeline-filters"
+          onClick={() => setShowFilters(!showFilters)}
+        >
+          Filters
+        </button>
+        <div
+          className="history-search-controls advanced-filters"
+          id="timeline-filters"
+          data-expanded={showFilters}
+        >
           <label>
             Period
             <select
@@ -152,10 +180,41 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
           <button
             className="journey-button history-reset"
             type="button"
-            onClick={() => setFilters(emptyHistoryFilters)}
+            onClick={() => setFilters({ ...emptyHistoryFilters, query: filters.query })}
           >
             Reset all filters
           </button>
+          <p className="history-filter-hint">{centuryCoverageHelp}</p>
+        </div>
+        <div className="filter-chips">
+          {(["era", "period", "century", "civilization"] as const).map((key) => {
+            const value = filters[key];
+            if (value === "all") return null;
+            const label =
+              key === "era"
+                ? eras.find(([id]) => id === value)?.[1]
+                : key === "period"
+                  ? periods.find(([id]) => id === value)?.[1]
+                  : key === "century"
+                    ? centuryOptions.find((option) => option.id === value)?.label
+                    : value;
+            return (
+              <button
+                key={key}
+                type="button"
+                aria-label={"Remove filter: " + label}
+                onClick={() =>
+                  setFilters({
+                    ...filters,
+                    [key]: "all",
+                    period: key === "era" || key === "period" ? "all" : filters.period,
+                  })
+                }
+              >
+                {label} ×
+              </button>
+            );
+          })}
         </div>
         <label className="mobile-event-picker">
           Jump to event
@@ -170,7 +229,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
             ))}
           </select>
         </label>
-        <p className="history-filter-hint">{centuryCoverageHelp}</p>
+
         <p className="history-result-count" role="status">
           {matches.length} {matches.length === 1 ? "event" : "events"}
         </p>
@@ -187,6 +246,13 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
                 {event.dateLabel} · {event.periodTitle}
               </span>
               <strong>{event.title}</strong>
+              {filters.query && (
+                <small className="match-excerpt">
+                  {matchExcerpt(event, filters.query).map((part, i) =>
+                    part.match ? <mark key={i}>{part.text}</mark> : part.text,
+                  )}
+                </small>
+              )}
               <small>{event.node.event.regions?.join(" · ") ?? event.eraTitle}</small>
             </button>
           ))}
@@ -200,7 +266,7 @@ export function HistoryExplorer({ events, activeEvent, onNavigate }: HistoryExpl
                   setFilters(emptyHistoryFilters);
                 }}
               >
-                Clear filters
+                Start a new search
               </button>
             </p>
           )}

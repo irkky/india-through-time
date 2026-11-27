@@ -27,6 +27,7 @@ export interface PrehistoryGalleryImage {
   readonly src: string;
   readonly title: string;
   readonly alt: string;
+  readonly subject?: string;
   readonly caption: string;
   readonly category: "Artefact" | "Site photograph" | "Teaching example" | "Map" | "Illustration";
   readonly credit?: string;

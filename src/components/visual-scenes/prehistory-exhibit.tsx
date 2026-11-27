@@ -1,10 +1,11 @@
 ﻿"use client";
 
+import { SaveEvent } from "@/components/historical-events/saved-events";
 import Image from "next/image";
 import { useContext, useCallback, useEffect, useId, useRef, useState } from "react";
 import type { HistoricalVideo } from "@/types/history";
 import type { TimelineDisplayEvent } from "@/types/timeline-presentation";
-import { ClippedStoryText, EnlargeImage } from "./exhibit-reading";
+import { ClippedStoryText, EnlargeImage, photoDescription } from "./exhibit-reading";
 import { PrehistoryDiagram } from "./prehistory-diagram";
 import { PrehistoryGallery } from "./prehistory-gallery";
 import { ContentNeeds } from "@/components/historical-events/content-needs";
@@ -380,7 +381,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
               image={showPhoto ? photo : undefined}
               text={
                 showPhoto
-                  ? photo.caption
+                  ? photoDescription(photo)
                   : showVideo
                     ? inlineVideo.context
                     : showImageSpace
@@ -412,7 +413,12 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
             <p>
               {event.dateLabel} / {record.regions?.join(" / ")}
             </p>
-            <nav className="evidence-sections" aria-label="Evidence sections">
+            <nav
+              tabIndex={-1}
+              id={panelId + "-sections"}
+              className="evidence-sections"
+              aria-label="Evidence sections"
+            >
               {["Images", "Videos", "Sources & interpretation"].map((label, index) => (
                 <button
                   type="button"
@@ -430,6 +436,7 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
               <a className="journey-button" href={"/read#read-" + event.id}>
                 Read this event
               </a>
+              <SaveEvent id={event.id} />
             </nav>
             <section id={panelId + "-section-0"} tabIndex={-1}>
               <h3>Images</h3>
@@ -575,6 +582,17 @@ export function PrehistoryExhibit({ event }: { readonly event: TimelineDisplayEv
                 </p>
               </div>
             </section>
+            <button
+              type="button"
+              className="evidence-back"
+              onClick={() => {
+                const nav = document.getElementById(panelId + "-sections");
+                nav?.focus({ preventScroll: true });
+                nav?.scrollIntoView({ block: "start" });
+              }}
+            >
+              Back to sections
+            </button>
           </>
         )}
       </dialog>

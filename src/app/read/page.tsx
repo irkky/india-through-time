@@ -21,8 +21,8 @@ export default function ReadingPage() {
           </p>
           <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">Read the evidence</h1>
           <p className="mt-5 max-w-2xl leading-7 text-[#d5d4ca]">
-            Browse all eight chapters without the animated timeline. Event IDs, dates, citations and
-            source links are shared with the journey.
+            Follow a chapter at your own pace. Each record includes its historical context, evidence
+            and sources.
           </p>
         </div>
       </header>

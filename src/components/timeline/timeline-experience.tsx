@@ -262,17 +262,22 @@ export function TimelineExperience({ model }: { readonly model: CompiledHistory 
                 Sourced reading
               </p>
               <h2 className="mt-5 text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
-                Continue through the evidence.
+                India through 2025
               </h2>
               <p className="mt-5 leading-7">
-                Open the server-rendered reading chapters for every record, source list and undated
-                context section.
+                Explore the records, photographs and sources behind each chapter.
               </p>
               <a
-                className="mt-6 inline-block rounded-full border border-[#20251f]/30 px-5 py-3 underline"
-                href="/read#prehistory-reader"
+                className="ending-event"
+                href={"/read#read-" + historicalEvents[historicalEvents.length - 1]!.id}
               >
-                Read all chapters →
+                Read the final event
+              </a>
+              <a
+                className="mt-6 inline-block rounded-full border border-[#20251f]/30 px-5 py-3 underline"
+                href="/read#chapter-index"
+              >
+                Browse all eight chapters →
               </a>
             </div>
           </section>

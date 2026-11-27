@@ -5,6 +5,11 @@ import { createPortal } from "react-dom";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import type { PrehistoryGalleryImage } from "@/types/prehistory-exhibit";
 
+export function photoDescription(item: PrehistoryGalleryImage) {
+  const subject = item.subject ?? item.alt;
+  if (!subject || item.caption.toLowerCase().startsWith(subject.toLowerCase())) return item.caption;
+  return subject.replace(/[.!?]?$/, ".") + " " + item.caption;
+}
 function ReadingDialog({
   title,
   label,
@@ -194,7 +199,7 @@ function ImageDetail({ item }: { item: PrehistoryGalleryImage }) {
       </div>
       <details className="zoom-caption">
         <summary>Caption &amp; credit</summary>
-        <p>{item.caption}</p>
+        <p>{photoDescription(item)}</p>
         <ImageCredit item={item} />
       </details>
       <a href={item.src} target="_blank" rel="noreferrer">

@@ -172,6 +172,70 @@ async function main() {
       fs.writeFileSync(path.join(artifactDir, `${name}.png`), Buffer.from(result.data, "base64"));
     };
     await send("Runtime.enable");
+    if (process.env.BROWSER_LEARNING_ONLY) {
+      for (const width of [1440, 390]) {
+        await send("Emulation.setDeviceMetricsOverride", {
+          width,
+          height: 844,
+          deviceScaleFactor: 1,
+          mobile: width < 600,
+        });
+        await send("Emulation.setEmulatedMedia", {
+          features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+        });
+        await send("Page.navigate", { url: base });
+        await waitFor("!!document.querySelector('.opening-trail')");
+        await click(".opening-trail");
+        for (let stop = 1; stop <= 5; stop++) {
+          await waitFor(
+            "document.querySelector('.trail-position')?.textContent.includes('Stop " +
+              stop +
+              " of 5')",
+          );
+          if (stop === 1 || stop === 3) {
+            await waitFor("!!document.querySelector('.save-event:not(:disabled)')");
+            await click(".save-event");
+            await waitFor(
+              "document.querySelector('.save-event')?.getAttribute('aria-pressed')==='true'",
+            );
+          }
+          await click(".trail-next");
+        }
+        await waitFor("document.querySelector('h1')?.textContent==='Five stops complete'");
+        await click(".learning-trail article > a");
+        await waitFor(
+          "document.querySelector('.saved-collection summary')?.textContent.includes('(2)')",
+        );
+        assert.equal(await evaluate("document.querySelectorAll('.era-orientation p').length"), 8);
+        await click(".saved-collection summary");
+        await click(".saved-collection li a");
+        await waitFor("document.querySelector('details:target')?.open === true");
+        await click("details:target > a[href^='/#event=']");
+        await waitFor(
+          active +
+            "?.dataset.timelinePointId != null && document.querySelector('.historical-experience-layer')?.getAttribute('aria-hidden')==='false'",
+        );
+        await click(".era-help");
+        await waitFor("document.querySelector('#active-era-guide').matches(':popover-open')");
+        await click("#active-era-guide button");
+        await click(".journey-toolbar > button");
+        await click(".saved-collection summary");
+        await waitFor("document.querySelectorAll('.saved-collection li').length===2");
+        await click(".saved-collection li:last-child div button");
+        await waitFor(active + "?.dataset.timelinePointId === 'indus-food-farming'");
+        await click(".journey-toolbar > button");
+        await click(".saved-collection li button[aria-label^=Remove]");
+        await click(".saved-collection li button[aria-label^=Remove]");
+        await waitFor(
+          "document.querySelector('.saved-collection summary').textContent.includes('(0)')",
+        );
+        console.log(
+          "PASS: five-stop trail, completion, era guides and saved collection at " + width + "px",
+        );
+      }
+      assert.deepEqual(errors, []);
+      return;
+    }
     if (process.env.BROWSER_READING_ONLY) {
       for (const [width, height] of [
         [320, 640],
@@ -303,6 +367,16 @@ async function main() {
         await send("Emulation.setEmulatedMedia", {
           features: [{ name: "prefers-reduced-motion", value: "reduce" }],
         });
+        await send("Page.navigate", { url: base });
+        await waitFor("!!document.querySelector('.opening-chapters')");
+        const finalHref = await evaluate("document.querySelector('.ending-event').href");
+        await click(".opening-chapters");
+        await waitFor("document.querySelectorAll('#chapter-index li').length === 8");
+        await waitFor(
+          "Array.from(document.querySelectorAll('#chapter-index li a:first-of-type')).every(a=>document.getElementById(a.hash.slice(1)))",
+        );
+        await send("Page.navigate", { url: finalHref });
+        await waitFor("document.querySelector('details:target')?.open === true");
         await send("Page.navigate", { url: base + "/#event=" + id });
         await waitFor(active + "?.dataset.timelinePointId === " + JSON.stringify(id));
         await click(".date-help-button");
@@ -322,6 +396,20 @@ async function main() {
             "Array.from(document.querySelectorAll('.history-event-result strong'),e=>e.textContent)",
           );
         };
+        await search("Sandhav");
+        await waitFor(
+          "document.querySelector('.match-excerpt mark')?.textContent.toLowerCase().includes('sandhav')",
+        );
+        await click(".search-clear");
+        assert.ok(await evaluate("document.querySelector('.filter-chips button') !== null"));
+        if (width < 761) {
+          assert.ok(
+            await evaluate("document.querySelector('.advanced-filters').offsetHeight === 0"),
+          );
+          await click(".filter-disclosure");
+          await waitFor("document.querySelector('.advanced-filters').offsetHeight > 0");
+        }
+        await click(".filter-chips button");
         assert.deepEqual(await search("paleolithic"), await search("palaeolithic"));
         await click(".history-reset");
         const ranked = await search("Dholavira");
@@ -338,6 +426,14 @@ async function main() {
           await click(".evidence-sections button:nth-child(" + n + ")");
           await waitFor("document.activeElement.id.endsWith('-section-" + (n - 1) + "')");
         }
+        await evaluate("document.querySelector('.exhibit-dialog[open]').scrollTop=1e7");
+        assert.ok(
+          await evaluate(
+            "(()=>{const d=document.querySelector('.exhibit-dialog[open]');const h=d.querySelector('header').getBoundingClientRect();return h.top>=d.getBoundingClientRect().top-2 && h.bottom<d.getBoundingClientRect().bottom})()",
+          ),
+        );
+        await click(".evidence-back");
+        await waitFor("document.activeElement.classList.contains('evidence-sections')");
         await click(".evidence-sections a");
         await waitFor("document.querySelector(" + JSON.stringify(record) + ")?.open === true");
         await click(record + " a[href^='/#event=']");

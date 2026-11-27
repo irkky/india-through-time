@@ -519,6 +519,7 @@ export const prehistoryGalleries: Readonly<Record<string, readonly PrehistoryGal
     },
     {
       src: "/assets/images/prehistoric_india/researched/sandhav-excavation.jpg",
+      subject: "Modern excavation landscape at Sandhav, Gujarat",
       title: "Sandhav — Excavation Landscape",
       alt: "Field photograph showing an exposed archaeological sediment section and researcher at Sandhav, Gujarat.",
       caption:

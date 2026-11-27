@@ -1,3 +1,4 @@
+import { SaveEvent } from "@/components/historical-events/saved-events";
 import type { HistoricalEra } from "@/types/history";
 import { compareHistoricalDates, formatHistoricalDate } from "@/lib/historical-date";
 import { prehistoryGaps } from "@/data/timeline/prehistory/gaps";
@@ -108,6 +109,7 @@ export function PrehistoryReader({
                         ` — ${formatHistoricalDate(event.dateEnd, { approximate: event.approximateDate })}`}
                     </span>
                   </summary>
+                  <SaveEvent id={event.id} />
                   <a className="mt-3 inline-block underline" href={"/#event=" + event.id}>
                     View on timeline
                   </a>
