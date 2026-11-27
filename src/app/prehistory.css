@@ -1658,16 +1658,6 @@ html:has(.reading-dialog[open]) {
   cursor: pointer;
   font-weight: 600;
 }
-.opening-trail {
-  position: absolute;
-  z-index: 45;
-  bottom: 28px;
-  left: 24px;
-  color: #f2e5ce;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  font-size: 0.85rem;
-}
 .save-event {
   border: 1px solid currentColor;
   border-radius: 2rem;
@@ -1707,70 +1697,4 @@ html:has(.reading-dialog[open]) {
 .saved-collection a {
   text-decoration: underline;
   text-align: left;
-}
-.learning-trail {
-  min-height: 100dvh;
-  background: #f1ebdd;
-  color: #20332b;
-  padding: clamp(1.2rem, 5vw, 4rem);
-}
-.learning-trail article {
-  max-width: 46rem;
-  margin: auto;
-}
-.learning-trail h1 {
-  font:
-    500 clamp(2rem, 6vw, 3.5rem)/1.1 Georgia,
-    serif;
-}
-.learning-trail p {
-  margin: 1rem 0;
-  line-height: 1.65;
-}
-.learning-trail .trail-label {
-  color: #765738;
-  font-weight: 600;
-  margin-top: 2rem;
-}
-.trail-position,
-.learning-trail figcaption {
-  font-size: 0.85rem;
-}
-.trail-question {
-  font:
-    italic 1.2rem Georgia,
-    serif;
-}
-.learning-trail figure {
-  background: #e5ddcc;
-  padding: 0.65rem;
-}
-.learning-trail a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.learning-trail nav,
-.trail-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin: 1rem 0;
-}
-.learning-trail nav {
-  border-top: 1px solid #b4a58b;
-  padding-top: 1rem;
-}
-.learning-trail .trail-next {
-  display: inline-block;
-  padding: 0.65rem 1rem;
-  background: #20382e;
-  color: #fff6df;
-  border-radius: 2rem;
-  text-decoration: none;
-}
-.learning-trail ol {
-  list-style: decimal;
-  padding-left: 1.5rem;
-  line-height: 2;
 }

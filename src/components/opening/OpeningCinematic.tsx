@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { openingPrelude, openingSequence } from "@/data/opening/opening-sequence";
 import { OpeningProgress } from "./OpeningProgress";
@@ -35,9 +34,6 @@ export function OpeningCinematic({
       <a className="opening-chapters" href="/read#chapter-index">
         Choose a chapter
       </a>
-      <Link prefetch={false} className="opening-trail" href="/trail/dholavira-water-city">
-        Try a five-stop trail
-      </Link>
       {resumeTitle && (
         <button type="button" className="journey-start-button journey-resume" onClick={onResume}>
           Continue where you left off · {resumeTitle}

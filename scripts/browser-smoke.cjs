@@ -184,25 +184,23 @@ async function main() {
           features: [{ name: "prefers-reduced-motion", value: "reduce" }],
         });
         await send("Page.navigate", { url: base });
-        await waitFor("!!document.querySelector('.opening-trail')");
-        await click(".opening-trail");
-        for (let stop = 1; stop <= 5; stop++) {
+        await waitFor("!!document.querySelector('.opening-chapters')");
+        await click(".opening-chapters");
+        for (const id of ["dholavira-water-city", "indus-food-farming"]) {
+          const record = "#read-" + id;
           await waitFor(
-            "document.querySelector('.trail-position')?.textContent.includes('Stop " +
-              stop +
-              " of 5')",
+            "!!document.querySelector(" +
+              JSON.stringify(record + " .save-event:not(:disabled)") +
+              ")",
           );
-          if (stop === 1 || stop === 3) {
-            await waitFor("!!document.querySelector('.save-event:not(:disabled)')");
-            await click(".save-event");
-            await waitFor(
-              "document.querySelector('.save-event')?.getAttribute('aria-pressed')==='true'",
-            );
-          }
-          await click(".trail-next");
+          await click(record + " summary");
+          await click(record + " .save-event");
+          await waitFor(
+            "document.querySelector(" +
+              JSON.stringify(record + " .save-event") +
+              ").getAttribute('aria-pressed') === 'true'",
+          );
         }
-        await waitFor("document.querySelector('h1')?.textContent==='Five stops complete'");
-        await click(".learning-trail article > a");
         await waitFor(
           "document.querySelector('.saved-collection summary')?.textContent.includes('(2)')",
         );
@@ -229,9 +227,7 @@ async function main() {
         await waitFor(
           "document.querySelector('.saved-collection summary').textContent.includes('(0)')",
         );
-        console.log(
-          "PASS: five-stop trail, completion, era guides and saved collection at " + width + "px",
-        );
+        console.log("PASS: era guides and saved collection at " + width + "px");
       }
       assert.deepEqual(errors, []);
       return;

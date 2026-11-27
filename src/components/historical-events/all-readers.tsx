@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { eraOrientations } from "@/data/timeline/era-orientations";
 import { SavedCollection } from "./saved-events";
 import { ancientGaps, ancientIndiaEra } from "@/data/timeline/ancient-india";
@@ -72,9 +71,6 @@ export function AllReaders() {
       <nav id="chapter-index" className="chapter-index" aria-labelledby="chapter-index-title">
         <h2 id="chapter-index-title">Choose a chapter</h2>
         <p>Date ranges show the records covered here. Regional histories overlap.</p>
-        <Link prefetch={false} href="/trail/dholavira-water-city">
-          Follow the five-stop water and settlement trail
-        </Link>
         <SavedCollection
           records={chapters.flatMap(({ era }) =>
             era.periods.flatMap((period) =>
